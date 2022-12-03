@@ -4,6 +4,7 @@ import { traverseObject } from '@/utils';
 import { cloneDeep } from 'lodash';
 import { Button } from '@mui/material';
 import { useLocation } from '@/utils/hooks';
+import { useEffect } from 'react';
 
 const formatRoutes = cloneDeep(routes);
 traverseObject(formatRoutes, (item) => {
@@ -23,6 +24,12 @@ function LoginLayout({user}: typeof injector.type) {
   const location = useLocation();
   const authList = matchRoutes(formatRoutes, location)?.map(i => (i.route as any)?.meta?.auth).filter(Boolean);
   const navigator = useNavigate();
+
+  useEffect(() => {
+    if (!user.maps.isLogin) {
+      navigator('/login');
+    }
+  }, [navigator, user.maps.isLogin]);
   
   if (!authList?.every(user.maps.hasAuth)) {
     return (

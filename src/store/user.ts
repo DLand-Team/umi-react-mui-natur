@@ -15,7 +15,7 @@ const store = {
 		}],
 	},
 	actions: {
-		updateName: (event: any) => ({name: event?.target?.value || ''}),
+		updateName: (name: string) => ({name}),
 	},
 };
 

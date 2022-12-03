@@ -4,7 +4,14 @@ export default {
   npmClient: 'npm',
   mfsu: false,
   plugins: ['umi-natur'],
-  natur: {},
+  natur: {
+    persist: {
+      include: ['user'],
+      specific: {
+        user: 0,
+      },
+    },
+  },
   styles: [
     'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap',
     'https://fonts.googleapis.com/icon?family=Material+Icons'

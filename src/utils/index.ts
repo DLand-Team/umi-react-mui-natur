@@ -54,3 +54,6 @@ export function traverseObject<T extends any | any[]>(json: T, handler: traverse
     path: [],
   });
 }
+
+
+export const sleep = async (time: number) => await new Promise(resolve => setTimeout(resolve, time));

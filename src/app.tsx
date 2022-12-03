@@ -14,3 +14,4 @@ export function rootContainer(container: any) {
     </ThemeProvider>
   );
 }
+

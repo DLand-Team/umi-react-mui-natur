@@ -1,5 +1,4 @@
 import { Dialog, Zoom, Box, CircularProgress } from '@mui/material';
-import React from 'react';
 import { inject } from 'umi';
 
 import styles from './style.scss';

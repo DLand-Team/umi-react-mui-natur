@@ -12,6 +12,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { store, useNavigate } from 'umi';
+import { sleep } from '@/utils';
 
 function Copyright(props: any) {
   return (
@@ -28,14 +30,21 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
+
 export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const navigator = useNavigate();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    if (!email) {
+      return store.dispatch('toast', 'warning', 'Please Input Email!');
+    }
+    store.dispatch('loading', 'show');
+    await sleep(3000)
+    store.dispatch('user', 'updateName', email);
+    store.dispatch('loading', 'hide');
+    navigator('/');
   };
 
   return (
