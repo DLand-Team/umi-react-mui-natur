@@ -2,18 +2,30 @@ export default [
   {
     path: '/',
     component: '@/layouts/loginLayout',
-    auth: 'login',
     routes: [
+      {
+        path: '/',
+        redirect: '/home'
+      },
+      {
+        path: '/home',
+        component: 'home',
+      },
       {
         path: '/docs',
         component: 'docs',
-        auth: 'login'
+        meta: {
+          auth: 'aaa',
+        }
       },
     ],
   },
-
   {
     path: '/login',
     component: 'login',
+  },
+  {
+    path: '/register',
+    component: 'register',
   },
 ];
