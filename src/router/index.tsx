@@ -12,6 +12,10 @@ export default [
         component: 'home',
       },
       {
+        path: '/demo',
+        component: 'demo',
+      },
+      {
         path: '/docs',
         component: 'docs',
         meta: {
