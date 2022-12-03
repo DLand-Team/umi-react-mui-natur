@@ -1,3 +1,5 @@
+import routes from '../src/router'
+
 export default {
   npmClient: 'npm',
   mfsu: false,
@@ -12,5 +14,6 @@ export default {
       name: 'viewport',
       content: 'initial-scale=1, width=device-width'
     }
-  ]
+  ],
+  routes
 };
