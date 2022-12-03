@@ -1,5 +1,6 @@
+import Button from '@/components/Button';
 import { sleep } from '@/utils';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { inject } from 'umi';
 
 const injector = inject('loading', 'toast', 'demo');
@@ -54,6 +55,11 @@ const DemoPage = ({ loading, toast, demo }: typeof injector.type) => {
 			<Box mr={1} component="span">
 				<Button variant="contained" color="warning" onClick={showToast('warning')}>
 					show warning toast
+				</Button>
+			</Box>
+			<Box mr={1} component="span">
+				<Button variant="contained" color="warning" auth='aaa' onClick={showToast('warning')}>
+					auth btn
 				</Button>
 			</Box>
 		</div>

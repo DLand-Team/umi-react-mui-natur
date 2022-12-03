@@ -36,7 +36,7 @@ export default function SignInSide() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
+    const email = data.get('email') as string | null;
     if (!email) {
       return store.dispatch('toast', 'warning', 'Please Input Email!');
     }

@@ -5,12 +5,12 @@ export default {
   mfsu: false,
   plugins: ['umi-natur'],
   natur: {
-    persist: {
-      include: ['user'],
-      specific: {
-        user: 0,
-      },
-    },
+    // persist: {
+    //   include: ['user'],
+    //   specific: {
+    //     user: 0,
+    //   },
+    // },
   },
   styles: [
     'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap',

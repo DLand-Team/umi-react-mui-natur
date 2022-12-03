@@ -4,12 +4,12 @@
  */
 const store = {
 	state: {
-		name: '',
-		authList: [] as string[],
+		name: localStorage.getItem('name') || '',
+		authList: ['aaa'] as string[],
 	},
 	maps: {
 		isLogin: ['name', (name: string) => !!name],
-		hasAuth: ['authList', (authConfig: string[]) => (auth: string) => {
+		hasAuth: ['authList', (authConfig: string[]) => (auth: string | undefined) => {
 			if (auth === undefined) {
 				return true;
 			}
@@ -17,7 +17,10 @@ const store = {
 		}],
 	},
 	actions: {
-		updateName: (name: string) => ({name}),
+		updateName: (name: string) => {
+			localStorage.setItem('name', name);
+			return {name}
+		},
 	},
 };
 
