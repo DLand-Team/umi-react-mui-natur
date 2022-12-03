@@ -1,10 +1,10 @@
 
 /**
- * 此模块已经配置了持久化，配置位于coonfig/config.ts中的natur.persist
+ * 此模块已经配置了持久化，配置位于config/config.ts中的natur.persist
  */
 const store = {
 	state: {
-		name: localStorage.getItem('name') || '',
+		name: '',
 		authList: ['aaa'] as string[],
 	},
 	maps: {
@@ -17,10 +17,7 @@ const store = {
 		}],
 	},
 	actions: {
-		updateName: (name: string) => {
-			localStorage.setItem('name', name);
-			return {name}
-		},
+		updateName: (name: string) => ({name}),
 	},
 };
 
