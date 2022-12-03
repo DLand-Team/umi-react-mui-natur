@@ -9,5 +9,6 @@ module.exports = {
 
   rules: {
     // your rules
+    // "indent": ["error", 2]
   },
 };
