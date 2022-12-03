@@ -2,6 +2,7 @@ import { isBrowser } from './index';
 import { useEffect, useRef } from "react"
 import { useLocation as useOriginLocation } from 'umi'
 import qs from 'qs';
+import { useRequest } from 'ahooks';
 
 /**
  * ahook的useMount在react strict模式下会执行两次，所以自己实现此方法
@@ -39,4 +40,17 @@ export const useLocation = () => {
         ...$location,
         query
     }
+}
+
+export type UseHttpArgs = Parameters<typeof useRequest>
+
+
+/**
+ * 包装一层useRequest
+ * @param args 
+ * @returns 
+ */
+export const useHttp = (...args: UseHttpArgs) => {
+ const res =	useRequest(...args);
+ return res;
 }
