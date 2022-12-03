@@ -37,7 +37,7 @@ yarn build
 
 ## 目录说明
 
-1. `/page` 存放页面和BFF API
+1. `/page` 存放页面
 1. `/components` 存放组件
 1. `/constants` 存放常量和枚举
 1. `/plugins` 存放插件和库相关
