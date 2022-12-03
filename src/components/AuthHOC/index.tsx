@@ -29,7 +29,6 @@ function AuthHOC<T, U extends AuthHOCProps<T> = AuthHOCProps<T>>(WrappedComponen
 		render() {
 			const { auth, forwardRef, user, ...props } = this.props;
 			const authIsValid = user.maps.hasAuth(auth);
-			console.log(authIsValid);
 			
 			if (forwardRef) {
 				(props as any).ref = forwardRef;
