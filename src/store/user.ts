@@ -1,5 +1,7 @@
 
-
+/**
+ * 此模块已经配置了持久化，配置位于coonfig/config.ts中的natur.persist
+ */
 const store = {
 	state: {
 		name: '',

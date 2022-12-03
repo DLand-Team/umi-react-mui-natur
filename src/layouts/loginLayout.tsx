@@ -24,7 +24,7 @@ function LoginLayout({user}: typeof injector.type) {
   const location = useLocation();
   const authList = matchRoutes(formatRoutes, location)?.map(i => (i.route as any)?.meta?.auth).filter(Boolean);
   const navigator = useNavigate();
-
+	
   useEffect(() => {
     if (!user.maps.isLogin) {
       navigator('/login');
