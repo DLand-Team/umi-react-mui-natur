@@ -1,5 +1,4 @@
-import type { ThunkParams } from 'natur';
-
+import type { ImmerThunkParams } from 'natur-immer'
 
 type ToastType = 'info' | 'success' | 'warning' | 'error';
 
@@ -33,18 +32,15 @@ const createToastAction = (type: ToastType = 'info') => (
 	text: string,
 	duration: number = 3000,
 ) => ({
-	getState,
+	setState,
 	dispatch,
-}: ThunkParams<typeof state>) => {
+}: ImmerThunkParams<typeof state>) => {
 	const toastItem = createToastItem({text, duration, type});
 	// 隐藏toast，触发toast ui退出动画
 	setTimeout(() => dispatch('toast/hide', toastItem.id), duration);
 	// 触发toast ui退出动画3秒后，toast ui应该已经退出完成了，此时删除toast数据
 	setTimeout(() => dispatch('toast/remove', toastItem.id), duration + 3000);
-	return [
-		...getState(),
-		toastItem,
-	];
+	return setState(s => {s.push(toastItem)});
 };
 
 
@@ -60,9 +56,9 @@ export default {
 		error: createToastAction('error'),
 		hide: (id: string) => ({
 			getState,
-		}: ThunkParams<typeof state>) => getState().map(i => (i.id === id ? { ...i, show: false } : i)),
+		}: ImmerThunkParams<typeof state>) => getState().map(i => (i.id === id ? { ...i, show: false } : i)),
 		remove: (id: string) => ({
 			getState,
-		}: ThunkParams<typeof state>) => getState().filter(i => i.id !== id),
+		}: ImmerThunkParams<typeof state>) => getState().filter(i => i.id !== id),
 	},
 };

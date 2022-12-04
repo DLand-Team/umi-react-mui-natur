@@ -12,7 +12,7 @@ const DemoPage = ({ loading, toast, demo }: typeof injector.type) => {
 		loading.actions.hide();
 	};
 	const showToast = (type: 'error' | 'info' | 'success' | 'warning') => () => {
-		toast.actions[type](demo.state.toastText);
+		toast.actions[type](demo.state.text.toast);
 	};
 
 	return (
@@ -33,7 +33,7 @@ const DemoPage = ({ loading, toast, demo }: typeof injector.type) => {
 				margin="normal"
 				label="toast text"
 				name="toast"
-				value={demo.state.toastText}
+				value={demo.state.text.toast}
 				onChange={(e) => demo.actions.updateToastText(e.target.value)}
 			/>
 			<br />
