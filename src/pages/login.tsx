@@ -33,6 +33,10 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const navigator = useNavigate();
+	React.useEffect(() => {
+		store.globalResetStates({
+		})
+	}, [])
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

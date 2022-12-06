@@ -30,7 +30,7 @@ function LoginLayout({user}: typeof injector.type) {
       navigator('/login');
     }
   }, [navigator, user.maps.isLogin]);
-  
+	
   if (!authList?.every(user.maps.hasAuth)) {
     return (
         <div>
