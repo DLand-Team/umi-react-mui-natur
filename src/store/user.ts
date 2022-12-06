@@ -9,11 +9,11 @@ const store = {
 	},
 	maps: {
 		isLogin: ['name', (name: string) => !!name],
-		hasAuth: ['authList', (authConfig: string[]) => (auth: string | undefined) => {
+		hasAuth: ['authList', (authList: string[]) => (auth: string | undefined) => {
 			if (auth === undefined) {
 				return true;
 			}
-			return authConfig.includes(auth);
+			return authList.includes(auth);
 		}],
 	},
 	actions: {
