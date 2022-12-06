@@ -36,6 +36,12 @@ _http.interceptors.response.use(response => {
     throw err;
 })
 
+export type ResponseType<D> = {
+	data: D;
+	code: string;
+	message: null | string;
+}
+
 // 重写axios的类型
 type GetParams = Parameters<typeof _http.get>;
 type PostParams = Parameters<typeof _http.post>;
@@ -44,14 +50,14 @@ type DeleteParams = Parameters<typeof _http.delete>;
 type HeadParams = Parameters<typeof _http.head>;
 type PutParams = Parameters<typeof _http.put>;
 
-const overrideHttpType = <T>(config: AxiosRequestConfig) => _http<T, T>(config);
-overrideHttpType.request = <T>(config: AxiosRequestConfig) => _http.request<T, T>(config);
-overrideHttpType.get = <T>(...arg: GetParams) => _http.get<T, T>(...arg);
-overrideHttpType.post = <T>(...arg: PostParams) => _http.post<T, T>(...arg);
-overrideHttpType.patch = <T>(...arg: PatchParams) => _http.patch<T, T>(...arg);
-overrideHttpType.delete = <T>(...arg: DeleteParams) => _http.delete<T, T>(...arg);
-overrideHttpType.head = <T>(...arg: HeadParams) => _http.head<T, T>(...arg);
-overrideHttpType.put = <T>(...arg: PutParams) => _http.put<T, T>(...arg);
+const overrideHttpType = <D extends any = any, T = ResponseType<D>>(config: AxiosRequestConfig) => _http<T, T>(config);
+overrideHttpType.request = <D extends any = any, T = ResponseType<D>>(config: AxiosRequestConfig) => _http.request<T, T>(config);
+overrideHttpType.get = <D extends any = any, T = ResponseType<D>>(...arg: GetParams) => _http.get<T, T>(...arg);
+overrideHttpType.post = <D extends any = any, T = ResponseType<D>>(...arg: PostParams) => _http.post<T, T>(...arg);
+overrideHttpType.patch = <D extends any = any, T = ResponseType<D>>(...arg: PatchParams) => _http.patch<T, T>(...arg);
+overrideHttpType.delete = <D extends any = any, T = ResponseType<D>>(...arg: DeleteParams) => _http.delete<T, T>(...arg);
+overrideHttpType.head = <D extends any = any, T = ResponseType<D>>(...arg: HeadParams) => _http.head<T, T>(...arg);
+overrideHttpType.put = <D extends any = any, T = ResponseType<D>>(...arg: PutParams) => _http.put<T, T>(...arg);
 
 type HttpType = typeof overrideHttpType;
 
