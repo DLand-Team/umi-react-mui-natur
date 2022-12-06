@@ -34,8 +34,8 @@ const theme = createTheme();
 export default function SignInSide() {
   const navigator = useNavigate();
 	React.useEffect(() => {
-		store.globalResetStates({
-		})
+		// 登陆页面重置store数据
+		store.globalResetStates({})
 	}, [])
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
