@@ -33,7 +33,8 @@ _http.interceptors.response.use(response => {
 }, err => {
     store.dispatch('loading', 'hide');
     store.dispatch('toast', 'error', err.message);
-    throw err;
+    // throw err;
+		throw new HttpError(err.message, Number(err.code || err.status));
 })
 
 export type ResponseType<D> = {
