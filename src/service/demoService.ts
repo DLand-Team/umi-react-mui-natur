@@ -7,7 +7,9 @@ export default class DemoService extends BaseService {
 		this.watch('toast', (args) => {
 			console.log(args);
 			// 异步执行模块action，参数同store.dispatch
-			// this.dispatch
 		})
+		// setInterval(() => {
+		// 	this.dispatch('demo', 'updateToastText', String(Math.random()))
+		// }, 3000)
 	}
 }

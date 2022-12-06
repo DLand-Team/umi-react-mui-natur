@@ -35,8 +35,9 @@ export default function SignInSide() {
   const navigator = useNavigate();
 	React.useEffect(() => {
 		// 登陆页面重置store数据
-		store.globalResetStates({})
+		store.globalResetStates()
 	}, [])
+	
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
