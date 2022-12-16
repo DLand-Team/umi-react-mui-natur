@@ -4,7 +4,7 @@ import React from 'react';
 import { inject } from 'umi';
 
 
-const injector = inject('toast');
+const injector = inject('message');
 
 const mt50 = {
 	marginTop: 50,
@@ -18,18 +18,18 @@ const position: SnackbarOrigin = {
 	horizontal: 'center',
 };
 
-function Toast({toast}: typeof injector.type) {
+function Toast({message}: typeof injector.type) {
 	return (
 		<Snackbar
 			anchorOrigin={position}
 			style={mt50}
-			open={toast.state.length !== 0}
+			open={message.state.length !== 0}
 		>
 			<Box
 				flexDirection='column'
 			>
 				{
-					toast.state.map(ti => (
+					message.state.map(ti => (
 						<Slide key={ti.id} direction="down" in={ti.show} mountOnEnter unmountOnExit>
 							<Alert style={alertStyle} variant="filled" severity={ti.type}>{ti.text}</Alert>
 						</Slide>

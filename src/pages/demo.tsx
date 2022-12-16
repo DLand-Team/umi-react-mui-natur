@@ -3,16 +3,16 @@ import { sleep } from '@/utils';
 import { Box, TextField } from '@mui/material';
 import { inject } from 'umi';
 
-const injector = inject('loading', 'toast', 'demo');
+const injector = inject('loading', 'message', 'demo');
 
-const DemoPage = ({ loading, toast, demo }: typeof injector.type) => {
+const DemoPage = ({ loading, message, demo }: typeof injector.type) => {
 	const showLoading = async () => {
 		loading.actions.show();
 		await sleep(3000);
 		loading.actions.hide();
 	};
 	const showToast = (type: 'error' | 'info' | 'success' | 'warning') => () => {
-		toast.actions[type](demo.state.text.toast);
+		message.actions[type](demo.state.text.message);
 	};
 
 	return (
@@ -31,30 +31,30 @@ const DemoPage = ({ loading, toast, demo }: typeof injector.type) => {
 			<br />
 			<TextField
 				margin="normal"
-				label="toast text"
-				name="toast"
-				value={demo.state.text.toast}
+				label="message text"
+				name="message"
+				value={demo.state.text.message}
 				onChange={(e) => demo.actions.updateToastText(e.target.value)}
 			/>
 			<br />
 			<Box mr={1} component="span">
 				<Button variant="contained" color="error" onClick={showToast('error')}>
-					show error toast
+					show error message
 				</Button>
 			</Box>
 			<Box mr={1} component="span">
 				<Button variant="contained" color="info" onClick={showToast('info')}>
-					show info toast
+					show info message
 				</Button>
 			</Box>
 			<Box mr={1} component="span">
 				<Button variant="contained" color="success" onClick={showToast('success')}>
-					show success toast
+					show success message
 				</Button>
 			</Box>
 			<Box mr={1} component="span">
 				<Button variant="contained" color="warning" onClick={showToast('warning')}>
-					show warning toast
+					show warning message
 				</Button>
 			</Box>
 			<Box mr={1} component="span">
