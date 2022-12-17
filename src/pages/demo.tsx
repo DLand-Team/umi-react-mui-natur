@@ -1,18 +1,18 @@
 import Button from '@/components/Button';
 import { sleep } from '@/utils';
-import { useNatur } from '@/utils/hooks';
+import { useInject } from '@/utils/hooks';
 import { Box, TextField } from '@mui/material';
-import { inject } from 'umi';
 
-const injector = inject('loading', 'demo');
 
-const DemoPage = ({ loading, demo }: typeof injector.type) => {
+const DemoPage = () => {
+	const [loading] = useInject('loading');
+	const [demo] = useInject('demo');
 	const showLoading = async () => {
 		loading.actions.show();
 		await sleep(3000);
 		loading.actions.hide();
 	};
-	const message = useNatur('message');
+	const [message] = useInject('message');
 	const showToast = (type: 'error' | 'info' | 'success' | 'warning') => () => {
 		message.actions[type](demo.state.text.message);
 	};
@@ -24,7 +24,9 @@ const DemoPage = ({ loading, demo }: typeof injector.type) => {
 				label="loading text"
 				name="loading"
 				value={loading.state.loadingText}
-				onChange={(e) => loading.actions.changeLoadingText(e.target.value)}
+				onChange={(e) => {
+					loading.actions.changeLoadingText(e.target.value)
+				}}
 			/>
 			<br />
 			<Button variant="contained" color="info" onClick={showLoading}>
@@ -67,4 +69,5 @@ const DemoPage = ({ loading, demo }: typeof injector.type) => {
 		</div>
 	);
 };
-export default injector(DemoPage);
+// export default injector(DemoPage);
+export default DemoPage;

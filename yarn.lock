@@ -6079,13 +6079,21 @@ natur-service@^2.1.x:
   resolved "https://registry.npmmirror.com/natur-service/-/natur-service-2.1.7.tgz#5342975c8f12409082ad674ab4226ca0df2046f6"
   integrity sha512-/maiAb4hl1DOJGQJKqbqWDpehjEkOIX9BeeAffe/AjHiUZ6iv7vOfnZL7b8kSyAchMW9vTF312p49b3JYEew6w==
 
-natur@^2.1.11, natur@^2.1.x:
+natur@^2.1.x:
   version "2.1.11"
   resolved "https://registry.npmmirror.com/natur/-/natur-2.1.11.tgz#c7ec4761055e83801e705e5f18821f460acfa884"
   integrity sha512-gqw6Vfiq/GsKXBDohhIwyZx3/FO0iwRfCN/qmrRGXrO39t7BsjGLqoQL8a425S/Ik3b0MfxhOf2yOBvg8rn2WQ==
   dependencies:
     hoist-non-react-statics "^3.3.0"
     react-is "^17.0.2"
+
+natur@^2.2.0-beta1:
+  version "2.2.0-beta1"
+  resolved "https://registry.yarnpkg.com/natur/-/natur-2.2.0-beta1.tgz#ebc23571fde3763c8eecce0e9c75d6f1bbb35f72"
+  integrity sha512-KlDUDCx86YD7x7tW+7FgJjIBb3Z6A+0jwVfbtPQzHnMxafO6MbQTklnXRH+7JRdRn7B5Lw1coaXCk72fLmCKnw==
+  dependencies:
+    hoist-non-react-statics "^3.3.2"
+    react-is "^18.2.0"
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
