@@ -7,12 +7,13 @@ import { Box, TextField } from '@mui/material';
 const DemoPage = () => {
 	const [loading] = useInject('loading');
 	const [demo] = useInject('demo');
+	const [message] = useInject('message');
+
 	const showLoading = async () => {
 		loading.actions.show();
 		await sleep(3000);
 		loading.actions.hide();
 	};
-	const [message] = useInject('message');
 	const showToast = (type: 'error' | 'info' | 'success' | 'warning') => () => {
 		message.actions[type](demo.state.text.message);
 	};
