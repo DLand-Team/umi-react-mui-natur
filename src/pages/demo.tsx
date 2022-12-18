@@ -3,11 +3,11 @@ import { sleep } from '@/utils';
 import { useInject } from '@/utils/hooks';
 import { Box, TextField } from '@mui/material';
 
-
 const DemoPage = () => {
-	const [loading] = useInject('loading');
-	const [demo] = useInject('demo');
-	const [message] = useInject('message');
+	
+	const [loading] = useInject('loading', {});
+	const [demo] = useInject('demo', {state: [s => s.text.message]});
+	const [message] = useInject('message', {});
 
 	const showLoading = async () => {
 		loading.actions.show();
@@ -17,7 +17,7 @@ const DemoPage = () => {
 	const showToast = (type: 'error' | 'info' | 'success' | 'warning') => () => {
 		message.actions[type](demo.state.text.message);
 	};
-
+	
 	return (
 		<div>
 			<TextField
@@ -36,10 +36,17 @@ const DemoPage = () => {
 			<br />
 			<TextField
 				margin="normal"
-				label="message text"
-				name="message"
+				label="demo message text"
+				name="demo message"
 				value={demo.state.text.message}
-				onChange={(e) => demo.actions.updateToastText(e.target.value)}
+				onChange={(e) => demo.actions.updateMessageText(e.target.value)}
+			/>
+			<TextField
+				margin="normal"
+				label="demo loading text"
+				name="demo loading"
+				value={demo.state.text.loading}
+				onChange={(e) => demo.actions.updateLoadingText(e.target.value)}
 			/>
 			<br />
 			<Box mr={1} component="span">
@@ -70,5 +77,4 @@ const DemoPage = () => {
 		</div>
 	);
 };
-// export default injector(DemoPage);
 export default DemoPage;

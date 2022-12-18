@@ -13,7 +13,7 @@ type ITP = ImmerThunkParams<State>;
 
 const actions = {
 	updateLoadingText: (loadingText: string) => ({setState}: ITP) => setState(s => {s.text.loading = loadingText}),
-	updateToastText: (messageText: string) => ({setState}: ITP) => setState(s => {s.text.loading = messageText}),
+	updateMessageText: (messageText: string) => ({setState}: ITP) => setState(s => {s.text.message = messageText}),
 };
 
 export default {
