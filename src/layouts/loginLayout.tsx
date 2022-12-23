@@ -1,9 +1,9 @@
-import { inject, matchRoutes, Outlet, useNavigate } from 'umi';
+import { matchRoutes, Outlet, useNavigate } from 'umi';
 import routes from '@/router';
 import { traverseObject } from '@/utils';
 import { cloneDeep } from 'lodash';
 import { Button } from '@mui/material';
-import { useLocation } from '@/utils/hooks';
+import { useInject, useLocation } from '@/utils/hooks';
 import { useEffect } from 'react';
 
 const formatRoutes = cloneDeep(routes);
@@ -18,12 +18,13 @@ traverseObject(formatRoutes, (item) => {
     }
 })
 
-const injector = inject('user');
 
-function LoginLayout({user}: typeof injector.type) {
+function LoginLayout() {
   const location = useLocation();
+	const [user] = useInject('user');
   const authList = matchRoutes(formatRoutes, location)?.map(i => (i.route as any)?.meta?.auth).filter(Boolean);
   const navigator = useNavigate();
+	
 	
   useEffect(() => {
     if (!user.maps.isLogin) {
@@ -52,4 +53,4 @@ function LoginLayout({user}: typeof injector.type) {
   );
 }
 
-export default injector(LoginLayout);
+export default LoginLayout;

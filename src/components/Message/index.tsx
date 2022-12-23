@@ -1,10 +1,7 @@
+import { useInject } from '@/utils/hooks';
 import type { SnackbarOrigin} from '@mui/material';
 import { Snackbar, Box, Slide, Alert } from '@mui/material';
-import React from 'react';
-import { inject } from 'umi';
 
-
-const injector = inject('message');
 
 const mt50 = {
 	marginTop: 50,
@@ -18,7 +15,8 @@ const position: SnackbarOrigin = {
 	horizontal: 'center',
 };
 
-function Toast({message}: typeof injector.type) {
+function Toast() {
+	const [message] = useInject('message')
 	return (
 		<Snackbar
 			anchorOrigin={position}
@@ -40,4 +38,4 @@ function Toast({message}: typeof injector.type) {
 	);
 }
 
-export default injector(Toast);
+export default Toast;

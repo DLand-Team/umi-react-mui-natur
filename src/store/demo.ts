@@ -2,6 +2,7 @@ import type { ImmerThunkParams } from 'natur-immer';
 
 
 const state = {
+	routePath: '',
 	text: {
 		loading: '',
 		message: '1111',
