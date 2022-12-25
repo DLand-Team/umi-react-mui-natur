@@ -11,27 +11,28 @@ import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { history } from 'umi';
 
+const Item: React.FC<{
+	icon: React.ReactElement;
+	onClick: () => any;
+	text: string;
+}> = ({ icon, onClick, text }) => (
+	<ListItemButton onClick={onClick}>
+		<ListItemIcon>{icon}</ListItemIcon>
+		<ListItemText primary={text} />
+	</ListItemButton>
+);
+
 export const mainListItems = (
-  <React.Fragment>
-    <ListItemButton onClick={() => history.push('/demo')}>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Demo Page" />
-    </ListItemButton>
-    <ListItemButton onClick={() => history.push('/register')}>
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Register Page" />
-    </ListItemButton>
-    <ListItemButton onClick={() => history.push('/docs')}>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Auth test Page" />
-    </ListItemButton>
-    {/* <ListItemButton>
+	<React.Fragment>
+		<Item onClick={() => history.push('/demo')} icon={<DashboardIcon />} text="Demo Page" />
+		<Item onClick={() => history.push('/form')} icon={<BarChartIcon />} text="Form Page" />
+		<Item
+			onClick={() => history.push('/register')}
+			icon={<ShoppingCartIcon />}
+			text="Register Page"
+		/>
+		<Item onClick={() => history.push('/docs')} icon={<PeopleIcon />} text="Auth test Page" />
+		{/* <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
@@ -43,12 +44,12 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton> */}
-  </React.Fragment>
+	</React.Fragment>
 );
 
 export const secondaryListItems = (
-  <React.Fragment>
-    {/* <ListSubheader component="div" inset>
+	<React.Fragment>
+		{/* <ListSubheader component="div" inset>
       Saved reports
     </ListSubheader>
     <ListItemButton>
@@ -69,5 +70,5 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
     </ListItemButton> */}
-  </React.Fragment>
+	</React.Fragment>
 );

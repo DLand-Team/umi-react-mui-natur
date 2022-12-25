@@ -15,6 +15,10 @@ export default [
         path: '/demo',
         component: 'demo',
       },
+			{
+        path: '/form',
+        component: 'form',
+      },
       {
         path: '/docs',
         component: 'docs',
