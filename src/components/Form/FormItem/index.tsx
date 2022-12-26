@@ -8,13 +8,8 @@ import { FormContext } from '..';
 import { FormItemBox } from './style';
 
 export interface FormItemProps extends FieldAttributes<any> {
-	// labelWidth?: number | string;
-	// labelAlign?: 'left' | 'right' | 'center';
 	labelStyle?: CSSProperties;
 	fieldStyle?: CSSProperties;
-	/**
-	 * form item layout
-	 */
 	/**
 	 * show required sign(*)
 	 */
