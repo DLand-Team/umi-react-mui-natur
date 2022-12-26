@@ -2,16 +2,19 @@ import { Box } from '@mui/material';
 import type { FieldAttributes } from 'formik';
 import { useField } from 'formik';
 import { ErrorMessage } from 'formik';
+import type { CSSProperties} from 'react';
 import { useContext, useEffect, useId, useRef, useState } from 'react';
 import { FormContext } from '..';
 import { FormItemBox } from './style';
 
 export interface FormItemProps extends FieldAttributes<any> {
-	labelWidth?: number;
+	// labelWidth?: number | string;
+	// labelAlign?: 'left' | 'right' | 'center';
+	labelStyle?: CSSProperties;
+	fieldStyle?: CSSProperties;
 	/**
 	 * form item layout
 	 */
-	// layout?: 'vertical' | 'horizontal' | 'inline';
 	/**
 	 * show required sign(*)
 	 */
@@ -36,7 +39,10 @@ export default function FormItem({
 	children,
 	name,
 	validate,
-	labelWidth,
+	labelStyle,
+	fieldStyle,
+	// labelWidth,
+	// labelAlign,
 	required = false,
 	...restProps
 }: FormItemProps) {
@@ -54,16 +60,28 @@ export default function FormItem({
 		}
 	}, [fieldHeight]);
 	const id = useId();
-	const {layout} = useContext(FormContext);
+	const ctx = useContext(FormContext);
+	const { layout = 'horizontal' } = ctx;
+
 
 	return (
 		<FormItemBox display={dispalyMap[layout]}>
 			{label && (
-				<Box className="label-box" component={'label'} htmlFor={id} width={labelWidth} display={dispalyMap[layout]}>
+				<Box
+					className="label-box"
+					component={'label'}
+					htmlFor={id}
+					display={fieldDisplayMap[layout]}
+					style={{...ctx.labelStyle, ...labelStyle}}
+				>
 					{required && <Box color='error.main' component={'span'}>* </Box>}{label}:
 				</Box>
 			)}
-			<Box display={fieldDisplayMap[layout]} style={{verticalAlign: 'top'}}>
+			<Box display={fieldDisplayMap[layout]} style={{
+				verticalAlign: 'top',
+				...ctx.fieldStyle,
+				...fieldStyle
+			}}>
 				<Comp {...restProps} {...field} id={id} error={!!errorMsg} ref={fieldRef}>
 					{children}
 				</Comp>

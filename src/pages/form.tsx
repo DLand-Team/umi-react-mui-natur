@@ -1,23 +1,38 @@
 import Form, { FormItem, useForm } from '@/components/Form';
+import { useInject } from '@/utils/hooks';
+import { LoadingButton } from '@mui/lab';
 import { Button, MenuItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 
 export default function FormPage() {
+	const [message] = useInject('message');
 	const form = useForm({
-		layout: 'vertical',
 		initialValues: {
 			name: 'tom111',
 			sex: 'man',
 		},
-		onSubmit: (...arg) => {
-			console.log(...arg, form);
+		onSubmit: async (...arg) => {
+			await new Promise((res) => setTimeout(res, 3000));
+			console.log(...arg);
+			message.actions.success('Submit Success!');
 		},
 	});
-	
+
 	return (
 		<Box p={2}>
 			<h1>form page</h1>
-			<Form form={form}>
+			<Form
+				form={form}
+				layout="horizontal"
+				labelStyle={{
+					textAlign: 'right',
+					width: '100px',
+					marginRight: 20,
+				}}
+				fieldStyle={{
+					width: 200,
+				}}
+			>
 				<FormItem
 					as={TextField}
 					name="name"
@@ -31,7 +46,6 @@ export default function FormPage() {
 					name="sex"
 					label="Sex"
 					select
-					style={{ width: 200 }}
 					size="small"
 					validate={(sex: string) => (sex === 'private' ? 'you must choose one!' : '')}
 				>
@@ -39,7 +53,16 @@ export default function FormPage() {
 					<MenuItem value="man">man</MenuItem>
 					<MenuItem value="woman">woman</MenuItem>
 				</FormItem>
-				<Button onClick={form.submitForm}>Submit</Button>
+				<Box ml={'120px'}>
+					<LoadingButton 
+						disabled={form.isSubmitting}
+						variant="contained"
+						loading={form.isSubmitting}
+						onClick={form.submitForm}
+					>
+						Submit
+					</LoadingButton>
+				</Box>
 			</Form>
 		</Box>
 	);
