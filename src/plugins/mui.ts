@@ -1,5 +1,9 @@
+import { OutlinedInput } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
+
+
+const spaceUnit = 8;
 
 // Create a theme instance.
 export const defaultTheme = createTheme({
@@ -19,6 +23,7 @@ export const defaultTheme = createTheme({
             main: red.A400,
         },
     },
+		spacing: (n: number) => `${n * spaceUnit}px`,
     components: {
         MuiButton: {
             styleOverrides: {
@@ -26,7 +31,16 @@ export const defaultTheme = createTheme({
                     boxShadow:'none'
                 }
             }
-        }
+        },
+				MuiOutlinedInput: {
+					styleOverrides: {
+						input: {
+							// height: 32
+							// paddingTop: spaceUnit * 0.5,
+							// paddingBottom: spaceUnit * 0.5,
+						}
+					}
+				}
     }
 });
 
