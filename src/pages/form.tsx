@@ -13,7 +13,7 @@ export default function FormPage() {
 			console.log(...arg, form);
 		},
 	});
-
+	
 	return (
 		<Box p={2}>
 			<h1>form page</h1>
@@ -24,7 +24,6 @@ export default function FormPage() {
 					label="Name"
 					size="small"
 					required
-					InputLabelProps={{ shrink: true }}
 					validate={(name: string) => (name.length > 15 ? 'name max length is 15.' : '')}
 				/>
 				<FormItem
@@ -32,9 +31,8 @@ export default function FormPage() {
 					name="sex"
 					label="Sex"
 					select
-					style={{ width: 100 }}
+					style={{ width: 200 }}
 					size="small"
-					InputLabelProps={{ shrink: true }}
 					validate={(sex: string) => (sex === 'private' ? 'you must choose one!' : '')}
 				>
 					<MenuItem value="private">private</MenuItem>
