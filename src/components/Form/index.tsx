@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import type { FormikConfig, FormikContextType, FormikValues } from 'formik';
 import { useFormik } from 'formik';
 import { FormikProvider } from 'formik';
-import { merge, omit, pick } from 'lodash';
+import { omit, pick } from 'lodash';
 import React from 'react';
 import type { FormItemProps } from './FormItem';
 
