@@ -1,5 +1,5 @@
+import { overrideHttpType } from './overrideHttpType';
 import { HttpError } from './../utils/HttpError';
-import type { AxiosRequestConfig} from "axios";
 import axios from "axios";
 import { history, store } from "umi";
 
@@ -14,7 +14,7 @@ _http.interceptors.request.use(config => {
     return config;
 }, err => {
     store.dispatch('loading', 'hide');
-    store.dispatch('toast', 'error', err.message);
+    store.dispatch('message', 'error', err.message);
     throw err;
 })
 
@@ -32,34 +32,9 @@ _http.interceptors.response.use(response => {
     return response.data;
 }, err => {
     store.dispatch('loading', 'hide');
-    store.dispatch('toast', 'error', err.message);
+    store.dispatch('message', 'error', err.message);
     // throw err;
 		throw new HttpError(err.message, Number(err.code || err.status));
 })
 
-export type ResponseType<D> = {
-	data: D;
-	code: string;
-	message: null | string;
-}
-
-// 重写axios的类型
-type GetParams = Parameters<typeof _http.get>;
-type PostParams = Parameters<typeof _http.post>;
-type PatchParams = Parameters<typeof _http.patch>;
-type DeleteParams = Parameters<typeof _http.delete>;
-type HeadParams = Parameters<typeof _http.head>;
-type PutParams = Parameters<typeof _http.put>;
-
-const overrideHttpType = <D extends any = any, T = ResponseType<D>>(config: AxiosRequestConfig) => _http<T, T>(config);
-overrideHttpType.request = <D extends any = any, T = ResponseType<D>>(config: AxiosRequestConfig) => _http.request<T, T>(config);
-overrideHttpType.get = <D extends any = any, T = ResponseType<D>>(...arg: GetParams) => _http.get<T, T>(...arg);
-overrideHttpType.post = <D extends any = any, T = ResponseType<D>>(...arg: PostParams) => _http.post<T, T>(...arg);
-overrideHttpType.patch = <D extends any = any, T = ResponseType<D>>(...arg: PatchParams) => _http.patch<T, T>(...arg);
-overrideHttpType.delete = <D extends any = any, T = ResponseType<D>>(...arg: DeleteParams) => _http.delete<T, T>(...arg);
-overrideHttpType.head = <D extends any = any, T = ResponseType<D>>(...arg: HeadParams) => _http.head<T, T>(...arg);
-overrideHttpType.put = <D extends any = any, T = ResponseType<D>>(...arg: PutParams) => _http.put<T, T>(...arg);
-
-type HttpType = typeof overrideHttpType;
-
-export const http = _http as HttpType;
+export const http = overrideHttpType(_http);
