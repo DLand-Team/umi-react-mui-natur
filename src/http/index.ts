@@ -2,6 +2,7 @@ import { overrideHttpType } from './overrideHttpType';
 import { HttpError } from './../utils/HttpError';
 import axios from "axios";
 import { history, store } from "umi";
+import { Message } from '@/utils/message';
 
 
 
@@ -14,7 +15,7 @@ _http.interceptors.request.use(config => {
     return config;
 }, err => {
     store.dispatch('loading', 'hide');
-    store.dispatch('message', 'error', err.message);
+    Message.error(err.message);
     throw err;
 })
 
@@ -32,7 +33,7 @@ _http.interceptors.response.use(response => {
     return response.data;
 }, err => {
     store.dispatch('loading', 'hide');
-    store.dispatch('message', 'error', err.message);
+		Message.error(err.message);
     // throw err;
 		throw new HttpError(err.message, Number(err.code || err.status));
 })
