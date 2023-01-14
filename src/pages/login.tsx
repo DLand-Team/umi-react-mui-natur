@@ -12,8 +12,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { store, useNavigate } from 'umi';
+import { store, useNavigate, useParams, useSearchParams } from 'umi';
 import { sleep } from '@/utils';
+import { Message } from '@/utils/message';
+import { useLocation } from '@/utils/hooks';
 
 function Copyright(props: any) {
   return (
@@ -38,18 +40,24 @@ export default function SignInSide() {
 		store.globalResetStates()
 	}, [])
 	
+	const location = useLocation<{redirect?: string}>();
+	
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email') as string | null;
     if (!email) {
-      return store.dispatch('toast', 'warning', 'Please Input Email!');
+			Message.warning('Please Input Email!');
     }
     store.dispatch('loading', 'show');
     await sleep(3000)
-    store.dispatch('user', 'updateName', email);
+    store.dispatch('user', 'updateName', email!);
     store.dispatch('loading', 'hide');
-    navigator('/');
+		if (location.query.redirect) {
+			navigator(location.query.redirect)
+		} else {
+			navigator('/');
+		}
   };
 
   return (

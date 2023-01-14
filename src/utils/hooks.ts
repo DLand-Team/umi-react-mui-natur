@@ -29,9 +29,9 @@ export const useBrowserInit = (fn: () => any) => {
     }
 }
 
-export const useLocation = () => {
+export const useLocation = <T extends Record<string, string> = Record<string, string>>() => {
     const $location = useOriginLocation();
-    let query = {};
+    let query: T = {};
     if ($location.search) {
         query = {
             ...qs.parse($location.search.slice(1)),
