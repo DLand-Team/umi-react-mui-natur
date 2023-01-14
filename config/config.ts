@@ -7,18 +7,19 @@ export default {
 	natur: {
 		service: {},
 		persist: {
-			include: ['user'],
+			include: ["user"],
 			specific: {
 				user: 0,
 			},
 		},
 		useImmer: true,
+
 	},
 	styles: [
 		'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap',
 		'https://fonts.googleapis.com/icon?family=Material+Icons',
 	],
-	externals: { react: 'React', 'react-dom': 'ReactDOM' },
+	externals: {react: 'React', 'react-dom': 'ReactDOM'},
 	headScripts: [
 		{
 			src: 'https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
