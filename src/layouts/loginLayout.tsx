@@ -4,8 +4,7 @@ import { traverseObject } from '@/utils';
 import { cloneDeep } from 'lodash';
 import { Button } from '@mui/material';
 import { useInject, useLocation } from '@/utils/hooks';
-import { useEffect, useLayoutEffect } from 'react';
-import { useLatest } from 'ahooks';
+import { useLayoutEffect } from 'react';
 
 const formatRoutes = cloneDeep(routes);
 traverseObject(formatRoutes, (item) => {
@@ -22,9 +21,10 @@ traverseObject(formatRoutes, (item) => {
 function LoginLayout() {
 	const location = useLocation();
 	const [user] = useInject('user');
-	const authList = matchRoutes(formatRoutes, location)
-		?.map((i) => (i.route as any)?.meta?.auth)
-		.filter(Boolean);
+	const authList: string[] =
+		matchRoutes(formatRoutes, location)
+			?.map((i) => (i.route as any)?.meta?.auth)
+			?.filter(Boolean) || [];
 	const navigator = useNavigate();
 
 	useLayoutEffect(() => {
@@ -33,7 +33,7 @@ function LoginLayout() {
 		}
 	}, [navigator, user.maps.isLogin, location.pathname, location.search]);
 
-	if (!authList?.every(user.maps.hasAuth)) {
+	if (!authList.every(user.maps.hasAuth)) {
 		return (
 			<div>
 				<h1>You do not have this permission</h1>
