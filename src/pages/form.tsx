@@ -3,6 +3,7 @@ import { useInject } from '@/utils/hooks';
 import { LoadingButton } from '@mui/lab';
 import { MenuItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import * as Yup from 'yup';
 
 export default function FormPage() {
 	const [message] = useInject('message');
@@ -16,6 +17,9 @@ export default function FormPage() {
 			console.log(...arg);
 			message.actions.success('Submit Success!');
 		},
+		validationSchema: Yup.object().shape({
+			name: Yup.string().max(15, 'name max length is 15.'),
+		}),
 	});
 
 	return (
@@ -33,14 +37,7 @@ export default function FormPage() {
 					width: 200,
 				}}
 			>
-				<FormItem
-					as={TextField}
-					name="name"
-					label="Name"
-					size="small"
-					required
-					validate={(name: string) => (name.length > 15 ? 'name max length is 15.' : '')}
-				/>
+				<FormItem as={TextField} name="name" label="Name" size="small" required />
 				<FormItem
 					as={TextField}
 					name="sex"
@@ -54,7 +51,7 @@ export default function FormPage() {
 					<MenuItem value="woman">woman</MenuItem>
 				</FormItem>
 				<Box ml={'120px'}>
-					<LoadingButton 
+					<LoadingButton
 						disabled={form.isSubmitting}
 						variant="contained"
 						loading={form.isSubmitting}

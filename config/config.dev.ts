@@ -22,7 +22,7 @@ export default {
 			referrerpolicy: 'no-referrer',
 		},
 		{
-			src: 'https://unpkg.com/@mui/material@5.10.16/umd/material-ui.production.min.js',
+			src: 'https://unpkg.com/@mui/material@5.10.16/umd/material-ui.development.js',
 		},
 		{
 			src: 'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.js',

@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import type { FieldAttributes } from 'formik';
 import { useField } from 'formik';
 import { ErrorMessage } from 'formik';
-import type { CSSProperties} from 'react';
+import type { CSSProperties } from 'react';
 import { useContext, useEffect, useId, useRef, useState } from 'react';
 import { FormContext } from '..';
 import { FormItemBox } from './style';
@@ -26,7 +26,7 @@ const fieldDisplayMap = {
 	vertical: 'block',
 	horizontal: 'inline-block',
 	inline: 'inline-block',
-}
+};
 
 export default function FormItem({
 	label,
@@ -58,7 +58,6 @@ export default function FormItem({
 	const ctx = useContext(FormContext);
 	const { layout = 'horizontal' } = ctx;
 
-
 	return (
 		<FormItemBox display={dispalyMap[layout]}>
 			{label && (
@@ -67,16 +66,24 @@ export default function FormItem({
 					component={'label'}
 					htmlFor={id}
 					display={fieldDisplayMap[layout]}
-					style={{...ctx.labelStyle, ...labelStyle}}
+					style={{ ...ctx.labelStyle, ...labelStyle }}
 				>
-					{required && <Box color='error.main' component={'span'}>* </Box>}{label}:
+					{required && (
+						<Box color="error.main" component={'span'}>
+							*{' '}
+						</Box>
+					)}
+					{label}:
 				</Box>
 			)}
-			<Box display={fieldDisplayMap[layout]} style={{
-				verticalAlign: 'top',
-				...ctx.fieldStyle,
-				...fieldStyle
-			}}>
+			<Box
+				display={fieldDisplayMap[layout]}
+				style={{
+					verticalAlign: 'top',
+					...ctx.fieldStyle,
+					...fieldStyle,
+				}}
+			>
 				<Comp {...restProps} {...field} id={id} error={!!errorMsg} ref={fieldRef}>
 					{children}
 				</Comp>
