@@ -19,6 +19,7 @@ export default function FormPage() {
 		},
 		validationSchema: Yup.object().shape({
 			name: Yup.string().max(15, 'name max length is 15.'),
+			sex: Yup.string().notOneOf(['private'], 'you must choose one!'),
 		}),
 	});
 
@@ -44,7 +45,7 @@ export default function FormPage() {
 					label="Sex"
 					select
 					size="small"
-					validate={(sex: string) => (sex === 'private' ? 'you must choose one!' : '')}
+					// validate={(sex: string) => (sex === 'private' ? 'you must choose one!' : '')}
 				>
 					<MenuItem value="private">private</MenuItem>
 					<MenuItem value="man">man</MenuItem>
