@@ -22,7 +22,6 @@ export default {
 		react: 'React',
 		'react-dom': 'ReactDOM',
 		lodash: '_',
-		'@mui/material': 'MaterialUI',
 		'decimal.js': 'Decimal',
 	},
 	headScripts: [
@@ -48,9 +47,6 @@ export default {
 			referrerpolicy: 'no-referrer',
 		},
 		{
-			src: 'https://unpkg.com/@mui/material@5.10.16/umd/material-ui.production.min.js',
-		},
-		{
 			src: 'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.min.js',
 			integrity:
 				'sha512-WWzCZDQZ23GuPVKPowBGCF6MhoA1az8iJk/Gjh2a5S3jeeNEvKJHgGPMyDofeUtcOeHeI3AbsPFUILWHfoRP8w==',
@@ -58,7 +54,6 @@ export default {
 			referrerpolicy: 'no-referrer',
 		},
 	],
-	links: [{ href: 'https://fonts.googleapis.com/icon?family=Material+Icons', rel: 'stylesheet' }],
 	metas: [
 		{
 			name: 'viewport',

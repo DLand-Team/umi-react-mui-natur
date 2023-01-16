@@ -22,9 +22,6 @@ export default {
 			referrerpolicy: 'no-referrer',
 		},
 		{
-			src: 'https://unpkg.com/@mui/material@5.10.16/umd/material-ui.development.js',
-		},
-		{
 			src: 'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.js',
 			integrity:
 				'sha512-Hmns2PIpNb0z/FtWoAx9JskDz1z8ewb68AY6UWIHrLX46DlSDUyYo0nxfGJtUXQSHNWRKKs13c7jy2g3421abw==',
@@ -32,5 +29,4 @@ export default {
 			referrerpolicy: 'no-referrer',
 		},
 	],
-	links: [{ href: 'https://fonts.googleapis.com/icon?family=Material+Icons', rel: 'stylesheet' }],
 };
