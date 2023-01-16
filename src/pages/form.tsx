@@ -1,12 +1,11 @@
 import Form, { FormItem, useForm } from '@/components/Form';
-import { useInject } from '@/utils/hooks';
 import { LoadingButton } from '@mui/lab';
 import { MenuItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
+import { Message } from '@/utils/message';
 
 export default function FormPage() {
-	const [message] = useInject('message');
 	const form = useForm({
 		initialValues: {
 			name: 'tom111',
@@ -15,7 +14,7 @@ export default function FormPage() {
 		onSubmit: async (...arg) => {
 			await new Promise((res) => setTimeout(res, 3000));
 			console.log(...arg);
-			message.actions.success('Submit Success!');
+			Message.success('Submit Success!');
 		},
 		validationSchema: Yup.object().shape({
 			name: Yup.string().max(15, 'name max length is 15.'),
