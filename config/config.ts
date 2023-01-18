@@ -22,7 +22,8 @@ export default {
 		react: 'React',
 		'react-dom': 'ReactDOM',
 		lodash: '_',
-		'decimal.js': 'Decimal',
+		// 'decimal.js': 'Decimal',
+		// rxjs: 'rxjs',
 	},
 	headScripts: [
 		{
@@ -46,13 +47,16 @@ export default {
 			crossorigin: 'anonymous',
 			referrerpolicy: 'no-referrer',
 		},
-		{
-			src: 'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.min.js',
-			integrity:
-				'sha512-WWzCZDQZ23GuPVKPowBGCF6MhoA1az8iJk/Gjh2a5S3jeeNEvKJHgGPMyDofeUtcOeHeI3AbsPFUILWHfoRP8w==',
-			crossorigin: 'anonymous',
-			referrerpolicy: 'no-referrer',
-		},
+		// {
+		// 	src: 'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.min.js',
+		// 	integrity:
+		// 		'sha512-WWzCZDQZ23GuPVKPowBGCF6MhoA1az8iJk/Gjh2a5S3jeeNEvKJHgGPMyDofeUtcOeHeI3AbsPFUILWHfoRP8w==',
+		// 	crossorigin: 'anonymous',
+		// 	referrerpolicy: 'no-referrer',
+		// },
+		// {
+		// 	src: 'https://unpkg.com/rxjs@7.8.0/dist/bundles/rxjs.umd.min.js',
+		// },
 	],
 	metas: [
 		{

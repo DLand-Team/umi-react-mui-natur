@@ -52,6 +52,7 @@ yarn build
 
 1. UI库[mui](https://mui.com/)
 1. 状态管理[natur](https://www.npmjs.com/package/natur)
+1. 事件管理[rxjs](https://rxjs.dev/guide/overview)
 1. 基础工具函数[lodash](https://www.npmjs.com/package/lodash)
 1. 表单校验组件[formik](https://www.npmjs.com/package/formik)
 1. 数据校验工具[yup](https://www.npmjs.com/package/yup)

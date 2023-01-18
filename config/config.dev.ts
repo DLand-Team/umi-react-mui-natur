@@ -21,12 +21,15 @@ export default {
 			crossorigin: 'anonymous',
 			referrerpolicy: 'no-referrer',
 		},
-		{
-			src: 'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.js',
-			integrity:
-				'sha512-Hmns2PIpNb0z/FtWoAx9JskDz1z8ewb68AY6UWIHrLX46DlSDUyYo0nxfGJtUXQSHNWRKKs13c7jy2g3421abw==',
-			crossorigin: 'anonymous',
-			referrerpolicy: 'no-referrer',
-		},
+		// {
+		// 	src: 'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.js',
+		// 	integrity:
+		// 		'sha512-Hmns2PIpNb0z/FtWoAx9JskDz1z8ewb68AY6UWIHrLX46DlSDUyYo0nxfGJtUXQSHNWRKKs13c7jy2g3421abw==',
+		// 	crossorigin: 'anonymous',
+		// 	referrerpolicy: 'no-referrer',
+		// },
+		// {
+		// 	src: 'https://unpkg.com/rxjs@7.8.0/dist/bundles/rxjs.umd.js',
+		// },
 	],
 };
