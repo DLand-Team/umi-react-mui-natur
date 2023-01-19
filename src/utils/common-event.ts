@@ -1,4 +1,4 @@
-import { buffer, debounceTime, fromEvent, interval } from 'rxjs';
+import { buffer, debounceTime, fromEvent, interval, switchMap } from 'rxjs';
 import { filter, map, pairwise } from 'rxjs/operators';
 import type { HasEventTargetAddRemove } from 'rxjs/internal/observable/fromEvent';
 
@@ -20,5 +20,12 @@ export const createTripleClickListener = (ele: HasEventTargetAddRemove<Event>) =
 	return click.pipe(
 		buffer(click.pipe(debounceTime(300))),
 		filter((v) => v.length > 2),
+	);
+};
+
+export const createSelectListener = (ele: HasEventTargetAddRemove<Event>) => {
+	const md = fromEvent(ele, 'mousedown');
+	return md.pipe(
+		switchMap(() => fromEvent(ele, 'mousemove').pipe(switchMap(() => fromEvent(ele, 'mouseup')))),
 	);
 };
