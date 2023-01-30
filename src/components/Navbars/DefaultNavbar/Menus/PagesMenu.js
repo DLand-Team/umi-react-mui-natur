@@ -34,7 +34,7 @@ import DefaultNavbarCategory from '@/components/Navbars/DefaultNavbar/DefaultNav
 import DefaultNavbarMenu from '@/components/Navbars/DefaultNavbar/DefaultNavbarMenu';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function PagesMenu({ routes, open, close, mobileMenu }) {
 	const [controller] = useMaterialUIController();

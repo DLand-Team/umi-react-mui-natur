@@ -23,16 +23,16 @@ import PropTypes from 'prop-types';
 
 // Otis Admin PRO React components
 import MDBox from '@/components/MDBox';
+import { useMaterialUIController } from '../../../utils/hooks';
 
 // Otis Admin PRO React context
-import { useMaterialUIController, setLayout } from 'context';
 
 function PageLayout({ background, children }) {
-	const [, dispatch] = useMaterialUIController();
+	const [, { setLayout }] = useMaterialUIController();
 	const { pathname } = useLocation();
 
 	useEffect(() => {
-		setLayout(dispatch, 'page');
+		setLayout('page');
 	}, [pathname]);
 
 	return (

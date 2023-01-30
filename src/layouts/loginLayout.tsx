@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 import { Button } from '@mui/material';
 import { useInject, useLocation } from '@/utils/hooks';
 import { useLayoutEffect } from 'react';
+import DashboardLayout from '@/components/LayoutContainers/DashboardLayout';
 
 const formatRoutes = cloneDeep(routes);
 traverseObject(formatRoutes, (item) => {
@@ -57,9 +58,9 @@ function LoginLayout() {
 	}
 
 	return (
-		<div>
+		<DashboardLayout>
 			<Outlet />
-		</div>
+		</DashboardLayout>
 	);
 }
 

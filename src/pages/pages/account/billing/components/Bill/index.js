@@ -25,7 +25,7 @@ import MDTypography from '@/components/MDTypography';
 import MDButton from '@/components/MDButton';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function Bill({ name, company, email, vat, noGutter }) {
 	const [controller] = useMaterialUIController();

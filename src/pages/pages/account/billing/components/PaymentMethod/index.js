@@ -29,7 +29,7 @@ import masterCardLogo from '@/assets/images/logos/mastercard.png';
 import visaLogo from '@/assets/images/logos/visa.png';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function PaymentMethod() {
 	const [controller] = useMaterialUIController();

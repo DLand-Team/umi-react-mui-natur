@@ -29,7 +29,7 @@ import MDBox from '@/components/MDBox';
 import { item, itemContent, itemArrow } from '@/components/Sidenav/styles/sidenavItem';
 
 // Otis Admin PRO React contexts
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function SidenavItem({ color, name, active, nested, children, open, ...rest }) {
 	const [controller] = useMaterialUIController();

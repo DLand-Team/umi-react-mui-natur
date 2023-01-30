@@ -59,3 +59,8 @@ export const useHttp = (...args: UseHttpArgs) => {
 };
 
 export const useInject = createUseInject(() => store);
+
+export function useMaterialUIController() {
+	const [context] = useInject('mui');
+	return [context.state, context.actions];
+}

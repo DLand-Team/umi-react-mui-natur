@@ -31,7 +31,7 @@ import MDBox from '@/components/MDBox';
 import MDDropzoneRoot from '@/components/MDDropzone/MDDropzoneRoot';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function MDDropzone({ options }) {
 	const [controller] = useMaterialUIController();

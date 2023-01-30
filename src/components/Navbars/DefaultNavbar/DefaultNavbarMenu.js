@@ -26,7 +26,7 @@ import Grow from '@mui/material/Grow';
 import MDBox from '@/components/MDBox';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function DefaultNavbarMenu({ open, close, placement, children, style }) {
 	const [controller] = useMaterialUIController();

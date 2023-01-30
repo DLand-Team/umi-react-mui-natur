@@ -33,7 +33,7 @@ import logoCT from '@/assets/images/logo-ct.png';
 import logoCTDark from '@/assets/images/logo-ct-dark.png';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function Invoice() {
 	const [controller] = useMaterialUIController();

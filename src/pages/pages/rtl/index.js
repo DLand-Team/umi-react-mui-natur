@@ -49,21 +49,20 @@ import progressLineChartData from 'layouts/pages/rtl/data/progressLineChartData'
 import calendarEventsData from 'layouts/pages/rtl/data/calendarEventsData';
 import categoriesListData from 'layouts/pages/rtl/data/categoriesListData';
 import caloriesChartData from 'layouts/pages/rtl/data/caloriesChartData';
+import { useMaterialUIController } from '../../../utils/hooks';
 
 // Otis Admin PRO React contexts
-import { useMaterialUIController, setDirection } from 'context';
 
 function RTL() {
-	const [, dispatch] = useMaterialUIController();
+	const [, { setDirection }] = useMaterialUIController();
 	const [lights, setLights] = useState(false);
 
 	const handleSetLights = () => setLights(!lights);
 
 	// Changing the direction to rtl
 	useEffect(() => {
-		setDirection(dispatch, 'rtl');
-
-		return () => setDirection(dispatch, 'ltr');
+		setDirection('rtl');
+		return () => setDirection('ltr');
 	}, []);
 
 	return (

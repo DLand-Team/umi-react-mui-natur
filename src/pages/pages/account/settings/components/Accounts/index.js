@@ -36,7 +36,7 @@ import logoAtlassian from '@/assets/images/small-logos/logo-atlassian.svg';
 import logoAsana from '@/assets/images/small-logos/logo-asana.svg';
 
 // Otis Admin PRO React components
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function Accounts() {
 	const [controller] = useMaterialUIController();

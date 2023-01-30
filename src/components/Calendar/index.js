@@ -33,7 +33,7 @@ import MDTypography from '@/components/MDTypography';
 import CalendarRoot from '@/components/Calendar/CalendarRoot';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function Calendar({ header, ...rest }) {
 	const [controller] = useMaterialUIController();

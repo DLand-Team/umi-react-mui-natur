@@ -24,7 +24,7 @@ import MDBox from '@/components/MDBox';
 import MDTypography from '@/components/MDTypography';
 
 // Otis Admin PRO React components
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 // Timeline context
 import { TimelineProvider } from '@/components/Timeline/context';

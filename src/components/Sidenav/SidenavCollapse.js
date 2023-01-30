@@ -36,7 +36,7 @@ import {
 } from '@/components/Sidenav/styles/sidenavCollapse';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function SidenavCollapse({ icon, name, children, active, noCollapse, open, ...rest }) {
 	const [controller] = useMaterialUIController();

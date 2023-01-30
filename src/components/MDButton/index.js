@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
 import MDButtonRoot from '@/components/MDButton/MDButtonRoot';
 
 // Otis Admin PRO React contexts
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 const MDButton = forwardRef(
 	({ color, variant, size, circular, iconOnly, children, ...rest }, ref) => {

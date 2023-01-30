@@ -31,7 +31,7 @@ import MDTypography from '@/components/MDTypography';
 import MDSnackbarIconRoot from '@/components/MDSnackbar/MDSnackbarIconRoot';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function MDSnackbar({ color, icon, title, dateTime, content, close, bgWhite, ...rest }) {
 	const [controller] = useMaterialUIController();

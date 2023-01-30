@@ -45,7 +45,7 @@ import Header from 'layouts/applications/kanban/components/Header';
 import boards from 'layouts/applications/kanban/data';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function Kanban() {
 	const [controller] = useMaterialUIController();

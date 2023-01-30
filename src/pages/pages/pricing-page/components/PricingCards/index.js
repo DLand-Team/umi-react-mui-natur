@@ -26,7 +26,7 @@ import MDBox from '@/components/MDBox';
 import DefaultPricingCard from '@/components/Cards/PricingCards/DefaultPricingCard';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function PricingCards({ prices }) {
 	const [controller] = useMaterialUIController();

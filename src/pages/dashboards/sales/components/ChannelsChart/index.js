@@ -30,7 +30,7 @@ import PieChart from '@/components/Charts/PieChart';
 import channelChartData from 'layouts/dashboards/sales/components/ChannelsChart/data';
 
 // Otis Admin PRO React contexts
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function ChannelsChart() {
 	const [controller] = useMaterialUIController();

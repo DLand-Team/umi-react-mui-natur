@@ -46,18 +46,12 @@ import {
 	navbarDesktopMenu,
 	navbarMobileMenu,
 } from '@/components/Navbars/DashboardNavbar/styles';
-
-// Otis Admin PRO React context
-import {
-	useMaterialUIController,
-	setTransparentNavbar,
-	setMiniSidenav,
-	setOpenConfigurator,
-} from 'context';
+import { useMaterialUIController } from '../../../utils/hooks';
 
 function DashboardNavbar({ absolute, light, isMini }) {
 	const [navbarType, setNavbarType] = useState();
-	const [controller, dispatch] = useMaterialUIController();
+	const [controller, { setTransparentNavbar, setMiniSidenav, setOpenConfigurator }] =
+		useMaterialUIController();
 	const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
 	const [openMenu, setOpenMenu] = useState(false);
 	const route = useLocation().pathname.split('/').slice(1);
@@ -72,7 +66,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
 		// A function that sets the transparent state of the navbar.
 		function handleTransparentNavbar() {
-			setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
+			setTransparentNavbar((fixedNavbar && window.scrollY === 0) || !fixedNavbar);
 		}
 
 		/**
@@ -86,10 +80,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
 		// Remove event listener on cleanup
 		return () => window.removeEventListener('scroll', handleTransparentNavbar);
-	}, [dispatch, fixedNavbar]);
+	}, [fixedNavbar]);
 
-	const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-	const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+	const handleMiniSidenav = () => setMiniSidenav(!miniSidenav);
+	const handleConfiguratorOpen = () => setOpenConfigurator(!openConfigurator);
 	const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
 	const handleCloseMenu = () => setOpenMenu(false);
 

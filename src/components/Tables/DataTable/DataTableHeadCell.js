@@ -23,7 +23,7 @@ import Icon from '@mui/material/Icon';
 import MDBox from '@/components/MDBox';
 
 // Otis Admin PRO React contexts
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
 	const [controller] = useMaterialUIController();

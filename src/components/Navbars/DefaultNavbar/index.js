@@ -45,7 +45,7 @@ import ApplicationsMenu from '@/components/Navbars/DefaultNavbar/Menus/Applicati
 import DocsMenu from '@/components/Navbars/DefaultNavbar/Menus/DocsMenu';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function DefaultNavbar({ routes, transparent, light, action }) {
 	const [controller] = useMaterialUIController();

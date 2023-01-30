@@ -39,19 +39,15 @@ import SidenavItem from '@/components/Sidenav/SidenavItem';
 // Custom styles for the Sidenav
 import SidenavRoot from '@/components/Sidenav/SidenavRoot';
 import sidenavLogoLabel from '@/components/Sidenav/styles/sidenav';
+import { useMaterialUIController } from '../../utils/hooks';
 
 // Otis Admin PRO React context
-import {
-	useMaterialUIController,
-	setMiniSidenav,
-	setTransparentSidenav,
-	setWhiteSidenav,
-} from 'context';
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
 	const [openCollapse, setOpenCollapse] = useState(false);
 	const [openNestedCollapse, setOpenNestedCollapse] = useState(false);
-	const [controller, dispatch] = useMaterialUIController();
+	const [controller, { setMiniSidenav, setTransparentSidenav, setWhiteSidenav }] =
+		useMaterialUIController();
 	const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
 	const location = useLocation();
 	const { pathname } = location;
@@ -68,7 +64,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 		textColor = 'inherit';
 	}
 
-	const closeSidenav = () => setMiniSidenav(dispatch, true);
+	const closeSidenav = () => setMiniSidenav(true);
 
 	useEffect(() => {
 		setOpenCollapse(collapseName);
@@ -78,9 +74,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 	useEffect(() => {
 		// A function that sets the mini state of the sidenav.
 		function handleMiniSidenav() {
-			setMiniSidenav(dispatch, window.innerWidth < 1200);
-			setTransparentSidenav(dispatch, window.innerWidth < 1200 ? false : transparentSidenav);
-			setWhiteSidenav(dispatch, window.innerWidth < 1200 ? false : whiteSidenav);
+			setMiniSidenav(window.innerWidth < 1200);
+			setTransparentSidenav(window.innerWidth < 1200 ? false : transparentSidenav);
+			setWhiteSidenav(window.innerWidth < 1200 ? false : whiteSidenav);
 		}
 
 		/**
@@ -93,7 +89,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
 		// Remove event listener on cleanup
 		return () => window.removeEventListener('resize', handleMiniSidenav);
-	}, [dispatch, location]);
+	}, [location]);
 
 	// Render all the nested collapse items from the routes.js
 	const renderNestedCollapse = (collapse) => {

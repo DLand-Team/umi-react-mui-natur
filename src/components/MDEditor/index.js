@@ -22,7 +22,7 @@ import 'react-quill/dist/quill.snow.css';
 import MDEditorRoot from '@/components/MDEditor/MDEditorRoot';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function MDEditor(props) {
 	const [controller] = useMaterialUIController();

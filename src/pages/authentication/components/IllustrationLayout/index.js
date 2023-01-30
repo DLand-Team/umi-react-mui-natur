@@ -31,7 +31,7 @@ import PageLayout from '@/components/LayoutContainers/PageLayout';
 import pageRoutes from 'page.routes';
 
 // Otis Admin PRO React context
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function IllustrationLayout({ header, title, description, illustration, children }) {
 	const [controller] = useMaterialUIController();

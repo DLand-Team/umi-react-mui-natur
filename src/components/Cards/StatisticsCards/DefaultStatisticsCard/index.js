@@ -25,7 +25,7 @@ import MDBox from '@/components/MDBox';
 import MDTypography from '@/components/MDTypography';
 
 // Otis Admin PRO React contexts
-import { useMaterialUIController } from 'context';
+import { useMaterialUIController } from '@/utils/hooks';
 
 function DefaultStatisticsCard({ title, count, percentage, dropdown }) {
 	const [controller] = useMaterialUIController();

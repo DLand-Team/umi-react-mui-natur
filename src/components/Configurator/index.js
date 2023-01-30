@@ -29,21 +29,21 @@ import MDButton from '@/components/MDButton';
 
 // Custom styles for the Configurator
 import ConfiguratorRoot from '@/components/Configurator/ConfiguratorRoot';
-
-// Otis Admin PRO React context
-import {
-	useMaterialUIController,
-	setOpenConfigurator,
-	setTransparentSidenav,
-	setWhiteSidenav,
-	setMiniSidenav,
-	setFixedNavbar,
-	setSidenavColor,
-	setDarkMode,
-} from 'context';
+import { useMaterialUIController } from '../../utils/hooks';
 
 function Configurator() {
-	const [controller, dispatch] = useMaterialUIController();
+	const [
+		controller,
+		{
+			setOpenConfigurator,
+			setTransparentSidenav,
+			setWhiteSidenav,
+			setMiniSidenav,
+			setFixedNavbar,
+			setSidenavColor,
+			setDarkMode,
+		},
+	] = useMaterialUIController();
 	const {
 		openConfigurator,
 		miniSidenav,
@@ -73,22 +73,22 @@ function Configurator() {
 		return () => window.removeEventListener('resize', handleDisabled);
 	}, []);
 
-	const handleCloseConfigurator = () => setOpenConfigurator(dispatch, false);
+	const handleCloseConfigurator = () => setOpenConfigurator(false);
 	const handleTransparentSidenav = () => {
-		setTransparentSidenav(dispatch, true);
-		setWhiteSidenav(dispatch, false);
+		setTransparentSidenav(true);
+		setWhiteSidenav(false);
 	};
 	const handleWhiteSidenav = () => {
-		setWhiteSidenav(dispatch, true);
-		setTransparentSidenav(dispatch, false);
+		setWhiteSidenav(true);
+		setTransparentSidenav(false);
 	};
 	const handleDarkSidenav = () => {
-		setWhiteSidenav(dispatch, false);
-		setTransparentSidenav(dispatch, false);
+		setWhiteSidenav(false);
+		setTransparentSidenav(false);
 	};
-	const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-	const handleFixedNavbar = () => setFixedNavbar(dispatch, !fixedNavbar);
-	const handleDarkMode = () => setDarkMode(dispatch, !darkMode);
+	const handleMiniSidenav = () => setMiniSidenav(!miniSidenav);
+	const handleFixedNavbar = () => setFixedNavbar(!fixedNavbar);
+	const handleDarkMode = () => setDarkMode(!darkMode);
 
 	// sidenav type buttons styles
 	const sidenavTypeButtonsStyles = ({
@@ -198,7 +198,7 @@ function Configurator() {
 										borderColor: darkMode ? white.main : dark.main,
 									},
 								})}
-								onClick={() => setSidenavColor(dispatch, color)}
+								onClick={() => setSidenavColor(color)}
 							/>
 						))}
 					</MDBox>
