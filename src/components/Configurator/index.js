@@ -29,30 +29,29 @@ import MDButton from '@/components/MDButton';
 
 // Custom styles for the Configurator
 import ConfiguratorRoot from '@/components/Configurator/ConfiguratorRoot';
-import { useMaterialUIController } from '../../utils/hooks';
+import { useInject } from '../../utils/hooks';
 
 function Configurator() {
-	const [
-		controller,
-		{
-			setOpenConfigurator,
-			setTransparentSidenav,
-			setWhiteSidenav,
-			setMiniSidenav,
-			setFixedNavbar,
-			setSidenavColor,
-			setDarkMode,
-		},
-	] = useMaterialUIController();
+	const [mui] = useInject('mui');
 	const {
-		openConfigurator,
 		miniSidenav,
-		fixedNavbar,
+		direction,
+		layout,
+		openConfigurator,
 		sidenavColor,
 		transparentSidenav,
 		whiteSidenav,
 		darkMode,
-	} = controller;
+	} = mui.state;
+	const {
+		setOpenConfigurator,
+		setTransparentSidenav,
+		setWhiteSidenav,
+		setMiniSidenav,
+		setFixedNavbar,
+		setSidenavColor,
+		setDarkMode,
+	} = mui.actions;
 	const [disabled, setDisabled] = useState(false);
 	const sidenavColors = ['primary', 'dark', 'info', 'success', 'warning', 'error'];
 
