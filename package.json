@@ -16,6 +16,7 @@
     "@mui/material": "^5.10.16",
     "ahooks": "^3.7.2",
     "axios": "^1.2.0",
+    "chroma-js": "^2.4.2",
     "color": "^4.2.3",
     "dayjs": "^1.11.6",
     "decimal.js": "^10.4.2",
@@ -23,6 +24,7 @@
     "hoist-non-react-statics": "^3.3.2",
     "lodash": "^4.17.21",
     "natur": "^2.2.0-beta2",
+    "prop-types": "^15.8.1",
     "qs": "^6.11.0",
     "recharts": "^2.1.16",
     "rxjs": "^7.8.0",
@@ -30,8 +32,10 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/chroma-js": "^2.1.4",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/lodash": "^4.14.191",
+    "@types/prop-types": "^15.7.5",
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
