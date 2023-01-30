@@ -37,6 +37,7 @@ function Configurator() {
 		miniSidenav,
 		direction,
 		layout,
+		fixedNavbar,
 		openConfigurator,
 		sidenavColor,
 		transparentSidenav,
@@ -91,8 +92,11 @@ function Configurator() {
 
 	// sidenav type buttons styles
 	const sidenavTypeButtonsStyles = ({
+		// @ts-ignore
 		functions: { pxToRem },
+		// @ts-ignore
 		palette: { white, dark, background },
+		// @ts-ignore
 		borders: { borderWidth },
 	}) => ({
 		height: pxToRem(39),
@@ -109,7 +113,9 @@ function Configurator() {
 
 	// sidenav type active button styles
 	const sidenavTypeActiveButtonStyles = ({
+		// @ts-ignore
 		functions: { pxToRem, linearGradient },
+		// @ts-ignore
 		palette: { white, gradients, background },
 	}) => ({
 		height: pxToRem(39),
@@ -122,6 +128,9 @@ function Configurator() {
 		},
 	});
 
+	// @ts-ignore
+	// @ts-ignore
+	// @ts-ignore
 	return (
 		<ConfiguratorRoot variant="permanent" ownerState={{ openConfigurator }}>
 			<MDBox
@@ -140,6 +149,7 @@ function Configurator() {
 				</MDBox>
 
 				<Icon
+					// @ts-ignore
 					sx={({ typography: { size }, palette: { dark, white } }) => ({
 						fontSize: `${size.lg} !important`,
 						color: darkMode ? white.main : dark.main,
@@ -165,13 +175,16 @@ function Configurator() {
 							<IconButton
 								key={color}
 								sx={({
+									// @ts-ignore
 									borders: { borderWidth },
+									// @ts-ignore
 									palette: { white, dark, background },
 									transitions,
 								}) => ({
 									width: '24px',
 									height: '24px',
 									padding: 0,
+									// @ts-ignore
 									border: `${borderWidth[1]} solid ${darkMode ? background.sidenav : white.main}`,
 									borderColor: () => {
 										let borderColorValue = sidenavColor === color && dark.main;
@@ -186,6 +199,7 @@ function Configurator() {
 										easing: transitions.easing.sharp,
 										duration: transitions.duration.shorter,
 									}),
+									// @ts-ignore
 									backgroundImage: ({ functions: { linearGradient }, palette: { gradients } }) =>
 										linearGradient(gradients[color].main, gradients[color].state),
 

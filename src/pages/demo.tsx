@@ -4,9 +4,8 @@ import { useInject } from '@/utils/hooks';
 import { Box, TextField } from '@mui/material';
 
 const DemoPage = () => {
-	
 	const [loading] = useInject('loading', {});
-	const [demo] = useInject('demo', {state: [s => s.text.message]});
+	const [demo] = useInject('demo', { state: [(s) => s.text.message] });
 	const [message] = useInject('message', {});
 
 	const showLoading = async () => {
@@ -17,7 +16,7 @@ const DemoPage = () => {
 	const showToast = (type: 'error' | 'info' | 'success' | 'warning') => () => {
 		message.actions[type](demo.state.text.message);
 	};
-	
+
 	return (
 		<div>
 			<TextField
@@ -26,7 +25,7 @@ const DemoPage = () => {
 				name="loading"
 				value={loading.state.loadingText}
 				onChange={(e) => {
-					loading.actions.changeLoadingText(e.target.value)
+					loading.actions.changeLoadingText(e.target.value);
 				}}
 			/>
 			<br />
@@ -70,7 +69,7 @@ const DemoPage = () => {
 				</Button>
 			</Box>
 			<Box mr={1} component="span">
-				<Button variant="contained" color="warning" auth='aaa' onClick={showToast('warning')}>
+				<Button variant="contained" color="warning" auth="aaa" onClick={showToast('warning')}>
 					auth btn
 				</Button>
 			</Box>
