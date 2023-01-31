@@ -15,7 +15,6 @@ export default function Layout() {
 	const [mui] = useInject('mui');
 	const {
 		miniSidenav,
-		direction,
 		layout,
 		openConfigurator,
 		sidenavColor,
@@ -23,16 +22,8 @@ export default function Layout() {
 		whiteSidenav,
 		darkMode,
 	} = mui.state;
-	const {
-		setOpenConfigurator,
-		setTransparentSidenav,
-		setWhiteSidenav,
-		setMiniSidenav,
-		setFixedNavbar,
-		setSidenavColor,
-		setDarkMode,
-	} = mui.actions;
-	
+	const { setOpenConfigurator, setMiniSidenav } = mui.actions;
+
 	useEffect(() => {
 		// 监听路由变化，并同步到store
 		store.dispatch('route', 'updatePath', location.pathname);
@@ -59,11 +50,6 @@ export default function Layout() {
 
 	// Change the openConfigurator state
 	const handleConfiguratorOpen = () => setOpenConfigurator(!openConfigurator);
-
-	// Setting the dir attribute for the body element
-	useEffect(() => {
-		document.body.setAttribute('dir', direction);
-	}, [direction]);
 
 	// Setting page scroll to 0 when changing the route
 	useEffect(() => {

@@ -16,7 +16,7 @@ export default {
 	},
 	styles: [
 		'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap',
-		'https://fonts.googleapis.com/icon?family=Material+Icons',
+		'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp',
 	],
 	externals: {
 		react: 'React',
