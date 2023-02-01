@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -13,9 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { store, useNavigate } from 'umi';
-import { sleep } from '@/utils';
 import { Message } from '@/utils/message';
-import { useLocation } from '@/utils/hooks';
+import { useHttp, useInject, useLocation } from '@/utils/hooks';
+import { LoadingButton } from '@mui/lab';
 
 function Copyright(props: any) {
 	return (
@@ -39,25 +38,36 @@ export default function SignInSide() {
 		store.globalResetStates();
 	}, []);
 
+	const [login] = useInject('user');
+	const { loading, run } = useHttp(login.actions.login, {
+		manual: true,
+	});
 	const location = useLocation<{ redirect?: string }>();
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		const email = data.get('email') as string | null;
+		const email = data.get('email') as string;
 		if (!email) {
 			Message.warning('Please Input Email!');
 		}
-		store.dispatch('loading', 'show');
-		await sleep(3000);
-		store.dispatch('user', 'updateName', email!);
-		store.dispatch('loading', 'hide');
+		try {
+			await run(email, data.get('password') as string);
+		} catch (e: any) {
+			Message.error(e.message);
+			return;
+		}
 		if (location.query.redirect) {
 			navigator(location.query.redirect);
 		} else {
 			navigator('/');
 		}
 	};
+	React.useLayoutEffect(() => {
+		if (login.maps.isLogin) {
+			navigator('/')
+		}
+	}, [login.maps.isLogin, navigator])
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -118,9 +128,15 @@ export default function SignInSide() {
 								control={<Checkbox value="remember" color="primary" />}
 								label="Remember me"
 							/>
-							<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+							<LoadingButton
+								loading={loading}
+								type="submit"
+								fullWidth
+								variant="contained"
+								sx={{ mt: 3, mb: 2 }}
+							>
 								Sign In
-							</Button>
+							</LoadingButton>
 							<Grid container>
 								<Grid item xs>
 									<Link href="#" variant="body2">

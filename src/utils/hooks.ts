@@ -2,7 +2,6 @@ import { isBrowser } from './index';
 import { useEffect, useRef } from 'react';
 import { store, useLocation as useOriginLocation } from 'umi';
 import qs from 'qs';
-import { useRequest } from 'ahooks';
 import { createUseInject } from 'natur';
 
 /**
@@ -47,15 +46,7 @@ export const useLocation = <T extends LocationQuery = LocationQuery>() => {
 	};
 };
 
-export type UseHttpArgs = Parameters<typeof useRequest>;
 
-/**
- * 包装一层useRequest
- * @param args
- * @returns
- */
-export const useHttp = (...args: UseHttpArgs) => {
-	return useRequest(...args);
-};
+export { useHttp } from './useHttp'
 
 export const useInject = createUseInject(() => store);
