@@ -14,6 +14,8 @@ type State = typeof state;
 const store = {
 	state: {
 		name: '',
+		userId: '',
+		token: '',
 		authList: ['aaa'] as string[],
 	},
 	maps: {
@@ -44,7 +46,7 @@ const store = {
 			return {
 				userId: res.data.token,
 				token: res.data.userId,
-				name: username
+				name: username,
 			};
 		},
 	},
