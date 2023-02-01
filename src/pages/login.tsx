@@ -35,8 +35,8 @@ export default function SignInSide() {
 	const navigator = useNavigate();
 	
 
-	const [login] = useInject('user');
-	const { loading, run } = useHttp(login.actions.login, {
+	const [user] = useInject('user');
+	const { loading, run } = useHttp(user.actions.login, {
 		manual: true,
 	});
 	const location = useLocation<{ redirect?: string }>();
