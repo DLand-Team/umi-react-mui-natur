@@ -4,7 +4,7 @@ import { traverseObject } from '@/utils';
 import { cloneDeep } from 'lodash';
 import { Button } from '@mui/material';
 import { useInject, useLocation } from '@/utils/hooks';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 const formatRoutes = cloneDeep(routes);
 traverseObject(formatRoutes, (item) => {
@@ -27,7 +27,7 @@ function LoginLayout() {
 			?.filter(Boolean) || [];
 	const navigator = useNavigate();
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (!user.maps.isLogin) {
 			navigator(`/login?redirect=${location.pathname + location.search}`);
 		}

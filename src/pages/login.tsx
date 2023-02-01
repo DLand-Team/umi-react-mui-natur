@@ -33,10 +33,7 @@ const theme = createTheme();
 
 export default function SignInSide() {
 	const navigator = useNavigate();
-	React.useEffect(() => {
-		// 登陆页面重置store数据
-		store.globalResetStates();
-	}, []);
+	
 
 	const [login] = useInject('user');
 	const { loading, run } = useHttp(login.actions.login, {
@@ -63,11 +60,14 @@ export default function SignInSide() {
 			navigator('/');
 		}
 	};
-	React.useLayoutEffect(() => {
+	React.useEffect(() => {
 		if (login.maps.isLogin) {
 			navigator('/')
+			return;
 		}
-	}, [login.maps.isLogin, navigator])
+		// 登陆页面重置store数据
+		store.globalResetStates();
+	}, [login.maps.isLogin, navigator]);
 
 	return (
 		<ThemeProvider theme={theme}>
