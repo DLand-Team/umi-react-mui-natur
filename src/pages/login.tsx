@@ -34,7 +34,6 @@ const theme = createTheme();
 export default function SignInSide() {
 	const navigator = useNavigate();
 	
-
 	const [user] = useInject('user');
 	const { loading, run } = useHttp(user.actions.login, {
 		manual: true,
@@ -60,14 +59,14 @@ export default function SignInSide() {
 			navigator('/');
 		}
 	};
-	React.useEffect(() => {
-		if (user.maps.isLogin) {
-			navigator('/')
-			return;
-		}
-		// 登陆页面重置store数据
-		store.globalResetStates();
-	}, [user.maps.isLogin, navigator]);
+	// React.useEffect(() => {
+	// 	if (user.maps.isLogin) {
+	// 		navigator('/')
+	// 		return;
+	// 	}
+	// 	// 登陆页面重置store数据
+	// 	store.globalResetStates();
+	// }, [user.maps.isLogin, navigator]);
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -129,9 +128,9 @@ export default function SignInSide() {
 								label="Remember me"
 							/>
 							<LoadingButton
-								loading={loading}
 								type="submit"
 								fullWidth
+								loading={loading}
 								variant="contained"
 								sx={{ mt: 3, mb: 2 }}
 							>

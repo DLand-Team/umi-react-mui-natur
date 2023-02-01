@@ -23,8 +23,18 @@ type HttpState<T> = {
 const initDeps: any[] = [];
 
 export interface UseHttpOptions {
+	/**
+	 * 依赖项，manual为false时有效
+	 */
 	deps?: DependencyList;
+	/**
+	 * 是否需要手动触发
+	 */
 	manual?: boolean;
+	/**
+	 * 同时只能发起一个请求，默认true
+	 */
+	single?: boolean;
 }
 
 export const useHttp = <F extends PromiseFunction>(
@@ -36,36 +46,42 @@ export const useHttp = <F extends PromiseFunction>(
 	error: Error | null;
 	run: F,
 } => {
+	const { deps, manual, single = true } = opts;
 	const isMounted = useRef(false);
-	const isManual = useRef(false);
-	const fnRef = useRef<PromiseFunction>();
+	const isLoading = useRef<any>();
+	const depsRef = useRef<DependencyList>(initDeps);
+	const argsRef = useRef({
+		fn,
+		deps: undefined as DependencyList | undefined,
+		manual: false,
+		single: true,
+	});
 	const [httpStatus, setHttpStatus] = useState<HttpState<PickPromiseType<F> | null>>({
 		loading: false,
 		error: null,
 		data: null,
 	});
-	fnRef.current = fn;
+	argsRef.current.fn = fn;
+	argsRef.current.manual = !!manual;
+	argsRef.current.single = !!single;
+	argsRef.current.deps = deps;
 
-	const { deps, manual } = opts;
-
-	const depsRef = useRef<DependencyList>(initDeps);
-	const latestDepsRef = useRef<DependencyList>();
-
-	isManual.current = !!manual;
-	latestDepsRef.current = deps;
 
 	if (deps && !Array.isArray(deps)) {
 		throw new Error('The second argument of useHttp must be an Array!');
 	}
 
 	const runFn = useCallback((...args: Parameters<F>) => {
-		setHttpStatus((ov) => ({
-			...ov,
-			loading: true,
-		}));
-		return fnRef
-			.current!(...args as any)
-			.then((res) => {
+		if (isLoading.current && argsRef.current.single) {
+			return isLoading.current;
+		}
+		isLoading.current = Promise.resolve().then(() => {
+			setHttpStatus((ov) => ({
+				...ov,
+				loading: true,
+			}));
+			return argsRef.current.fn!(...args as any)
+		}).then((res) => {
 				setHttpStatus({
 					loading: false,
 					error: null,
@@ -80,19 +96,22 @@ export const useHttp = <F extends PromiseFunction>(
 					data: null,
 				}));
 				throw err;
+			}).finally(() => {
+				isLoading.current = undefined;
 			});
+		return isLoading.current;
 	}, []) as F;
 
 	useEffect(() => {
 		if (isMounted.current) {
 			return;
 		}
-		const ld = latestDepsRef.current;
+		const ld = argsRef.current.deps;
 		if (ld?.length) {
 			depsRef.current = ld;
 		}
 		isMounted.current = true;
-		if (isManual.current) {
+		if (argsRef.current.manual) {
 			return;
 		}
 		// @ts-ignore
@@ -103,12 +122,12 @@ export const useHttp = <F extends PromiseFunction>(
 		if (isMounted.current === false || depsRef.current === initDeps) {
 			return;
 		}
-		const ld = latestDepsRef.current;
+		const ld = argsRef.current.deps;
 		if (shallowEqual(ld!, depsRef.current)) {
 			return;
 		}
 		depsRef.current = ld!;
-		if (isManual.current) {
+		if (argsRef.current.manual) {
 			return;
 		}
 		// @ts-ignore
