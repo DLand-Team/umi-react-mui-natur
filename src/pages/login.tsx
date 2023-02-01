@@ -61,13 +61,13 @@ export default function SignInSide() {
 		}
 	};
 	React.useEffect(() => {
-		if (login.maps.isLogin) {
+		if (user.maps.isLogin) {
 			navigator('/')
 			return;
 		}
 		// 登陆页面重置store数据
 		store.globalResetStates();
-	}, [login.maps.isLogin, navigator]);
+	}, [user.maps.isLogin, navigator]);
 
 	return (
 		<ThemeProvider theme={theme}>
