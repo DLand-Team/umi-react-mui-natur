@@ -24,19 +24,19 @@ const initDeps: any[] = [];
 
 export interface UseAsyncFunctionOptions {
 	/**
-	 * 依赖项，manual为false时有效
+	 * dependence list，it works when manual is false
 	 */
 	deps?: DependencyList;
 	/**
-	 * 是否需要手动触发
+	 * whether to call fn manually
 	 */
 	manual?: boolean;
 	/**
-	 * 同时只能发起一个请求，默认true
+	 * the fn function can only be called once at a time，default is true
 	 */
 	single?: boolean;
 	/**
-	 * 防抖参数，默认-1，无防抖
+	 * debounce time config. default value is -1 which means no debounce feature,
 	 */
 	debounceTime?: number;
 }
