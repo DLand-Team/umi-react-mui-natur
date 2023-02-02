@@ -15,6 +15,7 @@ import { store, useNavigate } from 'umi';
 import { Message } from '@/utils/message';
 import { useHttp, useInject, useLocation } from '@/utils/hooks';
 import { LoadingButton } from '@mui/lab';
+import { useEffect, useState } from 'react';
 
 function Copyright(props: any) {
 	return (
@@ -33,11 +34,25 @@ const theme = createTheme();
 
 export default function SignInSide() {
 	const navigator = useNavigate();
-	
+
 	const [user] = useInject('user');
+	// const [dep, setDep] = useState([]);
 	const { loading, run } = useHttp(user.actions.login, {
 		manual: true,
+		debounceTime: 1000,
 	});
+	// const loading = false;
+
+	// useHttp(() => user.actions.login('xxxx', 'xxx'), {
+	// 	debounceTime: 0,
+	// 	// single: false,
+	// 	deps: [dep],
+	// });
+	//
+	// useEffect(() => {
+	// 	setDep([]);
+	// }, []);
+
 	const location = useLocation<{ redirect?: string }>();
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -48,16 +63,17 @@ export default function SignInSide() {
 			Message.warning('Please Input Email!');
 		}
 		try {
-			await run(email, data.get('password') as string);
+			const res = await run(email, data.get('password') as string);
+			console.log(res);
 		} catch (e: any) {
 			Message.error(e.message);
 			return;
 		}
-		if (location.query.redirect) {
-			navigator(location.query.redirect);
-		} else {
-			navigator('/');
-		}
+		// if (location.query.redirect) {
+		// 	navigator(location.query.redirect);
+		// } else {
+		// 	navigator('/');
+		// }
 	};
 	// React.useEffect(() => {
 	// 	if (user.maps.isLogin) {

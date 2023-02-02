@@ -46,7 +46,6 @@ export const useLocation = <T extends LocationQuery = LocationQuery>() => {
 	};
 };
 
-
-export { useHttp } from './useHttp'
+export { useAsyncFunction as useHttp } from './useAsyncFunction';
 
 export const useInject = createUseInject(() => store);
