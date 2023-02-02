@@ -69,7 +69,7 @@ export default function FormItem({
 					component={'label'}
 					htmlFor={id}
 					display={fieldDisplayMap[layout]}
-					style={labelStyle || ctx.labelStyle}
+					style={{...ctx.labelStyle, ...labelStyle}}
 					sx={labelSx || ctx.labelSx}
 				>
 					{required && (
