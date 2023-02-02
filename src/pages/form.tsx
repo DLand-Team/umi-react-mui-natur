@@ -4,21 +4,26 @@ import { MenuItem, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import * as Yup from 'yup';
 import { Message } from '@/utils/message';
+import { sleep } from '@/utils';
 
 export default function FormPage() {
 	const form = useForm({
 		initialValues: {
-			name: 'tom111',
+			name: '',
 			sex: 'man',
 		},
-		onSubmit: async (...arg) => {
-			await new Promise((res) => setTimeout(res, 3000));
-			console.log(...arg);
+		onSubmit: async (formData, helpers) => {
+			// helpers.setTouched({name: true, sex: true}, true);
+			const res = await helpers.validateForm();
+			console.log(res);
+			
+			await sleep(3000);
+			// console.log(...arg);
 			Message.success('Submit Success!');
 		},
 		validationSchema: Yup.object().shape({
-			name: Yup.string().max(15, 'name max length is 15.'),
-			sex: Yup.string().notOneOf(['private'], 'you must choose one!'),
+			name: Yup.string().required('please input name').min(6, 'min is 6').max(15, 'name max length is 15.'),
+			sex: Yup.string().required('please input sex').notOneOf(['private'], 'you must choose one!'),
 		}),
 	});
 

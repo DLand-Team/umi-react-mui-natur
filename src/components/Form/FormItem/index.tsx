@@ -14,6 +14,7 @@ export interface FormItemProps extends FieldAttributes<any> {
 	 * show required sign(*)
 	 */
 	required?: boolean;
+	hideFormLabel?: boolean;
 }
 
 const displayMap = {
@@ -36,6 +37,7 @@ export default function FormItem({
 	validate,
 	labelStyle,
 	fieldStyle,
+	hideFormLabel = false,
 	// labelWidth,
 	// labelAlign,
 	required = false,
@@ -60,7 +62,7 @@ export default function FormItem({
 
 	return (
 		<FormItemBox display={displayMap[layout]}>
-			{label && (
+			{(label && !hideFormLabel) && (
 				<Box
 					className="label-box"
 					component={'label'}
@@ -91,7 +93,7 @@ export default function FormItem({
 				{errorMsg && (
 					<>
 						<br />
-						<Box color="error.main" pl={1} component={'span'}>
+						<Box color="error.main" component={'span'}>
 							{<ErrorMessage name={name} />}
 						</Box>
 					</>
