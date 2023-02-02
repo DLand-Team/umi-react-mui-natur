@@ -4,8 +4,8 @@ import { useField } from 'formik';
 import { ErrorMessage } from 'formik';
 import type { CSSProperties } from 'react';
 import { useContext, useEffect, useId, useRef, useState } from 'react';
-import { FormContext } from '..';
 import { FormItemBox } from './style';
+import { FormContext } from '../context';
 
 export interface FormItemProps extends FieldAttributes<any> {
 	labelStyle?: CSSProperties;
@@ -16,7 +16,7 @@ export interface FormItemProps extends FieldAttributes<any> {
 	required?: boolean;
 }
 
-const dispalyMap = {
+const displayMap = {
 	vertical: 'block',
 	horizontal: 'flex',
 	inline: 'inline-block',
@@ -59,7 +59,7 @@ export default function FormItem({
 	const { layout = 'horizontal' } = ctx;
 
 	return (
-		<FormItemBox display={dispalyMap[layout]}>
+		<FormItemBox display={displayMap[layout]}>
 			{label && (
 				<Box
 					className="label-box"
