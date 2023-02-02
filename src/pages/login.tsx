@@ -69,11 +69,11 @@ export default function SignInSide() {
 			Message.error(e.message);
 			return;
 		}
-		// if (location.query.redirect) {
-		// 	navigator(location.query.redirect);
-		// } else {
-		// 	navigator('/');
-		// }
+		if (location.query.redirect) {
+			navigator(location.query.redirect);
+		} else {
+			navigator('/');
+		}
 	};
 	// React.useEffect(() => {
 	// 	if (user.maps.isLogin) {

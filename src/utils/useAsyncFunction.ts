@@ -49,18 +49,35 @@ const listeners = new Map<
 	}[]
 >();
 
-/**
- * 占位值
- */
-export const PLACEHOLDER_VALUE = {};
+export class FalsyValue {
+	v: any;
+	constructor(v: any) {
+		this.v = v;
+	}
+	getValue() {
+		return this.v;
+	}
+}
 
 export const useAsyncFunction = <F extends PromiseFunction>(
 	fn: F,
 	opts: UseAsyncFunctionOptions = {},
 ): {
+	/**
+	 * return value of fn
+	 */
 	data: PickPromiseType<F> | null;
+	/**
+	 * promise's loading status
+	 */
 	loading: boolean;
+	/**
+	 * promise's error value
+	 */
 	error: Error | null;
+	/**
+	 * proxy of fn, same as fn.
+	 */
 	run: F;
 } => {
 	const { deps, manual, single = true, debounceTime = -1 } = opts;
@@ -70,6 +87,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		depsRef: initDeps as DependencyList,
 		id: {},
 		timeoutHandler: null as any,
+		falsyValues: [] as any[],
 	});
 	const argsRef = useRef({
 		fn,
@@ -138,7 +156,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 					return argsRef.current.fn!(...(args as any))
 						.then((res) => {
 							listeners.get(stateRef.current.id)?.forEach((i) => {
-								i.resolve(res || PLACEHOLDER_VALUE);
+								i.resolve(res || new FalsyValue(res));
 							});
 							if (listeners.has(stateRef.current.id)) {
 								listeners.set(stateRef.current.id, []);
@@ -147,7 +165,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 						})
 						.catch((err) => {
 							listeners.get(stateRef.current.id)?.forEach((i) => {
-								i.reject(err || PLACEHOLDER_VALUE);
+								i.reject(err);
 							});
 							if (listeners.has(stateRef.current.id)) {
 								listeners.set(stateRef.current.id, []);
@@ -155,7 +173,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 							throw err;
 						});
 				}
-				return arg;
+				return arg instanceof FalsyValue ? arg.getValue() : arg;
 			})
 			.then((res) => {
 				setAsyncFunctionState((ov) => {
