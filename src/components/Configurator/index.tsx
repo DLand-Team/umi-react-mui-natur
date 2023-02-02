@@ -35,8 +35,6 @@ function Configurator() {
 	const [mui] = useInject('mui');
 	const {
 		miniSidenav,
-		direction,
-		layout,
 		fixedNavbar,
 		openConfigurator,
 		sidenavColor,
