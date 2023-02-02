@@ -1,3 +1,4 @@
+import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
 import type { FieldAttributes } from 'formik';
 import { useField } from 'formik';
@@ -9,12 +10,13 @@ import { FormContext } from '../context';
 
 export interface FormItemProps extends FieldAttributes<any> {
 	labelStyle?: CSSProperties;
+	labelSx?: BoxProps['sx'];
 	fieldStyle?: CSSProperties;
+	fieldSx?: BoxProps['sx'];
 	/**
 	 * show required sign(*)
 	 */
 	required?: boolean;
-	hideFormLabel?: boolean;
 }
 
 const displayMap = {
@@ -37,9 +39,8 @@ export default function FormItem({
 	validate,
 	labelStyle,
 	fieldStyle,
-	hideFormLabel = false,
-	// labelWidth,
-	// labelAlign,
+	labelSx,
+	fieldSx,
 	required = false,
 	...restProps
 }: FormItemProps) {
@@ -62,13 +63,14 @@ export default function FormItem({
 
 	return (
 		<FormItemBox display={displayMap[layout]}>
-			{(label && !hideFormLabel) && (
+			{label && (
 				<Box
 					className="label-box"
 					component={'label'}
 					htmlFor={id}
 					display={fieldDisplayMap[layout]}
-					style={{ ...ctx.labelStyle, ...labelStyle }}
+					style={labelStyle || ctx.labelStyle}
+					sx={labelSx || ctx.labelSx}
 				>
 					{required && (
 						<Box color="error.main" component={'span'}>
@@ -80,6 +82,7 @@ export default function FormItem({
 			)}
 			<Box
 				display={fieldDisplayMap[layout]}
+				sx={fieldSx || ctx.fieldSx}
 				style={{
 					verticalAlign: 'top',
 					...ctx.fieldStyle,

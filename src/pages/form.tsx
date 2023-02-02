@@ -33,13 +33,14 @@ export default function FormPage() {
 			<Form
 				form={form}
 				layout="horizontal"
-				labelStyle={{
+				fieldSx={{
+					width: '100%',
+				}}
+				labelSx={{
 					textAlign: 'right',
 					width: '100px',
+					display: 'none',
 					marginRight: 20,
-				}}
-				fieldStyle={{
-					width: 200,
 				}}
 			>
 				<FormItem as={TextField} name="name" label="Name" size="small" required />
