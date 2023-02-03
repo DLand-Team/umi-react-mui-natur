@@ -1,8 +1,10 @@
-import type { PickPromiseType } from 'natur/dist/ts-utils';
 import type { DependencyList } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type PromiseFunction = (...args: any) => Promise<any>;
+export type PickPromiseType<P extends () => Promise<any>> = P extends () => Promise<infer V>
+	? V
+	: never;
 
 const shallowEqual = (arr1: DependencyList, arr2: DependencyList) => {
 	if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
