@@ -101,7 +101,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 	const [asyncFunctionState, setAsyncFunctionState] = useState<
 		AsyncFunctionState<PickPromiseType<F> | null>
 	>({
-		loading: false,
+		loading: !manual,
 		error: null,
 		data: null,
 	});
