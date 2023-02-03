@@ -83,10 +83,10 @@ function MyDialog({
 				{content}
 			</DialogContent>
 			<DialogActions sx={{ padding: 2 }}>
-				<Button size={'small'} variant={'contained'} onClick={localConfirm} autoFocus>
+				<Button variant={'contained'} onClick={localConfirm} autoFocus>
 					{confirmText}
 				</Button>
-				<Button size={'small'} variant={'outlined'} onClick={localCancel}>
+				<Button variant={'outlined'} onClick={localCancel}>
 					{cancelText}
 				</Button>
 			</DialogActions>

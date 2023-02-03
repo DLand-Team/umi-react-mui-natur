@@ -6,6 +6,7 @@ import { Message } from '@/utils/message';
 
 const _http = axios.create({
 	timeout: 1000 * 60,
+	baseURL: '/api',
 });
 
 _http.interceptors.request.use(
