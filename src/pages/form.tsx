@@ -5,24 +5,37 @@ import { Box } from '@mui/system';
 import * as Yup from 'yup';
 import { Message } from '@/utils/message';
 import { sleep } from '@/utils';
+import { Modal } from '@/utils/modal';
 
 export default function FormPage() {
 	const form = useForm({
 		initialValues: {
-			name: '',
+			name: '111111',
 			sex: 'man',
 		},
 		onSubmit: async (formData, helpers) => {
 			// helpers.setTouched({name: true, sex: true}, true);
 			const res = await helpers.validateForm();
 			console.log(res);
-			
+
+			await Modal.confirm({
+				title: 'confirm dialog',
+				content: (
+					<div style={{ width: '100%', wordBreak: 'break-all' }}>
+						111111111111111111111111111111111111111111111111111111111111111111
+					</div>
+				),
+			});
+
 			await sleep(3000);
 			// console.log(...arg);
 			Message.success('Submit Success!');
 		},
 		validationSchema: Yup.object().shape({
-			name: Yup.string().required('please input name').min(6, 'min is 6').max(15, 'name max length is 15.'),
+			name: Yup.string()
+				.required('please input name')
+				.min(6, 'min is 6')
+				.max(15, 'name max length is 15.'),
 			sex: Yup.string().required('please input sex').notOneOf(['private'], 'you must choose one!'),
 		}),
 	});
