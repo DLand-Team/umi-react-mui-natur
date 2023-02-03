@@ -10,6 +10,7 @@ import { defaultTheme } from '@/plugins/mui';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import Slide from '@mui/material/Slide';
 import type { TransitionProps } from '@mui/material/transitions';
+import ErrorIcon from '@mui/icons-material/Error';
 
 import styles from './style.module.scss';
 import { sleep } from '@/utils';
@@ -73,15 +74,20 @@ function MyDialog({
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 		>
-			<DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+			<DialogTitle id="alert-dialog-title" sx={{ display: 'flex', alignItems: 'center' }}>
+				<ErrorIcon color={'warning'} sx={{ mr: 1 }} />
+				{title}
+			</DialogTitle>
 			<DialogContent>
 				{/*<DialogContentText id="alert-dialog-description">{content}</DialogContentText>*/}
 				{content}
 			</DialogContent>
-			<DialogActions>
-				<Button onClick={localCancel}>{cancelText}</Button>
-				<Button onClick={localConfirm} autoFocus>
+			<DialogActions sx={{ padding: 2 }}>
+				<Button variant={'contained'} onClick={localConfirm} autoFocus>
 					{confirmText}
+				</Button>
+				<Button variant={'outlined'} onClick={localCancel}>
+					{cancelText}
 				</Button>
 			</DialogActions>
 		</Dialog>

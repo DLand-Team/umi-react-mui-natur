@@ -14,19 +14,15 @@ export default function FormPage() {
 			sex: 'man',
 		},
 		onSubmit: async (formData, helpers) => {
-			// helpers.setTouched({name: true, sex: true}, true);
-			const res = await helpers.validateForm();
-			console.log(res);
-
+			await helpers.validateForm();
 			await Modal.confirm({
-				title: 'confirm dialog',
+				title: 'Confirm dialog',
 				content: (
 					<div style={{ width: '100%', wordBreak: 'break-all' }}>
 						111111111111111111111111111111111111111111111111111111111111111111
 					</div>
 				),
 			});
-
 			await sleep(3000);
 			// console.log(...arg);
 			Message.success('Submit Success!');
