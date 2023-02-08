@@ -1,42 +1,29 @@
 import { Table } from '../components/Table';
 import { Box, Button, TextField } from '@mui/material';
-import { useState } from 'react';
-
-const dataSource = [
-	{
-		key: '1',
-		name: '胡彦斌',
-		age: 32,
-		address: '西湖区湖底公园1号',
-	},
-	{
-		key: '2',
-		name: '胡彦祖',
-		age: 42,
-		address: '西湖区湖底公园1号',
-	},
-];
+import { useEffect, useState } from 'react';
+import { fetchTableData } from '@/apis/demo';
+import { useHttp } from '@/utils/hooks';
 
 const columns = [
 	{
-		title: '姓名',
+		title: 'Name',
 		dataIndex: 'name',
 		key: 'name',
 	},
 	{
-		title: '年龄',
-		dataIndex: 'age',
-		key: 'age',
+		title: 'Date',
+		dataIndex: 'date',
+		key: 'date',
 	},
 	{
-		title: '住址',
+		title: 'Address',
 		dataIndex: 'address',
 		key: 'address',
 	},
 	{
 		title: 'Actions',
 		key: 'action',
-		render: (row: typeof dataSource[0]) => {
+		render: (row: any) => {
 			return (
 				<Button
 					size={'small'}
@@ -51,14 +38,22 @@ const columns = [
 	},
 ];
 
+
 export default function TablePage() {
 	const [name, setName] = useState('');
+	const { data, loading, run } = useHttp(fetchTableData, {manual: true});
+	
+	useEffect(() => {
+		run();
+	}, [run]);
+	
 	return (
 		<Box sx={{ p: 1 }}>
 			<div>
 				<TextField size={'small'} value={name} onChange={(e) => setName(e.target.value)} />
+				<Button disabled={loading} onClick={run}>Search</Button>
 			</div>
-			<Table rows={dataSource} columns={columns} />
+			<Table rows={data || []} columns={columns} />
 		</Box>
 	);
 }

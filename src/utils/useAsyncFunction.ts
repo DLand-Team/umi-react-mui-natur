@@ -2,7 +2,7 @@ import type { DependencyList } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type PromiseFunction = (...args: any) => Promise<any>;
-export type PickPromiseType<P extends () => Promise<any>> = P extends () => Promise<infer V>
+export type PickPromiseType<P extends (...arg: any) => Promise<any>> = P extends (...arg: any) => Promise<infer V>
 	? V
 	: never;
 
