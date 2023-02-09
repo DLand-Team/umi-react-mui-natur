@@ -2,13 +2,12 @@ import type { Columns } from '../components/Table';
 import { Table } from '../components/Table';
 import { Box, Button, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
+import type { TabelData } from '@/apis/demo';
 import { fetchTableData } from '@/apis/demo';
-import { useHttp } from '@/utils/hooks';
-import type { PickPromiseType } from '@/utils/useAsyncFunction';
+import { useHttp, useInject } from '@/utils/hooks';
 
-type Rows = PickPromiseType<typeof fetchTableData>;
 
-const columns: Columns<Rows[0]> = [
+const columns: Columns<TabelData[0]> = [
 	{
 		title: 'Name',
 		dataIndex: 'name',
@@ -42,30 +41,21 @@ const columns: Columns<Rows[0]> = [
 	},
 ];
 
-export default function TablePage() {
-	const [listQuery, setListQuery] = useState({
-		name: '',
-		pageSize: 10,
-		pageNum: 1,
-	});
-	const { data, loading, run } = useHttp(() => fetchTableData(listQuery), { manual: true, debounceTime: 300 });
+export default function TableStorePage() {
+	const [table] = useInject('table');
+	const { loading, run } = useHttp(table.actions.fetchTableData, { manual: true, debounceTime: 300 });
 
 	useEffect(() => {
 		run();
-	}, [run]);
+	}, [])
 
 	return (
 		<Box sx={{ p: 1 }}>
 			<div>
-				<TextField size={'small'} value={listQuery.name} onChange={(e) => {
-					setListQuery({
-						...listQuery,
-						name: e.target.value
-					});
-				}} />
-				<Button onClick={() => run()}>Search</Button>
+				<TextField size={'small'} value={table.state.listQuery.name} onChange={(e) => table.actions.updateListQuery({name: e.target.value})} />
+				<Button onClick={run}>Search</Button>
 			</div>
-			<Table rows={data || []} columns={columns} loading={loading} />
+			<Table rows={table.state.tableData || []} columns={columns} loading={loading} />
 		</Box>
 	);
 }

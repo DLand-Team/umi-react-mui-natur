@@ -20,6 +20,10 @@ export default [
 				component: 'table',
 			},
 			{
+				path: '/table-store',
+				component: 'table-store',
+			},
+			{
 				path: '/form',
 				component: 'form',
 			},

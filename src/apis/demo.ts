@@ -6,13 +6,14 @@ export interface TableDataParams {
 	name: string;
 }
 
-export const fetchTableData = async () => {
-	const res = await http.post<
-		{
-			date: string;
-			name: string;
-			address: string;
-		}[]
-	>('/getTableData');
+export type TabelData = {
+  date: string;
+  name: string;
+  address: string;
+}[];
+
+
+export const fetchTableData = async (p: TableDataParams) => {
+	const res = await http.post<TabelData>('/getTableData', p);
 	return res.data;
 };

@@ -5,7 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import MuiTable from '@mui/material/Table';
 import * as React from 'react';
 import type { ReactNode } from 'react';
-import { Box, TableContainer } from '@mui/material';
+import { Box, CircularProgress, TableContainer } from '@mui/material';
 import styles from './style.module.scss';
 
 export interface Column<D extends any = any> {
@@ -59,7 +59,11 @@ function Table<R extends Row = Row, C extends Column = Column>({
 					)}
 				</TableBody>
 			</MuiTable>
-			{loading && <Box className={styles['loading-box']}>Loading</Box>}
+			{loading && (
+				<Box className={styles['loading-box']}>
+					<CircularProgress thickness={3} size={50} />
+				</Box>
+			)}
 		</TableContainer>
 	);
 }
