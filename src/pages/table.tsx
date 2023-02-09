@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { fetchTableData } from '@/apis/demo';
 import { useHttp } from '@/utils/hooks';
 import type { PickPromiseType } from '@/utils/useAsyncFunction';
+import { Link } from 'umi';
 
 type Rows = PickPromiseType<typeof fetchTableData>;
 
@@ -56,6 +57,7 @@ export default function TablePage() {
 
 	return (
 		<Box sx={{ p: 1 }}>
+			<Link to='/table-store'>table store</Link>
 			<div>
 				<TextField size={'small'} value={listQuery.name} onChange={(e) => {
 					setListQuery({

@@ -1,10 +1,10 @@
 import type { Columns } from '../components/Table';
 import { Table } from '../components/Table';
 import { Box, Button, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import type { TabelData } from '@/apis/demo';
-import { fetchTableData } from '@/apis/demo';
 import { useHttp, useInject } from '@/utils/hooks';
+import { Link } from 'umi';
 
 
 const columns: Columns<TabelData[0]> = [
@@ -51,6 +51,7 @@ export default function TableStorePage() {
 
 	return (
 		<Box sx={{ p: 1 }}>
+			<Link to='/table'>table</Link>
 			<div>
 				<TextField size={'small'} value={table.state.listQuery.name} onChange={(e) => table.actions.updateListQuery({name: e.target.value})} />
 				<Button onClick={run}>Search</Button>

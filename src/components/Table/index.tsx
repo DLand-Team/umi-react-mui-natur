@@ -53,7 +53,7 @@ function Table<R extends Row = Row, C extends Column = Column>({
 					{!rows.length && (
 						<TableRow>
 							<TableCell colSpan={columns.length}>
-								<Box className={styles['empty-table-box']}>EMPTY DATA</Box>
+								<Box className={styles['empty-table-box']}>NO DATA</Box>
 							</TableCell>
 						</TableRow>
 					)}
