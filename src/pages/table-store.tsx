@@ -1,9 +1,9 @@
 import type { Columns } from '../components/Table';
 import { Table } from '../components/Table';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useEffect } from 'react';
 import type { TabelData } from '@/apis/demo';
-import { useHttp, useInject } from '@/utils/hooks';
+import { useFlatInject, useHttp } from '@/utils/hooks';
 import { Link } from 'umi';
 import { SearchInput } from '@/components/SearchInput';
 
@@ -42,8 +42,8 @@ const columns: Columns<TabelData[0]> = [
 ];
 
 export default function TableStorePage() {
-	const [table] = useInject('table');
-	const { loading, run } = useHttp(table.actions.fetchTableData, {
+	const [table] = useFlatInject('table');
+	const { loading, run } = useHttp(table.fetchTableData, {
 		manual: true,
 		debounceTime: 300,
 	});
@@ -56,12 +56,12 @@ export default function TableStorePage() {
 		<Box sx={{ p: 1 }}>
 			<Link to="/table">table</Link>
 			<SearchInput
-				value={table.state.listQuery.name}
-				onChange={(e) => table.actions.updateListQuery({ name: e.target.value })}
+				value={table.listQuery.name}
+				onChange={(e) => table.updateListQuery({ name: e.target.value })}
 				onSearch={() => run()}
 				loading={loading}
 			/>
-			<Table rows={table.state.tableData || []} columns={columns} loading={loading} />
+			<Table rows={table.tableData || []} columns={columns} loading={loading} />
 		</Box>
 	);
 }
