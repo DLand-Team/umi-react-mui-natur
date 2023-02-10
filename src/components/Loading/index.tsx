@@ -1,4 +1,4 @@
-import { useInject } from '@/utils/hooks';
+import { useFlatInject } from '@/utils/hooks';
 import { Dialog, Zoom, Box, CircularProgress } from '@mui/material';
 import styles from './style.scss';
 
@@ -7,10 +7,11 @@ const paperProps = {
 };
 
 const Loading = () => {
-	const [loading] = useInject('loading')
+	const [loading] = useFlatInject('loading');
+
 	return (
 		<Dialog
-			open={loading.maps.showLoading}
+			open={loading.showLoading}
 			classes={styles}
 			PaperProps={paperProps}
 			TransitionComponent={Zoom}
@@ -31,7 +32,7 @@ const Loading = () => {
 					mt={2}
 					color='primary.contrastText'
 				>
-					{loading.state.loadingText}
+					{loading.loadingText}
 				</Box>
 			</Box>
 		</Dialog>

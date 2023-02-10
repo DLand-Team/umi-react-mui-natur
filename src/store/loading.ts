@@ -4,7 +4,13 @@
 import type { ThunkParams } from 'natur';
 
 const state = {
+	/**
+	 * loading次数
+	 */
 	loadingCount: 0,
+	/**
+	 * loading文本
+	 */
 	loadingText: '加载中',
 	loadingZIndex: 100,
 };

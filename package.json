@@ -23,7 +23,7 @@
     "hoist-non-react-statics": "^3.3.2",
     "immer": "^9.0.19",
     "lodash": "^4.17.21",
-    "natur": "^2.2.0-beta7",
+    "natur": "^2.2.0-beta8",
     "qs": "^6.11.0",
     "recharts": "^2.1.16",
     "rxjs": "^7.8.0",
