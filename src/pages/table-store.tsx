@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import type { TabelData } from '@/apis/demo';
 import { useHttp, useInject } from '@/utils/hooks';
 import { Link } from 'umi';
-
+import { SearchInput } from '@/components/SearchInput';
 
 const columns: Columns<TabelData[0]> = [
 	{
@@ -43,19 +43,24 @@ const columns: Columns<TabelData[0]> = [
 
 export default function TableStorePage() {
 	const [table] = useInject('table');
-	const { loading, run } = useHttp(table.actions.fetchTableData, { manual: true, debounceTime: 300 });
+	const { loading, run } = useHttp(table.actions.fetchTableData, {
+		manual: true,
+		debounceTime: 300,
+	});
 
 	useEffect(() => {
 		run();
-	}, [])
+	}, []);
 
 	return (
 		<Box sx={{ p: 1 }}>
-			<Link to='/table'>table</Link>
-			<div>
-				<TextField size={'small'} value={table.state.listQuery.name} onChange={(e) => table.actions.updateListQuery({name: e.target.value})} />
-				<Button onClick={run}>Search</Button>
-			</div>
+			<Link to="/table">table</Link>
+			<SearchInput
+				value={table.state.listQuery.name}
+				onChange={(e) => table.actions.updateListQuery({ name: e.target.value })}
+				onSearch={() => run()}
+				loading={loading}
+			/>
 			<Table rows={table.state.tableData || []} columns={columns} loading={loading} />
 		</Box>
 	);
