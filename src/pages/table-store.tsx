@@ -58,7 +58,7 @@ export default function TableStorePage() {
 			<SearchInput
 				value={table.listQuery.name}
 				onChange={(e) => table.updateListQuery({ name: e.target.value })}
-				onSearch={() => run()}
+				onSearch={run}
 				loading={loading}
 			/>
 			<Table rows={table.tableData || []} columns={columns} loading={loading} />

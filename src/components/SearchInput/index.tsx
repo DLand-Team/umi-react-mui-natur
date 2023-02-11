@@ -3,10 +3,10 @@ import type { ChangeEvent, MouseEvent } from "react";
 
 
 export interface SearchInputProps {
-	value: string;
-	onChange: (event: ChangeEvent<HTMLInputElement>) => any;
-	onSearch: (event: MouseEvent<any>) => any;
-	loading: boolean;
+	value?: string;
+	onChange?: (event: ChangeEvent<HTMLInputElement>) => any;
+	onSearch?: (event: MouseEvent<any>) => any;
+	loading?: boolean;
 }
 
 export function SearchInput({value, onChange, onSearch, loading}: SearchInputProps) {
