@@ -4,9 +4,9 @@ import { Box, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { fetchTableData } from '@/apis/demo';
 import { useHttp } from '@/utils/hooks';
-import type { PickPromiseType } from '@/utils/useAsyncFunction';
 import { Link } from 'umi';
 import { SearchInput } from '@/components/SearchInput';
+import type { PickPromiseType } from '@/utils/greate-async';
 
 type Rows = PickPromiseType<typeof fetchTableData>;
 
