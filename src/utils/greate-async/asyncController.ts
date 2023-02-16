@@ -3,6 +3,13 @@ import { FalsyValue } from "./common";
 
 export const cacheMap = !!WeakMap ? new WeakMap<AnyFn, any>() : new Map<AnyFn, any>();
 
+/**
+ * 创建异步控制器，主要用于http请求的场景
+ * 支持防抖，缓存，单个请求等功能
+ * @param fn 
+ * @param param1 
+ * @returns 
+ */
 export const createAsyncController = <F extends PromiseFunction>(fn: F, {
   debounceTime = -1,
   ttl = -1,
