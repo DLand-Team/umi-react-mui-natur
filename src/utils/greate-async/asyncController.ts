@@ -1,7 +1,7 @@
 import type { AnyFn, PromiseFunction } from "./common";
 import { FalsyValue } from "./common";
 
-export const cacheMap = !!WeakMap ? new WeakMap<AnyFn, any>() : new Map<AnyFn, any>();
+export const cacheMap = !!window.WeakMap ? new WeakMap<AnyFn, any>() : new Map<AnyFn, any>();
 
 /**
  * 创建异步控制器，主要用于http请求的场景
