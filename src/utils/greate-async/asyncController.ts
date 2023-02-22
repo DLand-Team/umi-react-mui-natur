@@ -9,23 +9,31 @@ export interface CacheData {
 
 export const cacheMap = typeof WeakMap !== 'undefined' ? new WeakMap<AnyFn, Map<string, CacheData>>() : new Map<AnyFn, Map<string, CacheData>>();
 
+type Timer = ReturnType<typeof setTimeout>;
 
 
-function clearExpiredCache(fn: PromiseFunction, ttl: number) {
-  // put operation into micro event loop, so it will not impact the main process
-  setTimeout(() => {
-    const fnCache = cacheMap.get(fn);
-    if (!fnCache) {
-      return;
-    }
-    const now = Date.now();
-    fnCache.forEach((value, key) => {
-      if (now - value.timestamp > ttl) {
-        fnCache.delete(key);
-      }
-    });
-  });
+function createClearExpiredCache(fn: PromiseFunction, ttl: number) {
+	let timer: Timer | null = null;
+	return function clearExpiredCache() {
+		if (timer) {
+			clearTimeout(timer);
+		}
+		// put operation into micro event loop, so it will not impact the main process
+		timer = setTimeout(() => {
+			const fnCache = cacheMap.get(fn);
+			if (!fnCache) {
+				return;
+			}
+			const now = Date.now();
+			fnCache.forEach((value, key) => {
+				if (now - value.timestamp > ttl) {
+					fnCache.delete(key);
+				}
+			});
+		});
+	}
 }
+
 
 function clearCache(fn: PromiseFunction, key?: string) {
   const fnCache = cacheMap.get(fn);
@@ -52,8 +60,8 @@ export interface CreateAsyncControllerOptions<P extends any[] = any[]> {
 }
 
 /**
- * 创建异步控制器，主要用于http请求的场景
- * 支持防抖，缓存，单个请求等功能
+ * create async controller, http request is the main use case
+ * support debounce, cache, single mode
  * @param fn 
  * @param param1 
  * @returns 
@@ -66,6 +74,8 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
 }: CreateAsyncControllerOptions<Parameters<F>> = {}) => {
   let fetchMemberPageListTimer: any = null;
 	let promiseHandler: Promise<any> | null;
+	const clearExpiredCache = createClearExpiredCache(fn, ttl);
+
   let listener: {
 		resolve: (arg?: any) => any,
 		reject: (arg?: any) => any,
@@ -77,7 +87,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
     const cacheObj = thisCache?.get(key);
     if (ttl !== -1 && cacheObj && Date.now() - cacheObj.timestamp < ttl) {
 			// Check and delete expired caches on each call to prevent out of memory error
-			clearExpiredCache(fn, ttl);
+			clearExpiredCache();
       return Promise.resolve(cacheObj.data) as ReturnType<F>;
     }
 		if (single && promiseHandler && debounceTime === -1) {
