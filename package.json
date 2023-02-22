@@ -7,7 +7,7 @@
     "postinstall": "umi setup",
     "setup": "umi setup",
     "start": "npm run dev",
-		"test": "jest --detectOpenHandles"
+		"test": "jest"
   },
   "dependencies": {
     "@emotion/css": "^11.10.5",
