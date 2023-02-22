@@ -39,6 +39,10 @@ function clearCache(fn: PromiseFunction, key?: string) {
   }
 }
 
+
+function defaultGenKeyByParams(...params: any) {
+	return JSON.stringify(params);
+}
 /**
  * 创建异步控制器，主要用于http请求的场景
  * 支持防抖，缓存，单个请求等功能
@@ -50,6 +54,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
   debounceTime = -1,
   ttl = -1,
 	single = false,
+	genKeyByParams = defaultGenKeyByParams
 } = {}) => {
   let fetchMemberPageListTimer: any = null;
 	let promiseHandler: Promise<any> | null;
@@ -58,17 +63,17 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
 		reject: (arg?: any) => any,
 	}[] = [];
 
-  const fnProxy = (...params: Parameters<F>) => {
-    const key = JSON.stringify(params);
+  const fnProxy = (...params: Parameters<F>): ReturnType<F> => {
+    const key = genKeyByParams(params);
     const thisCache = cacheMap.get(fnProxy);
     const cacheObj = thisCache?.get(key);
     if (ttl !== -1 && cacheObj && Date.now() - cacheObj.timestamp < ttl) {
 			// Check and delete expired caches on each call to prevent out of memory error
 			clearExpiredCache(fn, ttl);
-      return Promise.resolve(cacheObj.data);
+      return Promise.resolve(cacheObj.data) as ReturnType<F>;
     }
 		if (single && promiseHandler && debounceTime === -1) {
-			return promiseHandler;
+			return promiseHandler as ReturnType<F>;
 		}
     promiseHandler = new Promise<void>((resolve, reject) => {
 			if (debounceTime === -1) {
@@ -112,14 +117,16 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
       fetchMemberPageListTimer = null;
 			promiseHandler = null;
     });
-		return promiseHandler;
+		return promiseHandler as ReturnType<F>;
   };
   cacheMap.set(fnProxy, new Map<string, CacheData>());
-	fnProxy.clearCache = (key?: string) => {
-    clearCache(fnProxy, key);
+
+	function fnClearCache (...params: Parameters<F>): void;
+	function fnClearCache (): void;
+	function fnClearCache (...params: Parameters<F>) {
+    clearCache(fnProxy, params.length ? genKeyByParams(params) : undefined);
   };
-  return fnProxy as F & {
-		clearCache: (key?: string) => void;
-	};
+	fnProxy.clearCache = fnClearCache;
+  return fnProxy;
 };
 
