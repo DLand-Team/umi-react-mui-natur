@@ -85,6 +85,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
     const key = genKeyByParams(params);
     const thisCache = cacheMap.get(fnProxy);
     const cacheObj = thisCache?.get(key);
+		
     if (ttl !== -1 && cacheObj && Date.now() - cacheObj.timestamp < ttl) {
 			// Check and delete expired caches on each call to prevent out of memory error
 			clearExpiredCache();
@@ -107,11 +108,11 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
       fetchMemberPageListTimer = setTimeout(resolve, debounceTime);
     }).then((arg: any) => {
       if (arg === undefined) {
-        return fn(params)
+        return fn(...(params as any[]))
           .then(res => {
             // eslint-disable-next-line @typescript-eslint/no-shadow
             const thisCache = cacheMap.get(fnProxy);
-            if (thisCache && !thisCache.get(key) && ttl !== -1) {
+            if (thisCache && ttl !== -1) {
 							thisCache.set(key, {
                 data: res,
                 timestamp: Date.now(),
@@ -131,9 +132,9 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
       }
       return arg instanceof FalsyValue ? arg.getValue() : arg;
     }).finally(() => {
-      listener = [];
       fetchMemberPageListTimer = null;
 			promiseHandler = null;
+			listener = [];
     });
 		return promiseHandler as ReturnType<F>;
   };
