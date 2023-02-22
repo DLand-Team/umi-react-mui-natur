@@ -1,7 +1,43 @@
 import type { AnyFn, PromiseFunction } from "./common";
 import { FalsyValue } from "./common";
 
-export const cacheMap = !!window.WeakMap ? new WeakMap<AnyFn, any>() : new Map<AnyFn, any>();
+
+export interface CacheData {
+	timestamp: number;
+	data: any;
+}
+
+export const cacheMap = typeof WeakMap !== 'undefined' ? new WeakMap<AnyFn, Map<string, CacheData>>() : new Map<AnyFn, Map<string, CacheData>>();
+
+
+
+function checkAndClearCache(fn: PromiseFunction, ttl: number) {
+  // put operation into micro event loop, so it will not impact the main process
+  setTimeout(() => {
+    const fnCache = cacheMap.get(fn);
+    if (!fnCache) {
+      return;
+    }
+    const now = Date.now();
+    fnCache.forEach((value, key) => {
+      if (now - value.timestamp > ttl) {
+        fnCache.delete(key);
+      }
+    });
+  });
+}
+
+function clearCache(fn: PromiseFunction, key: string) {
+  const fnCache = cacheMap.get(fn);
+  if (!fnCache) {
+    return;
+  }
+  if (key) {
+    fnCache.delete(key);
+  } else {
+    fnCache.clear();
+  }
+}
 
 /**
  * 创建异步控制器，主要用于http请求的场景
@@ -25,8 +61,10 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
   const fnProxy = (...params: Parameters<F>) => {
     const key = JSON.stringify(params);
     const thisCache = cacheMap.get(fnProxy);
-    if (ttl !== -1 && thisCache?.[key] && Date.now() - thisCache[key].timestamp < ttl) {
-      return Promise.resolve(thisCache[key].data);
+    const cacheObj = thisCache?.get(key);
+    if (ttl !== -1 && cacheObj && Date.now() - cacheObj.timestamp < ttl) {
+			checkAndClearCache(fn, ttl);
+      return Promise.resolve(cacheObj.data);
     }
 		if (single && promiseHandler && debounceTime === -1) {
 			return promiseHandler;
@@ -49,11 +87,11 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
           .then(res => {
             // eslint-disable-next-line @typescript-eslint/no-shadow
             const thisCache = cacheMap.get(fnProxy);
-            if (!thisCache[key] && ttl !== -1) {
-              thisCache[key] = {
+            if (thisCache && !thisCache.get(key) && ttl !== -1) {
+							thisCache.set(key, {
                 data: res,
                 timestamp: Date.now(),
-              };
+              });
             }
             listener.forEach(i => {
               i.resolve(res || new FalsyValue(res));
@@ -75,7 +113,12 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
     });
 		return promiseHandler;
   };
-  cacheMap.set(fnProxy, {});
-  return fnProxy as F;
+  cacheMap.set(fnProxy, new Map<string, CacheData>());
+	fnProxy.clearCache = (key: string) => {
+    clearCache(fnProxy, key);
+  };
+  return fnProxy as F & {
+		clearCache: (key: string) => void;
+	};
 };
 
