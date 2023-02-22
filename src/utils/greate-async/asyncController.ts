@@ -40,9 +40,17 @@ function clearCache(fn: PromiseFunction, key?: string) {
 }
 
 
-function defaultGenKeyByParams(...params: any) {
+function defaultGenKeyByParams(params: any[]) {
 	return JSON.stringify(params);
 }
+
+export interface CreateAsyncControllerOptions<P extends any[] = any[]> {
+	debounceTime?: number;
+	ttl?: number;
+	single?: boolean;
+	genKeyByParams?: (params: P) => string;
+}
+
 /**
  * 创建异步控制器，主要用于http请求的场景
  * 支持防抖，缓存，单个请求等功能
@@ -55,7 +63,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
   ttl = -1,
 	single = false,
 	genKeyByParams = defaultGenKeyByParams
-} = {}) => {
+}: CreateAsyncControllerOptions<Parameters<F>> = {}) => {
   let fetchMemberPageListTimer: any = null;
 	let promiseHandler: Promise<any> | null;
   let listener: {
