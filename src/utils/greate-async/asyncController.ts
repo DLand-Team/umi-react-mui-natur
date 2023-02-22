@@ -11,7 +11,7 @@ export const cacheMap = typeof WeakMap !== 'undefined' ? new WeakMap<AnyFn, Map<
 
 
 
-function checkAndClearCache(fn: PromiseFunction, ttl: number) {
+function clearExpiredCache(fn: PromiseFunction, ttl: number) {
   // put operation into micro event loop, so it will not impact the main process
   setTimeout(() => {
     const fnCache = cacheMap.get(fn);
@@ -63,7 +63,8 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
     const thisCache = cacheMap.get(fnProxy);
     const cacheObj = thisCache?.get(key);
     if (ttl !== -1 && cacheObj && Date.now() - cacheObj.timestamp < ttl) {
-			checkAndClearCache(fn, ttl);
+			// Check and delete expired caches on each call to prevent out of memory error
+			clearExpiredCache(fn, ttl);
       return Promise.resolve(cacheObj.data);
     }
 		if (single && promiseHandler && debounceTime === -1) {
