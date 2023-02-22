@@ -27,7 +27,7 @@ function checkAndClearCache(fn: PromiseFunction, ttl: number) {
   });
 }
 
-function clearCache(fn: PromiseFunction, key: string) {
+function clearCache(fn: PromiseFunction, key?: string) {
   const fnCache = cacheMap.get(fn);
   if (!fnCache) {
     return;
@@ -114,11 +114,11 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
 		return promiseHandler;
   };
   cacheMap.set(fnProxy, new Map<string, CacheData>());
-	fnProxy.clearCache = (key: string) => {
+	fnProxy.clearCache = (key?: string) => {
     clearCache(fnProxy, key);
   };
   return fnProxy as F & {
-		clearCache: (key: string) => void;
+		clearCache: (key?: string) => void;
 	};
 };
 
