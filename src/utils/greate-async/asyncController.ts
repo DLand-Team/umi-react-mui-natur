@@ -59,6 +59,14 @@ export interface CreateAsyncControllerOptions<P extends any[] = any[]> {
 	genKeyByParams?: (params: P) => string;
 }
 
+export type ReturnTypeOfCreateAsyncController<F extends PromiseFunction> = {
+	(...arg: Parameters<F>): ReturnType<F>;
+	clearCache: (...params: Parameters<F>) => void;
+} | {
+	(...arg: Parameters<F>): ReturnType<F>;
+	clearCache: () => void;
+};
+
 /**
  * create async controller, http request is the main use case
  * support debounce, cache, single mode
@@ -66,12 +74,12 @@ export interface CreateAsyncControllerOptions<P extends any[] = any[]> {
  * @param param1 
  * @returns 
  */
-export const createAsyncController = <F extends PromiseFunction>(fn: F, {
+export function createAsyncController<F extends PromiseFunction>(fn: F, {
   debounceTime = -1,
   ttl = -1,
 	single = false,
 	genKeyByParams = defaultGenKeyByParams
-}: CreateAsyncControllerOptions<Parameters<F>> = {}) => {
+}: CreateAsyncControllerOptions<Parameters<F>> = {}) {
   let fetchMemberPageListTimer: any = null;
 	let promiseHandler: Promise<any> | null;
 	const clearExpiredCache = createClearExpiredCache(fnProxy, ttl);

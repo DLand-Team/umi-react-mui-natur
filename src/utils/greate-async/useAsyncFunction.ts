@@ -1,4 +1,5 @@
-import { createAsyncController } from '@/utils/greate-async';
+import type { ReturnTypeOfCreateAsyncController} from './asyncController';
+import { createAsyncController } from './asyncController';
 import type { DependencyList } from 'react';
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import type { PickPromiseType, PromiseFunction} from './common';
@@ -35,14 +36,6 @@ export interface UseAsyncFunctionOptions {
 	ttl?: number;
 }
 
-export const listeners = new Map<
-	{},
-	{
-		resolve: (...arg: any) => any;
-		reject: (...arg: any) => any;
-	}[]
->();
-
 export type UseAsyncFunctionReturn<F extends PromiseFunction> = {
 	/**
 	 * return value of fn
@@ -60,11 +53,13 @@ export type UseAsyncFunctionReturn<F extends PromiseFunction> = {
 	 * proxy of fn, same as fn.
 	 */
 	run: F,
+	fnProxy: ReturnTypeOfCreateAsyncController<F>,
 } | {
 	data: PickPromiseType<F>;
 	loading: false;
 	error: any;
 	run: F,
+	fnProxy: ReturnTypeOfCreateAsyncController<F>,
 }
 
 
@@ -75,11 +70,8 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 	const { deps, manual, single, debounceTime = -1, ttl = -1 } = opts;
 	const stateRef = useRef({
 		isMounted: false,
-		isLoading: undefined as undefined | ReturnType<F>,
 		depsRef: initDeps as DependencyList,
 		id: {},
-		timeoutHandler: null as any,
-		falsyValues: [] as any[],
 	});
 	const argsRef = useRef({
 		fn,
@@ -188,26 +180,11 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		runFn();
 	}, [deps, runFn]);
 
-	useEffect(() => {
-		return () => {
-			if (stateRef.current.isLoading) {
-				stateRef.current.isLoading.then(() => {
-					if (listeners.has(stateRef.current.id)) {
-						listeners.delete(stateRef.current.id);
-					}
-				});
-			} else {
-				if (listeners.has(stateRef.current.id)) {
-					listeners.delete(stateRef.current.id);
-				}
-			}
-		};
-	}, []);
-
 	return {
 		data: asyncFunctionState.data,
 		loading: asyncFunctionState.loading,
 		error: asyncFunctionState.error,
 		run: runFn,
+		fnProxy: fnProxy as any,
 	} as UseAsyncFunctionReturn<F>;
 };
