@@ -39,11 +39,7 @@ export const listeners = new Map<
 	}[]
 >();
 
-
-export const useAsyncFunction = <F extends PromiseFunction>(
-	fn: F,
-	opts: UseAsyncFunctionOptions = {},
-): {
+export type UseAsyncFunctionReturn<F extends PromiseFunction> = {
 	/**
 	 * return value of fn
 	 */
@@ -51,17 +47,28 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 	/**
 	 * promise's loading status
 	 */
-	loading: boolean;
+	loading: true;
 	/**
 	 * promise's error value
 	 */
-	error: Error | null;
+	error: any;
 	/**
 	 * proxy of fn, same as fn.
 	 */
-	run: F;
-} => {
-	const { deps, manual, single = true, debounceTime = -1 } = opts;
+	run: F,
+} | {
+	data: PickPromiseType<F>;
+	loading: false;
+	error: any;
+	run: F,
+}
+
+
+export const useAsyncFunction = <F extends PromiseFunction>(
+	fn: F,
+	opts: UseAsyncFunctionOptions = {},
+): UseAsyncFunctionReturn<F> => {
+	const { deps, manual, single, debounceTime = -1 } = opts;
 	const stateRef = useRef({
 		isMounted: false,
 		isLoading: undefined as undefined | ReturnType<F>,
@@ -241,5 +248,5 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		loading: asyncFunctionState.loading,
 		error: asyncFunctionState.error,
 		run: runFn,
-	};
+	} as UseAsyncFunctionReturn<F>;
 };
