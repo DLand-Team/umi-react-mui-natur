@@ -27,9 +27,6 @@ test('single', async () => {
 
 });
 
-
-
-
 test('debounce time', async () => {
 	let times = 0;
 	const getUserData = createAsyncController(async () => {
@@ -56,8 +53,6 @@ test('debounce time', async () => {
 
 });
 
-
-
 test('ttl', async () => {
 	let times = 0;
 	const getUserData = createAsyncController(async (name?: string) => {
@@ -82,8 +77,6 @@ test('ttl', async () => {
 	expect(uniquedReslist.find(i => i.name === '2')).not.toBe(null);
 	expect(times).toBe(3);
 });
-
-
 
 test('ttl and debounce', async () => {
 	let times = 0;
@@ -126,8 +119,6 @@ test('ttl and debounce', async () => {
 	expect(uniquedReslist.find(i => i.name === '2')).not.toBe(null);
 	expect(times).toBe(3);
 });
-
-
 
 
 test('genKeyByParams', async () => {
@@ -228,4 +219,32 @@ test('clear all cache', async () => {
 	expect(uniquedReslist.find(i => i.name === '1')).not.toBe(null);
 	expect(uniquedReslist.find(i => i.name === '2')).not.toBe(null);
 	expect(times).toBe(3);
+});
+
+
+
+test('clear expired cache', async () => {
+	const getUserData = createAsyncController(async (name?: string) => {
+		await sleep(10);
+		return {
+			name: name || 'tom',
+			age: 10
+		}
+	}, {
+		ttl: 100,
+		genKeyByParams: ([name]) => name || '[]',
+	});
+	await getUserData('x');
+	expect(cacheMap.get(getUserData)?.get('x')?.data).toEqual({
+		name: 'x',
+		age: 10
+	});
+	await sleep(200);
+	await getUserData('y');
+	await sleep(20);
+	expect(cacheMap.get(getUserData)?.get('x')).toBe(undefined);
+	expect(cacheMap.get(getUserData)?.get('y')?.data).toEqual({
+		name: 'x',
+		age: 10
+	});
 });

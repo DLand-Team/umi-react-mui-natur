@@ -187,7 +187,9 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 						data: null,
 					};
 				});
-				throw err;
+				if (argsRef.current.manual) {
+					throw err;
+				}
 			})
 			.finally(() => {
 				stateRef.current.isLoading = undefined;
@@ -196,9 +198,9 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 	}, []) as unknown as F;
 
 	useEffect(() => {
-		if (stateRef.current.isMounted) {
-			return;
-		}
+		// if (stateRef.current.isMounted) {
+		// 	return;
+		// }
 		const ld = argsRef.current.deps;
 		if (ld?.length) {
 			stateRef.current.depsRef = ld;

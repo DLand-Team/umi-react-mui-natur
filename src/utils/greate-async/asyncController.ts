@@ -112,7 +112,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
           .then(res => {
             // eslint-disable-next-line @typescript-eslint/no-shadow
             const thisCache = cacheMap.get(fnProxy);
-            if (thisCache && ttl !== -1) {
+            if (thisCache && ttl !== -1 && thisCache.get(key)?.data !== res) {
 							thisCache.set(key, {
                 data: res,
                 timestamp: Date.now(),
@@ -127,6 +127,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
             listener.forEach(i => {
               i.reject(e);
             });
+						
             throw e;
           });
       }
