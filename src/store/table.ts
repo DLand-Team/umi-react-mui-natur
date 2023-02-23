@@ -1,6 +1,7 @@
 import { fetchTableData } from '@/apis/demo';
 import type { TabelData } from './../apis/demo';
-import type { ImmerThunkParams } from 'natur-immer';
+import { withAPI } from 'natur-immer';
+import type { ImmerThunkParams, WIA } from 'natur-immer';
 
 
 const state = {
@@ -24,12 +25,12 @@ const actions = {
 			}
 		})
 	},
-	fetchTableData: () => async ({getState}: ITP) => {
+	fetchTableData: withAPI(async ({getState}: WIA<State>) => {
 		const res = await fetchTableData(getState().listQuery);
 		return {
 			tableData: res,
 		}
-	},
+	}),
 };
 
 export default {

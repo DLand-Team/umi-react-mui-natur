@@ -47,7 +47,6 @@ export default function TableStorePage() {
 		manual: true,
 		debounceTime: 300,
 	});
-
 	useEffect(() => {
 		run();
 	}, []);

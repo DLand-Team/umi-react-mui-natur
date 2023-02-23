@@ -5,7 +5,6 @@ export default {
 	mfsu: false,
 	plugins: ['umi-natur'],
 	natur: {
-		service: {},
 		persist: {
 			include: ['user'],
 			specific: {
