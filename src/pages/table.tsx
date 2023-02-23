@@ -51,7 +51,7 @@ export default function TablePage() {
 		pageNum: 1,
 	});
 	const { data, loading, run, fnProxy } = useHttp(() => fetchTableData(listQuery), { manual: true, debounceTime: 300 });
-	fnProxy.clearCache(listQuery);
+	fnProxy.clearCache();
 
 	useEffect(() => {
 		run();

@@ -61,10 +61,11 @@ export interface CreateAsyncControllerOptions<P extends any[] = any[]> {
 
 export type ReturnTypeOfCreateAsyncController<F extends PromiseFunction> = {
 	(...arg: Parameters<F>): ReturnType<F>;
-	clearCache: (...params: Parameters<F>) => void;
-} | {
-	(...arg: Parameters<F>): ReturnType<F>;
-	clearCache: () => void;
+	clearCache: {
+		// eslint-disable-next-line @typescript-eslint/unified-signatures
+		(...params: Parameters<F>): void;
+		(): void;
+	};
 };
 
 /**
