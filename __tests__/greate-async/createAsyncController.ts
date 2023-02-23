@@ -244,7 +244,7 @@ test('clear expired cache', async () => {
 	await sleep(20);
 	expect(cacheMap.get(getUserData)?.get('x')).toBe(undefined);
 	expect(cacheMap.get(getUserData)?.get('y')?.data).toEqual({
-		name: 'x',
+		name: 'y',
 		age: 10
 	});
 });

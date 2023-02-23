@@ -74,23 +74,25 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
 }: CreateAsyncControllerOptions<Parameters<F>> = {}) => {
   let fetchMemberPageListTimer: any = null;
 	let promiseHandler: Promise<any> | null;
-	const clearExpiredCache = createClearExpiredCache(fn, ttl);
+	const clearExpiredCache = createClearExpiredCache(fnProxy, ttl);
 
   let listener: {
 		resolve: (arg?: any) => any,
 		reject: (arg?: any) => any,
 	}[] = [];
 
-  const fnProxy = (...params: Parameters<F>): ReturnType<F> => {
+  function fnProxy (...params: Parameters<F>): ReturnType<F> {
     const key = genKeyByParams(params);
     const thisCache = cacheMap.get(fnProxy);
     const cacheObj = thisCache?.get(key);
-		
-    if (ttl !== -1 && cacheObj && Date.now() - cacheObj.timestamp < ttl) {
+		if (ttl !== -1) {
 			// Check and delete expired caches on each call to prevent out of memory error
 			clearExpiredCache();
-      return Promise.resolve(cacheObj.data) as ReturnType<F>;
-    }
+			if (cacheObj && Date.now() - cacheObj.timestamp < ttl) {
+				return Promise.resolve(cacheObj.data) as ReturnType<F>;
+			}
+		}
+    
 		if (single && promiseHandler && debounceTime === -1) {
 			return promiseHandler as ReturnType<F>;
 		}
@@ -127,7 +129,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
             listener.forEach(i => {
               i.reject(e);
             });
-						
+
             throw e;
           });
       }
@@ -139,6 +141,7 @@ export const createAsyncController = <F extends PromiseFunction>(fn: F, {
     });
 		return promiseHandler as ReturnType<F>;
   };
+
   cacheMap.set(fnProxy, new Map<string, CacheData>());
 
 	function fnClearCache (...params: Parameters<F>): void;
