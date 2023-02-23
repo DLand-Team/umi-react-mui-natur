@@ -1,12 +1,12 @@
+import { createAsyncController } from '@/utils/greate-async';
 import type { DependencyList } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import type { PickPromiseType, PromiseFunction} from './common';
-import { FalsyValue} from './common';
 import { shallowEqual } from './common';
 
 export interface AsyncFunctionState<T> {
 	loading: boolean;
-	error: Error | null;
+	error: any;
 	data: T;
 }
 
@@ -29,6 +29,10 @@ export interface UseAsyncFunctionOptions {
 	 * debounce time config. default value is -1 which means no debounce feature,
 	 */
 	debounceTime?: number;
+	/**
+	 * time to live of cache, default is -1
+	 */
+	ttl?: number;
 }
 
 export const listeners = new Map<
@@ -68,7 +72,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 	fn: F,
 	opts: UseAsyncFunctionOptions = {},
 ): UseAsyncFunctionReturn<F> => {
-	const { deps, manual, single, debounceTime = -1 } = opts;
+	const { deps, manual, single, debounceTime = -1, ttl = -1 } = opts;
 	const stateRef = useRef({
 		isMounted: false,
 		isLoading: undefined as undefined | ReturnType<F>,
@@ -83,6 +87,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		manual: false,
 		single: true,
 		debounceTime: -1,
+		ttl: -1,
 	});
 	const [asyncFunctionState, setAsyncFunctionState] = useState<
 		AsyncFunctionState<PickPromiseType<F> | null>
@@ -96,111 +101,65 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 	argsRef.current.single = !!single;
 	argsRef.current.deps = deps;
 	argsRef.current.debounceTime = debounceTime;
+	argsRef.current.ttl = ttl;
 
 	if (deps && !Array.isArray(deps)) {
 		throw new Error('The deps must be an Array!');
 	}
 
-	const runFn = useCallback((...args: Parameters<F>) => {
-		if (
-			stateRef.current.isLoading &&
-			argsRef.current.single &&
-			argsRef.current.debounceTime === -1
-		) {
-			return stateRef.current.isLoading;
+	const fnProxy = useMemo(() => {
+		return createAsyncController(
+			(...arg: Parameters<F>) => argsRef.current.fn(...(arg as any)),
+			{
+				single: argsRef.current.single,
+				debounceTime: argsRef.current.debounceTime,
+				ttl: argsRef.current.ttl,
+			}
+		);
+	}, [])
+
+	const runFn = useCallback(async (...args: Parameters<F>) => {
+		await Promise.resolve();
+		setAsyncFunctionState((ov) => {
+			if (ov.loading) {
+				return ov;
+			}
+			return {
+				...ov,
+				loading: true,
+			};
+		});
+		try {
+			const res = await fnProxy(...args);
+			setAsyncFunctionState((ov) => {
+				if (!ov.loading && ov.error === null && ov.data === res) {
+					return ov;
+				}
+				return {
+					loading: false,
+					error: null,
+					data: res,
+				};
+			});
+			return res;
+		} catch (err) {
+			setAsyncFunctionState((ov) => {
+				if (!ov.loading && ov.error === err && ov.data === null) {
+					return ov;
+				}
+				return {
+					error: err,
+					loading: false,
+					data: null,
+				};
+			});
+			if (argsRef.current.manual) {
+				throw err;
+			}
 		}
-		stateRef.current.isLoading = Promise.resolve()
-			.then(() => {
-				setAsyncFunctionState((ov) => {
-					if (ov.loading) {
-						return ov;
-					}
-					return {
-						...ov,
-						loading: true,
-					};
-				});
-				return new Promise<void>((resolve, reject) => {
-					if (argsRef.current.debounceTime === -1) {
-						return resolve();
-					}
-					if (!Array.isArray(listeners.get(stateRef.current.id))) {
-						listeners.set(stateRef.current.id, []);
-					}
-					listeners.get(stateRef.current.id)!.push({
-						resolve,
-						reject,
-					});
-					if (stateRef.current.timeoutHandler) {
-						clearTimeout(stateRef.current.timeoutHandler);
-					}
-					stateRef.current.timeoutHandler = setTimeout(() => {
-						resolve();
-					}, argsRef.current.debounceTime);
-				});
-			})
-			.then((arg: any) => {
-				if (arg === undefined) {
-					return argsRef.current.fn!(...(args as any))
-						.then((res) => {
-							listeners.get(stateRef.current.id)?.forEach((i) => {
-								i.resolve(res || new FalsyValue(res));
-							});
-							if (listeners.has(stateRef.current.id)) {
-								listeners.set(stateRef.current.id, []);
-							}
-							return res;
-						})
-						.catch((err) => {
-							listeners.get(stateRef.current.id)?.forEach((i) => {
-								i.reject(err);
-							});
-							if (listeners.has(stateRef.current.id)) {
-								listeners.set(stateRef.current.id, []);
-							}
-							throw err;
-						});
-				}
-				return arg instanceof FalsyValue ? arg.getValue() : arg;
-			})
-			.then((res) => {
-				setAsyncFunctionState((ov) => {
-					if (!ov.loading && ov.error === null && ov.data === res) {
-						return ov;
-					}
-					return {
-						loading: false,
-						error: null,
-						data: res,
-					};
-				});
-				return res;
-			})
-			.catch((err) => {
-				setAsyncFunctionState((ov) => {
-					if (!ov.loading && ov.error === err && ov.data === null) {
-						return ov;
-					}
-					return {
-						error: err,
-						loading: false,
-						data: null,
-					};
-				});
-				if (argsRef.current.manual) {
-					throw err;
-				}
-			})
-			.finally(() => {
-				stateRef.current.isLoading = undefined;
-			}) as ReturnType<F>;
-		return stateRef.current.isLoading;
-	}, []) as unknown as F;
+	}, [fnProxy]) as unknown as F;
 
 	useEffect(() => {
-		// if (stateRef.current.isMounted) {
-		// 	return;
-		// }
 		const ld = argsRef.current.deps;
 		if (ld?.length) {
 			stateRef.current.depsRef = ld;

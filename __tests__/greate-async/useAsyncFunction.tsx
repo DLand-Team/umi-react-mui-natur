@@ -36,6 +36,91 @@ test('normal', async () => {
 });
 
 
+test('ttl', async () => {
+	let times = 0;
+	const getUserInfo = async () => {
+		times++;
+		await sleep(10);
+		return {
+			name: 'tom',
+			age: 10,
+			id: 'xxx',
+		};
+	};
+
+	const App = () => {
+		const { loading, data, run } = useAsyncFunction(getUserInfo, {ttl: 30});
+		useEffect(() => {
+			if (!data) {
+				return;
+			}
+			run().then(res => {
+				expect(res).toBe(data);
+			})
+		}, [data]);
+		if (loading) {
+			return <span role="loading">loading</span>;
+		}
+		return (
+			<div role={'app'}>
+				<span>{data.id}</span>
+				<span>{data.name}</span>
+				<span>{data.age}</span>
+			</div>
+		);
+	};
+	render(<App />);
+	expect(screen.getByRole('loading')).toHaveTextContent('loading');
+	await waitFor(() => screen.getByRole('app'));
+	expect(screen.getByRole('app')).toHaveTextContent('xxx');
+	expect(screen.getByRole('app')).toHaveTextContent('tom');
+	expect(screen.getByRole('app')).toHaveTextContent('10');
+	expect(times).toBe(1);
+});
+
+
+test('ttl and single', async () => {
+	let times = 0;
+	const getUserInfo = async () => {
+		times++;
+		await sleep(10);
+		return {
+			name: 'tom',
+			age: 10,
+			id: 'xxx',
+		};
+	};
+
+	const App = () => {
+		const { loading, data, run } = useAsyncFunction(getUserInfo, {ttl: 30, single: true});
+		run().then(res => {
+			if (!data) {
+				return;
+			}
+			expect(res).toBe(data);
+		})
+		if (loading) {
+			return <span role="loading">loading</span>;
+		}
+		return (
+			<div role={'app'}>
+				<span>{data.id}</span>
+				<span>{data.name}</span>
+				<span>{data.age}</span>
+			</div>
+		);
+	};
+	render(<App />);
+	expect(screen.getByRole('loading')).toHaveTextContent('loading');
+	await waitFor(() => screen.getByRole('app'));
+	expect(screen.getByRole('app')).toHaveTextContent('xxx');
+	expect(screen.getByRole('app')).toHaveTextContent('tom');
+	expect(screen.getByRole('app')).toHaveTextContent('10');
+	expect(times).toBe(1);
+});
+
+
+
 test('error', async () => {
 	const getUserInfo = async () => {
 		await sleep(10);
