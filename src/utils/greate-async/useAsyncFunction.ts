@@ -1,5 +1,4 @@
-import type { ReturnTypeOfCreateAsyncController} from './asyncController';
-import { createAsyncController } from './asyncController';
+import { ClearCache, createAsyncController } from './asyncController';
 import type { DependencyList } from 'react';
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import type { PickPromiseType, PromiseFunction} from './common';
@@ -53,20 +52,20 @@ export type UseAsyncFunctionReturn<F extends PromiseFunction> = {
 	 * proxy of fn, same as fn.
 	 */
 	run: F,
-	fnProxy: ReturnTypeOfCreateAsyncController<F>,
+	clearCache: ClearCache<F>;
 } | {
 	data: PickPromiseType<F>;
 	loading: false;
 	error: any;
 	run: F,
-	fnProxy: ReturnTypeOfCreateAsyncController<F>,
+	clearCache: ClearCache<F>;
 }
 
 
 export const useAsyncFunction = <F extends PromiseFunction>(
 	fn: F,
 	opts: UseAsyncFunctionOptions = {},
-): UseAsyncFunctionReturn<F> => {
+) => {
 	const { deps, manual, single, debounceTime = -1, ttl = -1 } = opts;
 	const stateRef = useRef({
 		isMounted: false,
@@ -110,46 +109,51 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		);
 	}, [])
 
-	const runFn = useCallback(async (...args: Parameters<F>) => {
-		await Promise.resolve();
-		setAsyncFunctionState((ov) => {
-			if (ov.loading) {
-				return ov;
-			}
-			return {
-				...ov,
-				loading: true,
-			};
-		});
-		try {
-			const res = await fnProxy(...args);
+	const createRunFn = useCallback((manual: boolean) => {
+		return async (...args: Parameters<F>) => {
+			await Promise.resolve();
 			setAsyncFunctionState((ov) => {
-				if (!ov.loading && ov.error === null && ov.data === res) {
+				if (ov.loading) {
 					return ov;
 				}
 				return {
-					loading: false,
-					error: null,
-					data: res,
+					...ov,
+					loading: true,
 				};
 			});
-			return res;
-		} catch (err) {
-			setAsyncFunctionState((ov) => {
-				if (!ov.loading && ov.error === err && ov.data === null) {
-					return ov;
+			try {
+				const res = await fnProxy(...args);
+				setAsyncFunctionState((ov) => {
+					if (!ov.loading && ov.error === null && ov.data === res) {
+						return ov;
+					}
+					return {
+						loading: false,
+						error: null,
+						data: res,
+					};
+				});
+				return res;
+			} catch (err) {
+				setAsyncFunctionState((ov) => {
+					if (!ov.loading && ov.error === err && ov.data === null) {
+						return ov;
+					}
+					return {
+						error: err,
+						loading: false,
+						data: null,
+					};
+				});
+				if (manual) {
+					throw err;
 				}
-				return {
-					error: err,
-					loading: false,
-					data: null,
-				};
-			});
-			if (argsRef.current.manual) {
-				throw err;
 			}
 		}
-	}, [fnProxy]) as unknown as F;
+	}, []);
+
+	const runFn = useMemo(() => createRunFn(false), [fnProxy]) as F;
+	const manualRunFn = useMemo(() => createRunFn(true), [fnProxy]) as F;
 
 	useEffect(() => {
 		const ld = argsRef.current.deps;
@@ -184,7 +188,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		data: asyncFunctionState.data,
 		loading: asyncFunctionState.loading,
 		error: asyncFunctionState.error,
-		run: runFn,
-		fnProxy: fnProxy as any,
+		run: manualRunFn,
+		clearCache: fnProxy.clearCache
 	} as UseAsyncFunctionReturn<F>;
 };
