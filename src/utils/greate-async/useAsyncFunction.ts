@@ -1,4 +1,4 @@
-import type { ClearCache} from './asyncController';
+import type { ClearCache, CreateAsyncControllerOptions} from './asyncController';
 import { createAsyncController } from './asyncController';
 import type { DependencyList } from 'react';
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
@@ -13,7 +13,7 @@ export interface AsyncFunctionState<T> {
 
 const initDeps: any[] = [];
 
-export interface UseAsyncFunctionOptions {
+export interface UseAsyncFunctionOptions<F extends PromiseFunction> extends CreateAsyncControllerOptions<F> {
 	/**
 	 * dependence list，it works when manual is false
 	 */
@@ -22,18 +22,6 @@ export interface UseAsyncFunctionOptions {
 	 * whether to call fn manually
 	 */
 	manual?: boolean;
-	/**
-	 * the fn function can only be called once at a time，default is true
-	 */
-	single?: boolean;
-	/**
-	 * debounce time config. default value is -1 which means no debounce feature,
-	 */
-	debounceTime?: number;
-	/**
-	 * time to live of cache, default is -1
-	 */
-	ttl?: number;
 }
 
 export type UseAsyncFunctionReturn<F extends PromiseFunction> = {
@@ -65,9 +53,18 @@ export type UseAsyncFunctionReturn<F extends PromiseFunction> = {
 
 export const useAsyncFunction = <F extends PromiseFunction>(
 	fn: F,
-	opts: UseAsyncFunctionOptions = {},
+	opts: UseAsyncFunctionOptions<F> = {},
 ) => {
-	const { deps, manual, single, debounceTime = -1, ttl = -1 } = opts;
+	const {
+		deps,
+		manual,
+		single,
+		debounceTime = -1,
+		ttl = -1,
+		genKeyByParams,
+		retryCount,
+		retryStrategy
+	} = opts;
 	const stateRef = useRef({
 		isMounted: false,
 		depsRef: initDeps as DependencyList,
@@ -80,6 +77,9 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		single: true,
 		debounceTime: -1,
 		ttl: -1,
+		genKeyByParams: undefined as CreateAsyncControllerOptions<F>['genKeyByParams'],
+		retryCount: undefined  as CreateAsyncControllerOptions<F>['retryCount'],
+		retryStrategy: undefined as CreateAsyncControllerOptions<F>['retryStrategy'],
 	});
 	const [asyncFunctionState, setAsyncFunctionState] = useState<
 		AsyncFunctionState<PickPromiseType<F> | null>
@@ -94,21 +94,28 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 	argsRef.current.deps = deps;
 	argsRef.current.debounceTime = debounceTime;
 	argsRef.current.ttl = ttl;
+	argsRef.current.genKeyByParams = genKeyByParams;
+	argsRef.current.retryCount = retryCount;
+	argsRef.current.retryStrategy = retryStrategy;
 
 	if (deps && !Array.isArray(deps)) {
 		throw new Error('The deps must be an Array!');
 	}
 
 	const fnProxy = useMemo(() => {
+		const fn1 = (...args: Parameters<F>) => argsRef.current.fn(...(args as any));
 		return createAsyncController(
-			(...arg: Parameters<F>)=> argsRef.current.fn(...(arg as any)) as ReturnType<F>,
+			fn1 as F,
 			{
 				single: argsRef.current.single,
 				debounceTime: argsRef.current.debounceTime,
 				ttl: argsRef.current.ttl,
+				genKeyByParams: argsRef.current.genKeyByParams,
+				retryCount: argsRef.current.retryCount,
+				retryStrategy: argsRef.current.retryStrategy,
 			}
 		);
-	}, [])
+	}, []);
 
 	const createRunFn = useCallback((throwError: boolean) => {
 		return async (...args: Parameters<F>) => {

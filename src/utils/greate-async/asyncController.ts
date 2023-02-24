@@ -52,11 +52,13 @@ function defaultGenKeyByParams(params: any[]) {
 	return JSON.stringify(params);
 }
 
-export interface CreateAsyncControllerOptions<P extends any[] = any[]> {
+export interface CreateAsyncControllerOptions<F extends PromiseFunction = PromiseFunction> {
 	debounceTime?: number;
 	ttl?: number;
 	single?: boolean;
-	genKeyByParams?: (params: P) => string;
+	genKeyByParams?: (params: Parameters<F>) => string;
+	retryCount?: number;
+	retryStrategy?: (error: any) => boolean;
 }
 
 
@@ -74,16 +76,18 @@ export type ReturnTypeOfCreateAsyncController<F extends PromiseFunction> = {
 /**
  * create async controller, http request is the main use case
  * support debounce, cache, single mode
- * @param fn 
- * @param param1 
+ * @param fn A function and it's return type must be Promise
+ * @param param1 createAsyncController options
  * @returns 
  */
 export function createAsyncController<F extends PromiseFunction>(fn: F, {
   debounceTime = -1,
   ttl = -1,
 	single = false,
+	retryCount = 0,
+	retryStrategy = (error) => !!error,
 	genKeyByParams = defaultGenKeyByParams
-}: CreateAsyncControllerOptions<Parameters<F>> = {}) {
+}: CreateAsyncControllerOptions<F> = {}) {
   let fetchMemberPageListTimer: any = null;
 	let promiseHandler: Promise<any> | null;
 	const clearExpiredCache = createClearExpiredCache(fnProxy, ttl);
@@ -92,6 +96,18 @@ export function createAsyncController<F extends PromiseFunction>(fn: F, {
 		resolve: (arg?: any) => any,
 		reject: (arg?: any) => any,
 	}[] = [];
+
+	async function retryFn(params: Parameters<F>, _retryCount: number = 0): Promise<ReturnType<F>> {
+		try {
+			const res = await fn(...(params as any[]));
+			return res;
+		} catch (error) {
+			if (_retryCount > 0 && retryStrategy(error)) {
+				return retryFn(params, _retryCount - 1);
+			}
+			throw error;
+		}
+	}
 
   function fnProxy (...params: Parameters<F>): ReturnType<F> {
     const key = genKeyByParams(params);
@@ -122,7 +138,7 @@ export function createAsyncController<F extends PromiseFunction>(fn: F, {
       fetchMemberPageListTimer = setTimeout(resolve, debounceTime);
     }).then((arg: any) => {
       if (arg === undefined) {
-        return fn(...(params as any[]))
+        return retryFn(params, retryCount)
           .then(res => {
             // eslint-disable-next-line @typescript-eslint/no-shadow
             const thisCache = cacheMap.get(fnProxy);

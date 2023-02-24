@@ -1,6 +1,6 @@
 {
 	"git.ignoreLimitWarning": true,
-	"editor.fontSize": 18,
+	"editor.fontSize": 16,
 	"editor.tabSize": 2,
 	// Insert spaces when pressing Tab. This setting is overriden
 	// based on the file contents when `editor.detectIndentation` is true.

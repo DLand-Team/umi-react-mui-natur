@@ -1,6 +1,30 @@
 import { cacheMap, createAsyncController } from './../../src/utils/greate-async/asyncController';
 import { sleep } from './../../src/utils/index';
 
+
+test('normal', async () => {
+	let times = 0;
+	const getUserData = createAsyncController(async () => {
+		times++;
+		await sleep(100);
+		return {
+			name: 'tom',
+			age: 10
+		}
+	});
+	
+	const queuen = [];
+	for(let i = 0; i < 100; i++) {
+		// eslint-disable-next-line @typescript-eslint/no-loop-func
+		const promiseRes = getUserData();
+		queuen.push(promiseRes);
+	}
+	expect(queuen.length).toBe(100);
+	await Promise.all(queuen);
+	expect(times).toBe(100);
+
+});
+
 test('single', async () => {
 	let times = 0;
 	const getUserData = createAsyncController(async () => {
@@ -222,7 +246,6 @@ test('clear all cache', async () => {
 });
 
 
-
 test('clear expired cache', async () => {
 	const getUserData = createAsyncController(async (name?: string) => {
 		await sleep(10);
@@ -246,5 +269,76 @@ test('clear expired cache', async () => {
 	expect(cacheMap.get(getUserData)?.get('y')?.data).toEqual({
 		name: 'y',
 		age: 10
+	});
+});
+
+
+test('error', async () => {
+	const getUserData = createAsyncController(async () => {
+		await sleep(100);
+		throw new Error('error message');
+	});
+	
+	await expect(getUserData()).rejects.toThrow('error message');
+});
+
+test('retry error', async () => {
+	let times = 0;
+	const getUserData = createAsyncController(async () => {
+		times++;
+		await sleep(100);
+		throw new Error('error message');
+	}, {retryCount: 2});
+	
+	await expect(getUserData()).rejects.toThrow('error message');
+	expect(times).toBe(3);
+});
+
+test('retry error with custom retry strategy', async () => {
+	let times = 0;
+	let times1 = 0;
+	const getUserData = createAsyncController(async () => {
+		times++;
+		await sleep(100);
+		throw new Error('error message');
+	}, {
+		retryCount: 2,
+		retryStrategy: error => error.message === 'error'
+	});
+	await expect(getUserData()).rejects.toThrow('error message');
+	expect(times).toBe(1);
+
+	const getUserData2 = createAsyncController(async () => {
+		times1++;
+		await sleep(100);
+		throw new Error('error message');
+	}, {
+		retryCount: 2,
+		retryStrategy: error => error.message === 'error message'
+	});
+	await expect(getUserData2()).rejects.toThrow('error message');
+	expect(times1).toBe(3);
+});
+
+
+test('retry call fn when occur error and return success finally', async () => {
+	let times = 0;
+	const getUserData = createAsyncController(async () => {
+		times++;
+		await sleep(100);
+		if (times < 3) {
+			throw new Error('error message');
+		}
+		return {
+			name: 'tom',
+			age: 10
+		}
+	}, {retryCount: 2});
+	return getUserData().then(res => {
+		expect(res).toEqual({
+			name: 'tom',
+			age: 10,
+		});
+		expect(times).toBe(3);
 	});
 });
