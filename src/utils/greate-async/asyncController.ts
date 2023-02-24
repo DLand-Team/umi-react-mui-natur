@@ -53,11 +53,31 @@ function defaultGenKeyByParams(params: any[]) {
 }
 
 export interface CreateAsyncControllerOptions<F extends PromiseFunction = PromiseFunction> {
+	/**
+	 * debounce time config. default value is -1 which means no debounce feature,
+	 */
 	debounceTime?: number;
+	/**
+	 * time to live of cache, default is -1
+	 */
 	ttl?: number;
+	/**
+	 * the fn function can only be called once at a time，default is true
+	 */
 	single?: boolean;
+	/**
+	 * a strategy to genrate key of cache
+	 */
 	genKeyByParams?: (params: Parameters<F>) => string;
+	/**
+	 * retry count of call function when error occur
+	 */
 	retryCount?: number;
+	/**
+	 * retry strategy, if return value is true, it will retry to call function
+	 * @param error 
+	 * @returns 
+	 */
 	retryStrategy?: (error: any) => boolean;
 }
 
