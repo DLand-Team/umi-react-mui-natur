@@ -50,7 +50,7 @@ export default function TablePage() {
 		pageSize: 10,
 		pageNum: 1,
 	});
-	const { data, loading, run } = useHttp((lq: typeof listQuery = listQuery) => fetchTableData(lq), { manual: true, debounceTime: 300 });
+	const { data, loading, run } = useHttp(() => fetchTableData(listQuery), { manual: true, debounceTime: 300 });
 
 	useEffect(() => {
 		run();

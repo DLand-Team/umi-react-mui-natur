@@ -1,4 +1,5 @@
-import { ClearCache, createAsyncController } from './asyncController';
+import type { ClearCache} from './asyncController';
+import { createAsyncController } from './asyncController';
 import type { DependencyList } from 'react';
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import type { PickPromiseType, PromiseFunction} from './common';
@@ -100,7 +101,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 
 	const fnProxy = useMemo(() => {
 		return createAsyncController(
-			(...arg: Parameters<F>) => argsRef.current.fn(...(arg as any)),
+			(...arg: Parameters<F>)=> argsRef.current.fn(...(arg as any)) as ReturnType<F>,
 			{
 				single: argsRef.current.single,
 				debounceTime: argsRef.current.debounceTime,
@@ -109,7 +110,7 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		);
 	}, [])
 
-	const createRunFn = useCallback((manual: boolean) => {
+	const createRunFn = useCallback((throwError: boolean) => {
 		return async (...args: Parameters<F>) => {
 			await Promise.resolve();
 			setAsyncFunctionState((ov) => {
@@ -145,15 +146,15 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 						data: null,
 					};
 				});
-				if (manual) {
+				if (throwError) {
 					throw err;
 				}
 			}
 		}
-	}, []);
+	}, [fnProxy]);
 
-	const runFn = useMemo(() => createRunFn(false), [fnProxy]) as F;
-	const manualRunFn = useMemo(() => createRunFn(true), [fnProxy]) as F;
+	const runFn = useMemo(() => createRunFn(false), [createRunFn]);
+	const manualRunFn = useMemo(() => createRunFn(true), [createRunFn]) as F;
 
 	useEffect(() => {
 		const ld = argsRef.current.deps;
