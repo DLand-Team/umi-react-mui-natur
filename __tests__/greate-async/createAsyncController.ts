@@ -294,6 +294,22 @@ test('retry error', async () => {
 	expect(times).toBe(3);
 });
 
+
+test('retry error', async () => {
+	let times = 0;
+	const getUserData = createAsyncController(async () => {
+		times++;
+		await sleep(100);
+		throw new Error('error message');
+	}, {retryCount: 2});
+	
+	await expect(getUserData()).rejects.toThrow('error message');
+	expect(times).toBe(3);
+
+	await expect(getUserData()).rejects.toThrow('error message');
+	expect(times).toBe(6);
+});
+
 test('retry error with custom retry strategy', async () => {
 	let times = 0;
 	let times1 = 0;
@@ -307,6 +323,8 @@ test('retry error with custom retry strategy', async () => {
 	});
 	await expect(getUserData()).rejects.toThrow('error message');
 	expect(times).toBe(1);
+	await expect(getUserData()).rejects.toThrow('error message');
+	expect(times).toBe(2);
 
 	const getUserData2 = createAsyncController(async () => {
 		times1++;
@@ -318,6 +336,8 @@ test('retry error with custom retry strategy', async () => {
 	});
 	await expect(getUserData2()).rejects.toThrow('error message');
 	expect(times1).toBe(3);
+	await expect(getUserData2()).rejects.toThrow('error message');
+	expect(times1).toBe(6);
 });
 
 
@@ -342,3 +362,4 @@ test('retry call fn when occur error and return success finally', async () => {
 		expect(times).toBe(3);
 	});
 });
+
