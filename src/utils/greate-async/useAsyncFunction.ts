@@ -57,13 +57,8 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 ) => {
 	const {
 		deps,
-		manual,
-		single,
-		debounceTime = -1,
-		ttl = -1,
-		genKeyByParams,
-		retryCount,
-		retryStrategy
+		manual = false,
+		...createAsyncControllerOptions
 	} = opts;
 	const stateRef = useRef({
 		isMounted: false,
@@ -74,13 +69,8 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		fn,
 		deps: undefined as DependencyList | undefined,
 		manual: false,
-		single: true,
-		debounceTime: -1,
-		ttl: -1,
-		genKeyByParams: undefined as CreateAsyncControllerOptions<F>['genKeyByParams'],
-		retryCount: undefined  as CreateAsyncControllerOptions<F>['retryCount'],
-		retryStrategy: undefined as CreateAsyncControllerOptions<F>['retryStrategy'],
 	});
+	const [createAsyncControllerOpts] = useState(createAsyncControllerOptions);
 	const [asyncFunctionState, setAsyncFunctionState] = useState<
 		AsyncFunctionState<PickPromiseType<F> | null>
 	>({
@@ -89,14 +79,8 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		data: null,
 	});
 	argsRef.current.fn = fn;
-	argsRef.current.manual = !!manual;
-	argsRef.current.single = !!single;
+	argsRef.current.manual = manual;
 	argsRef.current.deps = deps;
-	argsRef.current.debounceTime = debounceTime;
-	argsRef.current.ttl = ttl;
-	argsRef.current.genKeyByParams = genKeyByParams;
-	argsRef.current.retryCount = retryCount;
-	argsRef.current.retryStrategy = retryStrategy;
 
 	if (deps && !Array.isArray(deps)) {
 		throw new Error('The deps must be an Array!');
@@ -106,16 +90,9 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		const fn1 = (...args: Parameters<F>) => argsRef.current.fn(...(args as any));
 		return createAsyncController(
 			fn1 as F,
-			{
-				single: argsRef.current.single,
-				debounceTime: argsRef.current.debounceTime,
-				ttl: argsRef.current.ttl,
-				genKeyByParams: argsRef.current.genKeyByParams,
-				retryCount: argsRef.current.retryCount,
-				retryStrategy: argsRef.current.retryStrategy,
-			}
+			createAsyncControllerOpts
 		);
-	}, []);
+	}, [createAsyncControllerOpts]);
 
 	const createRunFn = useCallback((throwError: boolean) => {
 		return async (...args: Parameters<F>) => {

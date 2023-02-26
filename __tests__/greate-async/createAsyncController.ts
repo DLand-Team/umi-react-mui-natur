@@ -25,6 +25,7 @@ test('normal', async () => {
 
 });
 
+
 test('single', async () => {
 	let times = 0;
 	const getUserData = createAsyncController(async () => {
@@ -101,6 +102,59 @@ test('ttl', async () => {
 	expect(uniquedReslist.find(i => i.name === '2')).not.toBe(null);
 	expect(times).toBe(3);
 });
+
+
+test('cacheCapacity', async () => {
+	let times = 0;
+	const getUserData = createAsyncController(async (name?: string) => {
+		times++;
+		await sleep(100);
+		return {
+			name: name || 'tom',
+			age: 10
+		}
+	}, {
+		cacheCapacity: 2,
+	});
+	
+	const resList = [];
+	for(let i = 0; i < 4; i++) {
+		resList.push(await getUserData(i % 3 + '' ));
+	}
+	const uniquedReslist = [...new Set(resList)];
+	expect(uniquedReslist.length).toBe(4);
+	expect(uniquedReslist.find(i => i.name === '0')).not.toBe(null);
+	expect(uniquedReslist.find(i => i.name === '1')).not.toBe(null);
+	expect(uniquedReslist.find(i => i.name === '2')).not.toBe(null);
+	expect(times).toBe(4);
+});
+
+
+test('cacheCapacity work', async () => {
+	let times = 0;
+	const getUserData = createAsyncController(async (name?: string) => {
+		times++;
+		await sleep(100);
+		return {
+			name: name || 'tom',
+			age: 10
+		}
+	}, {
+		cacheCapacity: 3,
+	});
+	
+	const resList = [];
+	for(let i = 0; i < 100; i++) {
+		resList.push(await getUserData(i % 3 + '' ));
+	}
+	const uniquedReslist = [...new Set(resList)];
+	expect(uniquedReslist.length).toBe(3);
+	expect(uniquedReslist.find(i => i.name === '0')).not.toBe(null);
+	expect(uniquedReslist.find(i => i.name === '1')).not.toBe(null);
+	expect(uniquedReslist.find(i => i.name === '2')).not.toBe(null);
+	expect(times).toBe(3);
+});
+
 
 test('ttl and debounce', async () => {
 	let times = 0;
@@ -363,3 +417,16 @@ test('retry call fn when occur error and return success finally', async () => {
 	});
 });
 
+
+
+
+test('recreate', async () => {
+	const getUserData = createAsyncController(async () => {
+		await sleep(100);
+		return {
+			name: 'tom',
+			age: 10
+		}
+	});
+	expect(createAsyncController(getUserData)).toBe(getUserData);
+});

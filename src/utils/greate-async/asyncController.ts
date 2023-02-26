@@ -1,5 +1,6 @@
 import type { AnyFn, PromiseFunction } from "./common";
 import { FalsyValue } from "./common";
+import { LRU } from "./LRU";
 
 
 export interface CacheData {
@@ -79,6 +80,11 @@ export interface CreateAsyncControllerOptions<F extends PromiseFunction = Promis
 	 * @returns 
 	 */
 	retryStrategy?: (error: any) => boolean;
+	/**
+	 * cache capacity, cache removal strategy using LRU algorithm
+	 * default value is -1, means no cache size limit
+	 */
+	cacheCapacity?: number;
 }
 
 
@@ -106,8 +112,12 @@ export function createAsyncController<F extends PromiseFunction>(fn: F, {
 	single = false,
 	retryCount = 0,
 	retryStrategy = (error) => !!error,
-	genKeyByParams = defaultGenKeyByParams
-}: CreateAsyncControllerOptions<F> = {}) {
+	genKeyByParams = defaultGenKeyByParams,
+	cacheCapacity = -1,
+}: CreateAsyncControllerOptions<F> = {}): ReturnTypeOfCreateAsyncController<F> {
+	if (cacheMap.get(fn)) {
+		return fn as any as ReturnTypeOfCreateAsyncController<F>;
+	}
   let fetchMemberPageListTimer: any = null;
 	let promiseHandler: Promise<any> | null;
 	const clearExpiredCache = createClearExpiredCache(fnProxy, ttl);
@@ -131,16 +141,22 @@ export function createAsyncController<F extends PromiseFunction>(fn: F, {
 
   function fnProxy (...params: Parameters<F>): ReturnType<F> {
     const key = genKeyByParams(params);
-    const thisCache = cacheMap.get(fnProxy);
-    const cacheObj = thisCache?.get(key);
 		if (ttl !== -1) {
 			// Check and delete expired caches on each call to prevent out of memory error
 			clearExpiredCache();
+			const thisCache = cacheMap.get(fnProxy);
+			const cacheObj = thisCache?.get(key);
 			if (cacheObj && Date.now() - cacheObj.timestamp < ttl) {
 				return Promise.resolve(cacheObj.data) as ReturnType<F>;
 			}
 		}
-    
+		if (cacheCapacity !== -1) {
+			const thisCache = cacheMap.get(fnProxy);
+			const cacheObj = thisCache?.get(key);
+			if (cacheObj) {
+				return Promise.resolve(cacheObj.data) as ReturnType<F>;
+			}
+		}
 		if (single && promiseHandler && debounceTime === -1) {
 			return promiseHandler as ReturnType<F>;
 		}
@@ -162,7 +178,7 @@ export function createAsyncController<F extends PromiseFunction>(fn: F, {
           .then(res => {
             // eslint-disable-next-line @typescript-eslint/no-shadow
             const thisCache = cacheMap.get(fnProxy);
-            if (thisCache && ttl !== -1 && thisCache.get(key)?.data !== res) {
+            if (thisCache && (ttl !== -1 || cacheCapacity !== -1) && thisCache.get(key)?.data !== res) {
 							thisCache.set(key, {
                 data: res,
                 timestamp: Date.now(),
@@ -190,7 +206,10 @@ export function createAsyncController<F extends PromiseFunction>(fn: F, {
 		return promiseHandler as ReturnType<F>;
   };
 
-  cacheMap.set(fnProxy, new Map<string, CacheData>());
+  cacheMap.set(
+		fnProxy,
+		cacheCapacity === -1 ? new Map<string, CacheData>() : new LRU<string, CacheData>(cacheCapacity)
+	);
 
 	function fnClearCache (...params: Parameters<F>): void;
 	function fnClearCache (): void;

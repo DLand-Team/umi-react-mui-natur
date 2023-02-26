@@ -1,9 +1,11 @@
 import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
-import type { FieldAttributes } from 'formik';
+import type { FieldAttributes} from 'formik';
+import { useFormikContext } from 'formik';
 import { useField } from 'formik';
 import { ErrorMessage } from 'formik';
-import type { CSSProperties } from 'react';
+import type { CSSProperties} from 'react';
+import { useCallback } from 'react';
 import { useContext, useEffect, useId, useRef, useState } from 'react';
 import { FormItemBox } from './style';
 import { FormContext } from '../context';
@@ -45,6 +47,7 @@ export default function FormItem({
 	...restProps
 }: FormItemProps) {
 	const [field, helper] = useField({ name, validate });
+	const { setFieldValue } = useFormikContext();
 	const errorMsg = helper.touched ? helper.error : '';
 	const fieldRef = useRef<HTMLDivElement>();
 	const [fieldHeight, setFieldHeight] = useState(40);
@@ -60,6 +63,12 @@ export default function FormItem({
 	const id = useId();
 	const ctx = useContext(FormContext);
 	const { layout = 'horizontal' } = ctx;
+
+
+	const onChange = useCallback((event: any) => {
+		restProps?.onChange?.(event);
+		setFieldValue(name, event?.target?.value);
+	}, [name, restProps?.onChange, setFieldValue])
 
 	return (
 		<FormItemBox display={displayMap[layout]}>
@@ -89,7 +98,7 @@ export default function FormItem({
 					...fieldStyle,
 				}}
 			>
-				<Comp {...restProps} {...field} id={id} error={!!errorMsg} ref={fieldRef}>
+				<Comp {...restProps} onChange={onChange} {...field} id={id} error={!!errorMsg} ref={fieldRef}>
 					{children}
 				</Comp>
 
