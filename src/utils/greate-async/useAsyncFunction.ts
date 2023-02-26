@@ -39,6 +39,7 @@ export type UseAsyncFunctionReturn<F extends PromiseFunction> = {
 	error: any;
 	/**
 	 * proxy of fn, same as fn.
+	 * the difference is calling run will update loading state
 	 */
 	run: F,
 	clearCache: ClearCache<F>;
@@ -177,3 +178,4 @@ export const useAsyncFunction = <F extends PromiseFunction>(
 		clearCache: fnProxy.clearCache
 	} as UseAsyncFunctionReturn<F>;
 };
+

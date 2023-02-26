@@ -1,4 +1,4 @@
-import { cacheMap, createAsyncController } from './../../src/utils/greate-async/asyncController';
+import { cacheMap, createAsyncController } from './../../src/utils/greate-async';
 import { sleep } from './../../src/utils/index';
 
 
