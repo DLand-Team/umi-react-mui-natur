@@ -21,7 +21,7 @@
     "dayjs": "^1.11.6",
     "decimal.js": "^10.4.2",
     "formik": "^2.2.9",
-    "great-async": "^1.0.0-beta5",
+    "great-async": "^1.0.0-beta6",
     "hoist-non-react-statics": "^3.3.2",
     "immer": "^9.0.19",
     "lodash": "^4.17.21",
