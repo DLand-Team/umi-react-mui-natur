@@ -44,4 +44,7 @@ export const defaultTheme = createTheme({
 			},
 		},
 	},
+	// myComponent: {
+	// 	fontSize: 13
+	// }
 });
