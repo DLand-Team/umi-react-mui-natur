@@ -8,15 +8,10 @@ const spaceUnit = 8;
 export const defaultTheme = createTheme({
 	palette: {
 		primary: {
-			// main: '#556cd6',
 			main: '#2775B6',
 		},
 		secondary: {
-			// light: '#C06F98',
 			main: '#C06F98',
-			// main: '#806D9E',
-			// main: '#C08EAF',
-			// dark: '#813C85',
 		},
 		error: {
 			main: red.A400,
@@ -35,7 +30,6 @@ export const defaultTheme = createTheme({
 			styleOverrides: {
 				root: {
 					[`&.${inputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
-						// borderWidth: '6px !important'
 					},
 				},
 			},
@@ -43,18 +37,11 @@ export const defaultTheme = createTheme({
 		MuiOutlinedInput: {
 			styleOverrides: {
 				root: {
-					// borderWidth: '6px',
 					[`&.${inputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
-						// borderWidth: '2px',
 						borderColor: 'red',
 					},
-					// height: 32
-					// paddingTop: spaceUnit * 0.5,
-					// paddingBottom: spaceUnit * 0.5,
 				},
 			},
 		},
 	},
 });
-
-// console.log(defaultTheme)
