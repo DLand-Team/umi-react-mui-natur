@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author": "timothy <timothy.wang@zoom.us>",
+  "author": "empty916@qq.com",
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
