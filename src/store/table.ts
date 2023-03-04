@@ -2,6 +2,7 @@ import { fetchTableData } from '@/apis/demo';
 import type { TabelData } from './../apis/demo';
 import { withAPI } from 'natur-immer';
 import type { ImmerThunkParams, WIA } from 'natur-immer';
+import type { WatchEvent } from 'natur';
 
 
 const state = {
@@ -33,7 +34,14 @@ const actions = {
 	}),
 };
 
+const watch = {
+	route: (watchEvent: WatchEvent) => {
+		console.log(watchEvent.type)
+	}
+}
+
 export default {
 	state,
 	actions,
+	watch
 };

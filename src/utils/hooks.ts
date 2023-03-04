@@ -1,8 +1,13 @@
 import { isBrowser } from './index';
 import { useEffect, useRef } from 'react';
-import { store, useLocation as useOriginLocation } from 'umi';
+import { useLocation as useOriginLocation } from 'umi';
 import qs from 'qs';
-import { createUseInject } from 'natur';
+
+export {
+	useInject,
+	useFlatInject
+} from 'umi'
+
 
 /**
  * ahook的useMount在react strict模式下会执行两次，所以自己实现此方法
@@ -48,5 +53,3 @@ export const useLocation = <T extends LocationQuery = LocationQuery>() => {
 
 export { useAsyncFunction as useHttp } from './greate-async/useAsyncFunction';
 
-export const useInject = createUseInject(() => store);
-export const useFlatInject = createUseInject(() => store, {flat: true});
