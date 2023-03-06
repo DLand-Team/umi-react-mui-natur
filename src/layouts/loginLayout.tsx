@@ -4,7 +4,7 @@ import { traverseObject } from '@/utils';
 import { cloneDeep } from 'lodash';
 import { Button } from '@mui/material';
 import { useInject, useLocation } from '@/utils/hooks';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 const formatRoutes = cloneDeep(routes);
 traverseObject(formatRoutes, (item) => {

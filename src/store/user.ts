@@ -39,13 +39,18 @@ const store = {
 	actions: {
 		updateName: (name: string) => ({ name }),
 		login: async (username: string, password: string) => {
-			const res = await http.post<{ token: string; userId: string }>('/login', {
-				username,
-				password,
-			});
+			// const res = await http.post<{ token: string; userId: string }>('/login', {
+			// 	username,
+			// 	password,
+			// });
+			// return {
+			// 	userId: res.data.token,
+			// 	token: res.data.userId,
+			// 	name: username,
+			// };
 			return {
-				userId: res.data.token,
-				token: res.data.userId,
+				userId: 'userId',
+				token: 'token',
 				name: username,
 			};
 		},

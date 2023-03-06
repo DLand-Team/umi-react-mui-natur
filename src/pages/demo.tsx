@@ -1,7 +1,7 @@
 import Button from '@/components/Button';
 import { sleep } from '@/utils';
-import { useFlatInject } from '@/utils/hooks';
 import { Box, TextField } from '@mui/material';
+import { useFlatInject } from 'umi';
 
 const DemoPage = () => {
 	const [loading] = useFlatInject('loading', {});

@@ -4,6 +4,8 @@ export default {
 	npmClient: 'npm',
 	mfsu: false,
 	plugins: ['umi-natur'],
+	svgr: {},
+	svgo: false,
 	natur: {
 		persist: {
 			include: ['user'],
