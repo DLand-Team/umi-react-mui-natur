@@ -1,35 +1,32 @@
-import type { Columns } from '../components/Table';
-import { Table } from '../components/Table';
-import { Box, Button } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { fetchTableData } from '@/apis/demo';
-import { useHttp } from '@/utils/hooks';
-import { Link } from 'umi';
 import { SearchInput } from '@/components/SearchInput';
 import type { PickPromiseType } from '@/utils/greate-async';
+import { useHttp } from '@/utils/hooks';
+import { Box, Button } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Link } from 'umi';
+import type { Columns } from '../components/Table';
+import { Table } from '../components/Table';
 
 type Rows = PickPromiseType<typeof fetchTableData>;
 
 const columns: Columns<Rows[0]> = [
 	{
-		title: 'Name',
-		dataIndex: 'name',
-		key: 'name',
+		headerName: 'Name',
+		field: 'name',
 	},
 	{
-		title: 'Date',
-		dataIndex: 'date',
-		key: 'date',
+		headerName: 'Date',
+		field: 'date',
 	},
 	{
-		title: 'Address',
-		dataIndex: 'address',
-		key: 'address',
+		headerName: 'Address',
+		field: 'address',
 	},
 	{
-		title: 'Actions',
-		key: 'action',
-		render: (row) => {
+		headerName: 'Actions',
+		field: 'action',
+		renderCell: (row) => {
 			return (
 				<Button
 					size={'small'}
@@ -53,7 +50,7 @@ export default function TablePage() {
 	const { data, loading, run } = useHttp(() => fetchTableData(listQuery), {
 		manual: true,
 		debounceTime: 300,
-		retryCount: 2
+		retryCount: 2,
 	});
 
 	useEffect(() => {
@@ -62,13 +59,18 @@ export default function TablePage() {
 
 	return (
 		<Box sx={{ p: 1 }}>
-			<Link to='/table-store'>table store</Link>
-			<SearchInput value={listQuery.name} onChange={(e) => {
+			<Link to="/table-store">table store</Link>
+			<SearchInput
+				value={listQuery.name}
+				onChange={(e) => {
 					setListQuery({
 						...listQuery,
-						name: e.target.value
+						name: e.target.value,
 					});
-				}} onSearch={() => run()} loading={loading} />
+				}}
+				onSearch={() => run()}
+				loading={loading}
+			/>
 			<Table rows={data || []} columns={columns} loading={loading} />
 		</Box>
 	);

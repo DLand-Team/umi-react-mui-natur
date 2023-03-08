@@ -1,219 +1,138 @@
+import { useTheme } from '@mui/material';
+import type {
+	DataGridProps,
+	GridColDef,
+	GridPaginationModel,
+	GridValidRowModel} from '@mui/x-data-grid';
 import {
-	Autocomplete,
-	Box,
-	CircularProgress,
-	Input,
-	Pagination,
-	TableContainer,
-	Typography,
-} from '@mui/material';
-import MuiTable from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import type { TableCellProps } from '@mui/material/TableCell';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import { omit } from 'lodash';
-import type { ReactNode } from 'react';
-import styles from './style.module.scss';
+	DataGrid,
+} from '@mui/x-data-grid';
+import { merge } from 'lodash';
+import { useCallback, useMemo, useRef } from 'react';
+import { LoadingOverlay } from '../Loading/box';
+import NoData from '../NoData';
+import { Pagination } from './Pagination';
 
-export interface Column<D extends any = any> extends Omit<TableCellProps, 'colSpan' | 'rowSpan'> {
-	key: string;
-	title: string;
-	dataIndex?: any;
-	render?: (row: D, rowIndex: number, tableData: D[]) => ReactNode;
-	colSpan?: ((row: D, rowIndex: number, tableData: D[]) => number) | number;
-	rowSpan?: ((row: D, rowIndex: number, tableData: D[]) => number) | number;
+export type Column<D extends GridValidRowModel = GridValidRowModel> = GridColDef<D>;
+export type Columns<D extends GridValidRowModel = GridValidRowModel> = Column<D>[];
+
+export type Row = GridValidRowModel;
+
+export interface TableProps<R extends Row = Row> extends Omit<DataGridProps<R>, 'pagination'> {
+	pagination?: {
+		pageSize: number;
+		pageNum: number;
+		total: number;
+	},
+	onPageChange?: (p: Omit<Exclude<TableProps<R>['pagination'], undefined>, 'total'>) => any;
 }
 
-export type Columns<D extends any = any> = Column<D>[];
+const defaultPageSizeOptions = [5, 10, 15, 30, 50, 100];
 
-export type Row = Record<string, any>;
+const defaultCellEditable = () => false;
 
-export interface PaginationData {
-	pageSize: number;
-	pageNum: number;
-	total: number;
-}
-export interface TableProps<C extends Column = Column, R extends Row = Row> {
-	columns: C[];
-	rows: R[];
-	loading?: boolean;
-	pagination?: PaginationData;
-	onTableChange?: (pagination: PaginationData) => any;
-}
-
-function getSpanValue({
-	data,
-	index,
-	tableData,
-	spanValue,
-}: {
-	data: any;
-	index: number;
-	tableData: any[];
-	spanValue?: ((row: any, rowIndex: number, tableData: any[]) => number) | number;
-}) {
-	if (typeof spanValue === 'function') {
-		return spanValue(data, index, tableData);
-	}
-	return spanValue;
-}
-
-function Table<R extends Row = Row, C extends Column = Column>({
+function Table<R extends Row = Row>({
 	rows,
 	columns,
-	loading = false,
+	sx,
+	initialState,
+	slots,
 	pagination,
-	onTableChange,
-}: TableProps<C, R>) {
-	const data = rows;
-	return (
-		<TableContainer className={styles['table-container']}>
-			<MuiTable size="small">
-				<TableHead>
-					<TableRow>
-						{columns.map((c, idx) => {
-							if (
-								getSpanValue({
-									data: c,
-									index: idx,
-									tableData: data,
-									spanValue: c.colSpan,
-								}) === 0 ||
-								getSpanValue({
-									data: c,
-									index: idx,
-									tableData: data,
-									spanValue: c.rowSpan,
-								}) === 0
-							) {
-								return null;
-							}
-							return (
-								<TableCell
-									key={c.key}
-									{...omit(c, 'key', 'title', 'dataIndex', 'render', 'rowSpan', 'colSpan')}
-									colSpan={getSpanValue({
-										data: c,
-										index: idx,
-										tableData: data,
-										spanValue: c.colSpan,
-									})}
-									rowSpan={getSpanValue({
-										data: c,
-										index: idx,
-										tableData: data,
-										spanValue: c.rowSpan,
-									})}
-								>
-									{c.title}
-								</TableCell>
-							);
-						})}
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{rows.map((row, index) => (
-						<TableRow key={row.id || index}>
-							{columns.map((c) => {
-								if (
-									getSpanValue({
-										data: c,
-										index,
-										tableData: data,
-										spanValue: c.colSpan,
-									}) === 0 ||
-									getSpanValue({
-										data: c,
-										index,
-										tableData: data,
-										spanValue: c.rowSpan,
-									}) === 0
-								) {
-									return null;
-								}
-								return (
-									<TableCell
-										key={c.key}
-										colSpan={getSpanValue({
-											data: c,
-											index,
-											tableData: data,
-											spanValue: c.colSpan,
-										})}
-										rowSpan={getSpanValue({
-											data: c,
-											index,
-											tableData: data,
-											spanValue: c.rowSpan,
-										})}
-										{...omit(c, 'key', 'title', 'dataIndex', 'render', 'rowSpan', 'colSpan')}
-									>
-										{c.render ? c.render?.(row, index, rows) : c.dataIndex ? row[c.dataIndex] : null}
-									</TableCell>
-								)
-							})}
-						</TableRow>
-					))}
-					{!rows.length && (
-						<TableRow>
-							<TableCell colSpan={columns.length}>
-								<Box className={styles['empty-table-box']}>NO DATA</Box>
-							</TableCell>
-						</TableRow>
-					)}
-				</TableBody>
-			</MuiTable>
-			{pagination && (
-				<Box display="flex" p={3}>
-					<Box display="flex" alignItems="center">
-						<Typography
-							variant="button"
-							sx={{ display: 'flex', alignItems: 'center' }}
-							color="secondary"
-							fontWeight="regular"
-						>
-							Showing 1 to 10 of {data.length} entries
-						</Typography>
-						<Box display="flex" alignItems="center" ml={2}>
-							<Autocomplete
-								disableClearable
-								options={['5', '10', '15', '20', '25']}
-								size="small"
-								sx={{ width: '5rem' }}
-								value={String(pagination.pageSize)}
-								onChange={(e, v) => onTableChange?.({ ...pagination, pageSize: Number(v) })}
-								renderInput={(params) => <Input {...params} />}
-							/>
-							<Typography variant="caption" color="secondary">
-								&nbsp;&nbsp;entries per page
-							</Typography>
-						</Box>
-					</Box>
+	onPageChange,
+	...restProps
+}: TableProps<R>) {
+	const initState: DataGridProps['initialState'] = useMemo(() => {
+		return merge(
+			{
+				pagination: pagination?{
+					paginationModel: {
+						pageSize: pagination?.pageSize,
+						page: pagination?.pageNum ? pagination.pageNum - 1 : undefined
+					},
+				}:undefined,
+				sorting: {
+					sortModel: [],
+				},
+			},
+			initialState || {},
+		);
+	}, [initialState, pagination]);
+	
+	const theme = useTheme();
+	const finalSx = useMemo(() => {
+		return merge(
+			{
+				height: rows.length ? 'auto' : 400
+			},
+			theme.MuiDataGrid?.sxOverrides,
+			sx,
+		);
+	}, [sx, theme.MuiDataGrid?.sxOverrides, rows.length]);
+	const finalColumns = useMemo(() => {
+		return columns.map((i) => {
+			if (i.sortable !== undefined) {
+				return i;
+			}
+			return {
+				sortable: false,
+				...i,
+			};
+		});
+	}, [columns]);
+	const finalSlots = useMemo(() => {
+		return merge(
+			{
+				loadingOverlay: LoadingOverlay,
+				noRowsOverlay: NoData,
+				pagination: Pagination,
+			},
+			slots,
+		);
+	}, [slots]);
 
-					<Pagination
-						sx={{
-							ml: 'auto',
-							':root': {
-								justifyContent: 'flex-end',
-								display: 'flex',
-							},
-						}}
-						page={pagination.pageNum}
-						onChange={(_, v) => onTableChange?.({ ...pagination, pageNum: v })}
-						count={Math.floor(pagination.total / pagination.pageSize)}
-						variant="outlined"
-						color="primary"
-					/>
-				</Box>
-			)}
-			{loading && (
-				<Box className={styles['loading-box']}>
-					<CircularProgress thickness={3} size={50} />
-				</Box>
-			)}
-		</TableContainer>
+	const paginationModel = useMemo(() => {
+		if (pagination) {
+			return {
+				pageSize: pagination.pageSize,
+				page: pagination.pageNum - 1
+			}
+		}
+		return undefined;
+	}, [pagination]);
+
+	const onPaginationChangeRef = useRef(onPageChange);
+	onPaginationChangeRef.current = onPageChange;
+
+	const onPaginationModelChange = useCallback((p: GridPaginationModel) => {
+		onPaginationChangeRef.current?.({
+			pageNum: p.page + 1,
+			pageSize: p.pageSize,
+		});
+	}, [])
+
+	return (
+		<DataGrid
+			rows={rows}
+			sx={finalSx}
+			isCellEditable={defaultCellEditable}
+			disableColumnFilter
+			disableColumnMenu
+			autoHeight={!!rows.length}
+			autoPageSize
+			disableColumnSelector
+			columns={finalColumns}
+			initialState={initState}
+			pageSizeOptions={defaultPageSizeOptions}
+			rowSelection
+			rowCount={pagination?.total}
+			slots={finalSlots}
+			hideFooterSelectedRowCount
+			hideFooterPagination={!pagination}
+			pagination={!!pagination === true ? true : undefined}
+			paginationModel={paginationModel}
+			onPaginationModelChange={onPaginationModelChange}
+			{...restProps}
+		/>
 	);
 }
 

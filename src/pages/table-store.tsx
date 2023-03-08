@@ -9,24 +9,21 @@ import { SearchInput } from '@/components/SearchInput';
 
 const columns: Columns<TabelData[0]> = [
 	{
-		title: 'Name',
-		dataIndex: 'name',
-		key: 'name',
+		headerName: 'Name',
+		field: 'name',
 	},
 	{
-		title: 'Date',
-		dataIndex: 'date',
-		key: 'date',
+		headerName: 'Date',
+		field: 'date',
 	},
 	{
-		title: 'Address',
-		dataIndex: 'address',
-		key: 'address',
+		headerName: 'Address',
+		field: 'address',
 	},
 	{
-		title: 'Actions',
-		key: 'action',
-		render: (row) => {
+		headerName: 'Actions',
+		field: 'action',
+		renderCell: (row) => {
 			return (
 				<Button
 					size={'small'}
@@ -40,6 +37,7 @@ const columns: Columns<TabelData[0]> = [
 		},
 	},
 ];
+
 
 export default function TableStorePage() {
 	const [table] = useFlatInject('table');

@@ -1,4 +1,5 @@
 import { ReactComponent as LoadingSvg} from '@/assets/svg/loading.svg';
+import type { BoxProps } from '@mui/material';
 import { Box, styled, keyframes } from '@mui/material';
 
 
@@ -22,21 +23,34 @@ const SpiningLoadingBox = styled(Box)`
 	justify-content: center;
 `
 
-export interface LoadingBoxProps {
+export interface LoadingBoxProps extends BoxProps {
 	children: React.ReactNode;
 	loading?: boolean;
 	size?: number;
 }
-export function LoadingBox({ children, loading = false, size = 50 }: LoadingBoxProps) {
+
+
+export function LoadingBox({
+	children,
+	loading = false,
+	size = 50,
+	...props
+}: LoadingBoxProps) {
 	const loadingUI = loading ? (
 		<SpiningLoadingBox>
 			<SpiningLoadingSvg style={{width: size, height: size}}  />
 		</SpiningLoadingBox>
 	) : null;
 	return (
-		<Box position="relative">
+		<Box position="relative" {...props}>
 			{loadingUI}
 			{children}
 		</Box>
 	);
+}
+
+export function LoadingOverlay() {
+	return (
+		<LoadingBox loading width={'100%'} height='100%'>{null}</LoadingBox>
+	)
 }
