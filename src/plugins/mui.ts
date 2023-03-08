@@ -1,6 +1,7 @@
 import { inputClasses, outlinedInputClasses } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
+import { getDataGridUtilityClass } from '@mui/x-data-grid';
 
 const spaceUnit = 8;
 
@@ -44,7 +45,21 @@ export const defaultTheme = createTheme({
 			},
 		},
 	},
-	// myComponent: {
-	// 	fontSize: 13
-	// }
+	MuiDataGrid: {
+		sxOverrides: {
+			border: 'none',
+			[`.${getDataGridUtilityClass('main')}`]: {
+				color: '#6E7680',
+			},
+			[`.${getDataGridUtilityClass('cell')}:focus`]: {
+				outline: "unset"
+			},
+			[`& .${getDataGridUtilityClass('columnSeparator')}`]: {
+				display: 'none',
+			},
+			[`& .${getDataGridUtilityClass('columnHeaderTitle')}`]: {
+				fontWeight: 'bold'
+			},
+		}
+	}
 });
