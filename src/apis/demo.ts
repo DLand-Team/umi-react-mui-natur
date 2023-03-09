@@ -7,18 +7,17 @@ export interface TableDataParams {
 	name: string;
 }
 
-export type TabelData = {
-  date: string;
-  name: string;
-  address: string;
+export type TableData = {
+	date: string;
+	name: string;
+	address: string;
 }[];
 
-
 export const fetchTableData = async (p: TableDataParams) => {
-	const res = await http.post<TabelData>('/getTableData', p);
+	const res = await http.post<TableData>('/getTableData', p);
 	return res.data;
 };
 
 export const fetchTableDataController = createAsyncController(fetchTableData, {
-	ttl: 1000 * 10
+	ttl: 1000 * 10,
 });

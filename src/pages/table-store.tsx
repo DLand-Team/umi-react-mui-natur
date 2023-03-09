@@ -2,12 +2,12 @@ import type { Columns } from '../components/Table';
 import { Table } from '../components/Table';
 import { Box, Button } from '@mui/material';
 import { useEffect } from 'react';
-import type { TabelData } from '@/apis/demo';
+import type { TableData } from '@/apis/demo';
 import { useFlatInject, useHttp } from '@/utils/hooks';
 import { Link } from 'umi';
 import { SearchInput } from '@/components/SearchInput';
 
-const columns: Columns<TabelData[0]> = [
+const columns: Columns<TableData[0]> = [
 	{
 		headerName: 'Name',
 		field: 'name',
@@ -37,7 +37,6 @@ const columns: Columns<TabelData[0]> = [
 		},
 	},
 ];
-
 
 export default function TableStorePage() {
 	const [table] = useFlatInject('table');
