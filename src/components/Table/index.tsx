@@ -35,28 +35,15 @@ function Table<R extends Row = Row>({
 	rows,
 	columns,
 	sx,
-	initialState,
+	// initialState,
 	slots,
 	pagination,
 	onPageChange,
 	...restProps
 }: TableProps<R>) {
-	const initState: DataGridProps['initialState'] = useMemo(() => {
-		return merge(
-			{
-				pagination: pagination?{
-					paginationModel: {
-						pageSize: pagination?.pageSize,
-						page: pagination?.pageNum ? pagination.pageNum - 1 : undefined
-					},
-				}:undefined,
-				sorting: {
-					sortModel: [],
-				},
-			},
-			initialState || {},
-		);
-	}, [initialState, pagination]);
+	// const initState: DataGridProps['initialState'] = useMemo(() => {
+	// 	return initialState;
+	// }, [initialState]);
 	
 	const theme = useTheme();
 	const finalSx = useMemo(() => {
@@ -121,7 +108,6 @@ function Table<R extends Row = Row>({
 			autoPageSize
 			disableColumnSelector
 			columns={finalColumns}
-			initialState={initState}
 			pageSizeOptions={defaultPageSizeOptions}
 			rowSelection
 			rowCount={pagination?.total}

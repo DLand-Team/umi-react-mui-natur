@@ -37,7 +37,6 @@ export function Pagination({
 }: Pick<TablePaginationProps, 'page' | 'onPageChange' | 'className'>) {
 	const apiRef = useGridApiContext();
 	const rootProps = useGridRootProps();
-	const pageCount = useGridSelector(apiRef, gridPageCountSelector);
 	const pageSize = useGridSelector(apiRef, gridPageSizeSelector);
 	const page = useGridSelector(apiRef, gridPageSelector);
 
@@ -74,7 +73,7 @@ export function Pagination({
 			<MuiPagination
 				color="primary"
 				className={className}
-				count={pageCount}
+				count={rootProps.rowCount ? Math.ceil(rootProps.rowCount / pageSize) : 0}
 				page={(page || 0) + 1}
 				onChange={onChange}
 				renderItem={renderItem}
