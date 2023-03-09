@@ -1,5 +1,5 @@
 import { http } from '@/http';
-import { createAsyncController } from '@/utils/greate-async';
+import { createAsyncController } from 'great-async';
 
 export interface TableDataParams {
 	pageNum: number;
