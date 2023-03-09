@@ -6,7 +6,6 @@ import type {
 } from '@mui/material/Pagination';
 import MuiPagination from '@mui/material/Pagination';
 import {
-	gridPageCountSelector,
 	gridPageSelector,
 	gridPageSizeSelector,
 	useGridApiContext,
