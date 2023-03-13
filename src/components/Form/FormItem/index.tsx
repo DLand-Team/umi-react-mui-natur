@@ -50,16 +50,6 @@ export default function FormItem({
 	const { setFieldValue } = useFormikContext();
 	const errorMsg = helper.touched ? helper.error : '';
 	const fieldRef = useRef<HTMLDivElement>();
-	const [fieldHeight, setFieldHeight] = useState(40);
-
-	useEffect(() => {
-		if (fieldRef.current) {
-			const { height } = fieldRef.current.getBoundingClientRect();
-			if (height !== fieldHeight) {
-				setFieldHeight(height);
-			}
-		}
-	}, [fieldHeight]);
 	const id = useId();
 	const ctx = useContext(FormContext);
 	const { layout = 'horizontal' } = ctx;
@@ -98,7 +88,7 @@ export default function FormItem({
 					...fieldStyle,
 				}}
 			>
-				<Comp {...restProps} onChange={onChange} {...field} id={id} error={!!errorMsg} ref={fieldRef}>
+				<Comp {...restProps} {...field} onChange={onChange} id={id} error={!!errorMsg} ref={fieldRef}>
 					{children}
 				</Comp>
 
