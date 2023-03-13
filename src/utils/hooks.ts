@@ -1,6 +1,6 @@
 import { isBrowser } from './index';
 import { useEffect, useRef } from 'react';
-import { useLocation as useOriginLocation } from 'umi';
+import { useFlatInject, useLocation as useOriginLocation } from 'umi';
 import qs from 'qs';
 
 export {
@@ -51,5 +51,19 @@ export const useLocation = <T extends LocationQuery = LocationQuery>() => {
 	};
 };
 
-export { useAsyncFunction as useHttp } from './greate-async/useAsyncFunction';
+export { useAsyncFunction as useHttp } from 'great-async';
+
+
+
+export function useLoading(loading: boolean) {
+  const [{ show, hide }] = useFlatInject("loading");
+
+  useEffect(() => {
+    if (loading) {
+      show();
+    } else {
+      hide();
+    }
+  }, [hide, loading, show]);
+}
 
