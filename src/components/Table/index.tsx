@@ -3,15 +3,13 @@ import type {
 	DataGridProps,
 	GridColDef,
 	GridPaginationModel,
-	GridValidRowModel} from '@mui/x-data-grid';
-import {
-	DataGrid,
+	GridValidRowModel,
 } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { merge } from 'lodash';
 import { useCallback, useMemo, useRef } from 'react';
 import { LoadingOverlay } from '../Loading/box';
 import NoData from '../NoData';
-import { MyDataGrid } from './MyDataGrid';
 import { Pagination } from './Pagination';
 
 export type Column<D extends GridValidRowModel = GridValidRowModel> = GridColDef<D>;
@@ -24,7 +22,7 @@ export interface TableProps<R extends Row = Row> extends Omit<DataGridProps<R>, 
 		pageSize: number;
 		pageNum: number;
 		total: number;
-	},
+	};
 	onPageChange?: (p: Omit<Exclude<TableProps<R>['pagination'], undefined>, 'total'>) => any;
 }
 
@@ -45,12 +43,12 @@ function Table<R extends Row = Row>({
 	// const initState: DataGridProps['initialState'] = useMemo(() => {
 	// 	return initialState;
 	// }, [initialState]);
-	
+
 	const theme = useTheme();
 	const finalSx = useMemo(() => {
 		return merge(
 			{
-				height: rows.length ? 'auto' : 400
+				height: rows.length ? 'auto' : 400,
 			},
 			theme.MuiDataGrid?.sxOverrides,
 			sx,
@@ -82,8 +80,8 @@ function Table<R extends Row = Row>({
 		if (pagination) {
 			return {
 				pageSize: pagination.pageSize,
-				page: pagination.pageNum - 1
-			}
+				page: pagination.pageNum - 1,
+			};
 		}
 		return undefined;
 	}, [pagination]);
@@ -96,10 +94,10 @@ function Table<R extends Row = Row>({
 			pageNum: p.page + 1,
 			pageSize: p.pageSize,
 		});
-	}, [])
+	}, []);
 
 	return (
-		<MyDataGrid
+		<DataGrid
 			rows={rows}
 			sx={finalSx}
 			isCellEditable={defaultCellEditable}

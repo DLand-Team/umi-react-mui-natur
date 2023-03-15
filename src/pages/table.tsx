@@ -1,12 +1,12 @@
 import { fetchTableData } from '@/apis/demo';
 import { SearchInput } from '@/components/SearchInput';
-import type { PickPromiseType } from '@/utils/greate-async';
 import { useHttp } from '@/utils/hooks';
 import { Box, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link } from 'umi';
-import type { Columns } from '../components/Table';
-import { Table } from '../components/Table';
+import type { Columns } from '@/components/Table';
+import { Table } from '@/components/Table';
+import type { PickPromiseType } from 'great-async';
 
 type Rows = PickPromiseType<typeof fetchTableData>;
 
@@ -71,7 +71,7 @@ export default function TablePage() {
 				onSearch={() => run()}
 				loading={loading}
 			/>
-			<Table rows={data || []} columns={columns} loading={loading} />
+			<Table getRowId={(d) => d.name} rows={data || []} columns={columns} loading={loading} />
 		</Box>
 	);
 }
