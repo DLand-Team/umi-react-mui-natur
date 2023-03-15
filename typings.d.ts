@@ -17,3 +17,22 @@ declare module '@mui/material/styles' {
 		};
 	}
 }
+
+
+declare module '@mui/x-data-grid' {
+	interface DataGridPropsWithDefaultValues {
+		pinnedColumns?: {
+			left?: string[];
+			right?: string[];
+		};
+	}
+}
+
+declare module '@mui/x-data-grid/models/gridStateCommunity' {
+	interface GridStateCommunity {
+		pinnedColumns: {
+			left?: string[];
+			right?: string[];
+		};
+	}
+}

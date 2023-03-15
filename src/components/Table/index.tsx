@@ -11,6 +11,7 @@ import { merge } from 'lodash';
 import { useCallback, useMemo, useRef } from 'react';
 import { LoadingOverlay } from '../Loading/box';
 import NoData from '../NoData';
+import { MyDataGrid } from './MyDataGrid';
 import { Pagination } from './Pagination';
 
 export type Column<D extends GridValidRowModel = GridValidRowModel> = GridColDef<D>;
@@ -98,7 +99,7 @@ function Table<R extends Row = Row>({
 	}, [])
 
 	return (
-		<DataGrid
+		<MyDataGrid
 			rows={rows}
 			sx={finalSx}
 			isCellEditable={defaultCellEditable}
