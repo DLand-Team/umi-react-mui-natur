@@ -1,5 +1,6 @@
 import { ReactComponent as LoadingSvg} from '@/assets/svg/loading.svg';
-import type { BoxProps } from '@mui/material';
+import type { BoxProps} from '@mui/material';
+import { Fade } from '@mui/material';
 import { Box, styled, keyframes } from '@mui/material';
 
 
@@ -36,11 +37,13 @@ export function LoadingBox({
 	size = 50,
 	...props
 }: LoadingBoxProps) {
-	const loadingUI = loading ? (
-		<SpiningLoadingBox>
+	const loadingUI = (
+		<Fade in={loading}>
+			<SpiningLoadingBox>
 			<SpiningLoadingSvg style={{width: size, height: size}}  />
 		</SpiningLoadingBox>
-	) : null;
+		</Fade>
+	);
 	return (
 		<Box position="relative" {...props}>
 			{loadingUI}
