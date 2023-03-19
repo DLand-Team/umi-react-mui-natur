@@ -5,7 +5,7 @@ import { useFormikContext } from 'formik';
 import { useField } from 'formik';
 import { ErrorMessage } from 'formik';
 import type { CSSProperties } from 'react';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useContext, useId, useRef } from 'react';
 import { FormItemBox } from './style';
 import { FormContext } from '../context';
@@ -63,6 +63,29 @@ export default function FormItem({
 		[name, restProps?.onChange, setFieldValue],
 	);
 
+	const boxyStyle = useMemo(
+		() => ({ ...ctx.labelStyle, ...labelStyle }),
+		[ctx.labelStyle, labelStyle],
+	);
+
+	const finalFieldStyle = useMemo(
+		() => ({
+			verticalAlign: 'top',
+			...ctx.fieldStyle,
+			...fieldStyle,
+		}),
+		[ctx.fieldStyle, fieldStyle],
+	);
+
+	const fieldComponentUI = useMemo(
+		() => (
+			<Comp {...restProps} {...field} onChange={onChange} id={id} {...errorPropMapper(errorMsg)}>
+				{children}
+			</Comp>
+		),
+		[Comp, children, errorMsg, errorPropMapper, field, id, onChange, restProps],
+	);
+
 	return (
 		<FormItemBox display={displayMap[layout]}>
 			{label && (
@@ -71,7 +94,7 @@ export default function FormItem({
 					component={'label'}
 					htmlFor={id}
 					display={fieldDisplayMap[layout]}
-					style={{ ...ctx.labelStyle, ...labelStyle }}
+					style={boxyStyle}
 					sx={labelSx || ctx.labelSx}
 				>
 					{required && (
@@ -82,19 +105,8 @@ export default function FormItem({
 					{label}:
 				</Box>
 			)}
-			<Box
-				display={fieldDisplayMap[layout]}
-				sx={fieldSx || ctx.fieldSx}
-				style={{
-					verticalAlign: 'top',
-					...ctx.fieldStyle,
-					...fieldStyle,
-				}}
-			>
-				<Comp {...restProps} {...field} onChange={onChange} id={id} {...errorPropMapper(errorMsg)}>
-					{children}
-				</Comp>
-
+			<Box display={fieldDisplayMap[layout]} sx={fieldSx || ctx.fieldSx} style={finalFieldStyle}>
+				{fieldComponentUI}
 				{errorMsg && (
 					<>
 						<br />
