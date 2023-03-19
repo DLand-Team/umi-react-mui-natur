@@ -1,5 +1,5 @@
-import type { ImmerThunkParams } from 'natur-immer';
-
+import type { ITP, WIA } from 'natur-immer';
+import { withAPI } from 'natur-immer';
 
 const state = {
 	routePath: '',
@@ -10,11 +10,18 @@ const state = {
 };
 
 type State = typeof state;
-type ITP = ImmerThunkParams<State>;
 
 const actions = {
-	updateLoadingText: (loadingText: string) => ({setState}: ITP) => setState(s => {s.text.loading = loadingText}),
-	updateMessageText: (messageText: string) => ({setState}: ITP) => setState(s => {s.text.message = messageText}),
+	updateLoadingText: withAPI((loadingText: string, { setState }: WIA<State>) =>
+		setState((s) => {
+			s.text.loading = loadingText;
+		}),
+	),
+	updateMessageText: withAPI((messageText: string, { setState }: WIA<State>) =>
+		setState((s) => {
+			s.text.message = messageText;
+		}),
+	),
 };
 
 export default {

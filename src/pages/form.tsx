@@ -6,8 +6,22 @@ import * as Yup from 'yup';
 import { Message } from '@/utils/message';
 import { sleep } from '@/utils';
 import { Modal } from '@/utils/modal';
+import { useState } from 'react';
+
+const Count = () => {
+	const [state, setState] = useState(0);
+	console.log('count render');
+	return (
+		<div>
+			<button onClick={() => setState((v) => v - 1)}>-</button>
+			<span>{state}</span>
+			<button onClick={() => setState((v) => v + 1)}>+</button>
+		</div>
+	);
+};
 
 export default function FormPage() {
+	console.log('FormPage render');
 	const form = useForm({
 		initialValues: {
 			name: '111111',
@@ -39,6 +53,7 @@ export default function FormPage() {
 	return (
 		<Box p={2}>
 			<h1>form page</h1>
+			<Count />
 			<Form
 				form={form}
 				layout="horizontal"
