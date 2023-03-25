@@ -59,7 +59,7 @@ export default function TablePage() {
 	useEffect(() => {
 		run();
 	}, [run]);
-	console.log('data', data);
+
 	return (
 		<Box sx={{ p: 1 }}>
 			<Link to="/table-store">table store</Link>
