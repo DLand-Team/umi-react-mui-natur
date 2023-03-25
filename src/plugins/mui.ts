@@ -55,4 +55,20 @@ export const defaultTheme = createTheme({
 			}
 		}
 	},
+	MyMuiTable: {
+		sxOverrides: {
+			'& .mui-table': {
+				border: '1px solid rgba(224, 224, 224, 1)',
+				borderRadius: 1,
+				overflow: 'hidden',
+			},
+			'& table': {
+				width: '100%',
+				textAlign: 'start',
+				borderRadius: '8px 8px 0 0',
+				borderCollapse: 'separate',
+				borderSpacing: 0,
+			}
+		}
+	}
 });

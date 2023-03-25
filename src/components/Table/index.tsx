@@ -13,6 +13,7 @@ import { default as RcTable } from 'rc-table';
 import type { TablePaginationProps } from '@/components/TablePagination';
 import { TablePagination } from '@/components/TablePagination';
 import { TableBox } from './style';
+import { useMemo } from 'react';
 
 export type Columns<D extends Record<any, any>> = RcTableProps<D>['columns'];
 
@@ -54,9 +55,13 @@ function Table<R extends Row = Row>({
 	loading,
 	...restProps
 }: TableProps<R>) {
-	// const theme = useTheme();
+	const theme = useTheme();
+	const finalSx = useMemo(() => ({
+		...theme.MyMuiTable?.sxOverrides,
+		...sx,
+	}), [sx, theme.MyMuiTable?.sxOverrides]);
 	return (
-		<TableBox sx={sx} loading={loading} loadingZIndex={2}>
+		<TableBox sx={finalSx} loading={loading} loadingZIndex={2}>
 				<RcTable components={components} prefixCls='mui-table' data={data} columns={columns} emptyText={emptyTableUI} {...restProps} />
 				{pagination ? <TablePagination {...pagination} onChange={onPageChange} mt={1} /> : null}
 		</TableBox>

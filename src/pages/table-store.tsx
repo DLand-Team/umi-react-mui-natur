@@ -61,7 +61,7 @@ export default function TableStorePage() {
 				rowKey={'name'}
 				data={table.tableData || []}
 				columns={columns}
-				// loading={loading}
+				loading={loading}
 			/>
 		</Box>
 	);

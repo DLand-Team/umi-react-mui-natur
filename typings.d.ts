@@ -1,19 +1,16 @@
-import type { DataGridProps } from '@mui/x-data-grid';
+import type { BoxProps } from '@mui/material';
 import 'umi/typings';
 
 declare module '@mui/material/styles' {
 	interface Theme {
-		myComponent?: {
-			fontSize?: number;
-		};
-		MuiDataGrid?: {
-			sxOverrides?: DataGridProps['sx'];
+		MyMuiTable?: {
+			sxOverrides?: BoxProps['sx'];
 		};
 	}
 	// allow configuration using `createTheme`
 	interface ThemeOptions {
-		MuiDataGrid?: {
-			sxOverrides?: DataGridProps['sx'];
+		MyMuiTable?: {
+			sxOverrides?: BoxProps['sx'];
 		};
 	}
 }
