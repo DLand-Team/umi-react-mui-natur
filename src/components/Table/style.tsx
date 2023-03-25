@@ -6,10 +6,7 @@ const fixShadowColor = 'rgba(5,5,5,.06)';
 
 export const TableBox = styled(LoadingBox)`
 	.mui-table {
-		font-size: 14px;
-		border: 1px solid ${borderColor};
-		border-radius: ${({theme}) => theme.shape.borderRadius}px;
-		overflow: hidden;
+		
 		&-cell {
 			&-fix-left,
 			&-fix-right {
@@ -20,7 +17,6 @@ export const TableBox = styled(LoadingBox)`
 			&-fix-right:last-child:not(&-fix-sticky) {
 				border-right-color: transparent;
 			}
-
 			.mui-table-rtl & {
 				&-fix-right:last-child {
 					border-right-color: ${borderColor};
@@ -29,7 +25,6 @@ export const TableBox = styled(LoadingBox)`
 					border-left-color: transparent;
 				}
 			}
-
 			&-fix-left-first {
 				.mui-table-rtl & {
 					/* box-shadow: 1px 0 0 ${borderColor}; */
@@ -117,16 +112,5 @@ export const TableBox = styled(LoadingBox)`
 				box-shadow: inset -10px 0 8px -8px ${fixShadowColor};
 			}
 		}
-	}
-	/* .mui-table-container {
-		border-start-start-radius: 8px;
-		border-start-end-radius: 8px;
-	} */
-	table {
-		width: 100%;
-		text-align: start;
-		border-radius: 8px 8px 0 0;
-		border-collapse: separate;
-		border-spacing: 0;
 	}
 `;
