@@ -6,7 +6,7 @@ import { useField } from 'formik';
 import { ErrorMessage } from 'formik';
 import type { CSSProperties } from 'react';
 import { useCallback, useMemo } from 'react';
-import { useContext, useId, useRef } from 'react';
+import { useContext, useId } from 'react';
 import { FormItemBox } from './style';
 import { FormContext } from '../context';
 
@@ -107,14 +107,14 @@ export default function FormItem({
 			)}
 			<Box display={fieldDisplayMap[layout]} sx={fieldSx || ctx.fieldSx} style={finalFieldStyle}>
 				{fieldComponentUI}
-				{errorMsg && (
+				{errorMsg ? (
 					<>
 						<br />
 						<Box color="error.main" component={'span'}>
 							{<ErrorMessage name={name} />}
 						</Box>
 					</>
-				)}
+				) : null}
 			</Box>
 		</FormItemBox>
 	);

@@ -1,16 +1,10 @@
-import type { TablePaginationProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import { Box, MenuItem, PaginationItem, Select } from '@mui/material';
 import type { PaginationProps, PaginationRenderItemParams } from '@mui/material/Pagination';
 import MuiPagination from '@mui/material/Pagination';
-import {
-	gridPageSelector,
-	gridPageSizeSelector,
-	useGridApiContext,
-	useGridRootProps,
-	useGridSelector,
-} from '@mui/x-data-grid';
+
 import { isNil, merge } from 'lodash';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import numeral from 'numeral';
 
 const renderItem = (item: PaginationRenderItemParams) => {
@@ -28,22 +22,29 @@ const selectSx = {
 	ml: 1,
 };
 
-export function Pagination({
-	className,
-}: Pick<TablePaginationProps, 'page' | 'onPageChange' | 'className'>) {
-	const apiRef = useGridApiContext();
-	const rootProps = useGridRootProps();
-	const pageSize = useGridSelector(apiRef, gridPageSizeSelector);
-	const page = useGridSelector(apiRef, gridPageSelector);
+export interface TablePaginationProps extends Omit<BoxProps, 'onChange'> {
+	pageNum: number;
+	pageSize: number;
+	total: number;
+	pageSizeOptions?: number[];
+	onChange?: (p: Pick<TablePaginationProps, 'pageNum' | 'pageSize'>) => any;
+}
 
-	const onChange = useCallback(
-		(event: any, newPage: number) => {
-			apiRef.current?.setPage?.(newPage - 1);
-		},
-		[apiRef],
-	);
+export function TablePagination({
+	pageNum,
+	pageSize,
+	total,
+	onChange,
+	pageSizeOptions = [5, 10, 15, 30, 50, 100],
+	...boxProps
+}: TablePaginationProps) {
+	const page = pageNum;
 
-	const { rowCount } = rootProps;
+	const onChangeRef = useRef(onChange);
+
+	onChangeRef.current = onChange;
+
+	const rowCount = total;
 
 	const selectUI = useMemo(() => {
 		return (
@@ -52,10 +53,13 @@ export function Pagination({
 				value={pageSize}
 				size="small"
 				onChange={(e) => {
-					apiRef.current.setPageSize(Number(e.target.value));
+					onChangeRef.current?.({
+						pageSize: Number(e.target.value),
+						pageNum,
+					});
 				}}
 			>
-				{rootProps.pageSizeOptions
+				{pageSizeOptions
 					.map((i) => ({
 						value: i,
 						label: `${i}/page`,
@@ -67,16 +71,25 @@ export function Pagination({
 					))}
 			</Select>
 		);
-	}, [pageSize, rootProps.pageSizeOptions, apiRef]);
+	}, [pageSize, pageSizeOptions, onChange]);
+
+	const onPaginationChange = useCallback(
+		(e: any, newPageNum: number) => {
+			onChangeRef.current?.({
+				pageNum: newPageNum,
+				pageSize,
+			});
+		},
+		[pageSize],
+	);
 
 	return (
-		<Box flex={1} display="flex">
+		<Box flex={1} display="flex" alignItems={'center'} {...boxProps}>
 			<MuiPagination
 				color="primary"
-				className={className}
 				count={rowCount ? Math.ceil(rowCount / pageSize) : 0}
 				page={(page || 0) + 1}
-				onChange={onChange}
+				onChange={onPaginationChange}
 				renderItem={renderItem}
 			/>
 			{selectUI}

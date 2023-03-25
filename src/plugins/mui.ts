@@ -1,7 +1,6 @@
 import { inputClasses, outlinedInputClasses } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
-import { getDataGridUtilityClass } from '@mui/x-data-grid';
 
 const spaceUnit = 8;
 
@@ -38,28 +37,22 @@ export const defaultTheme = createTheme({
 		MuiOutlinedInput: {
 			styleOverrides: {
 				root: {
-					[`&.${inputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
-						borderColor: 'red',
-					},
+					// [`&.${inputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
+					// 	borderColor: 'red',
+					// },
 				},
 			},
 		},
-	},
-	MuiDataGrid: {
-		sxOverrides: {
-			border: 'none',
-			[`.${getDataGridUtilityClass('main')}`]: {
-				color: '#6E7680',
-			},
-			[`.${getDataGridUtilityClass('cell')}:focus`]: {
-				outline: "unset"
-			},
-			[`& .${getDataGridUtilityClass('columnSeparator')}`]: {
-				display: 'none',
-			},
-			[`& .${getDataGridUtilityClass('columnHeaderTitle')}`]: {
-				fontWeight: 'bold'
-			},
+		MuiTableCell: {
+			styleOverrides: {
+				head: {
+					fontWeight: 600,
+					textAlign: 'start'
+				},
+				body: {
+					overflowWrap: 'break-word'
+				}
+			}
 		}
-	}
+	},
 });

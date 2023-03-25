@@ -9,21 +9,21 @@ import { SearchInput } from '@/components/SearchInput';
 
 const columns: Columns<TableData[0]> = [
 	{
-		headerName: 'Name',
-		field: 'name',
+		title: 'Name',
+		dataIndex: 'name',
 	},
 	{
-		headerName: 'Date',
-		field: 'date',
+		title: 'Date',
+		dataIndex: 'date',
 	},
 	{
-		headerName: 'Address',
-		field: 'address',
+		title: 'Address',
+		dataIndex: 'address',
 	},
 	{
-		headerName: 'Actions',
-		field: 'action',
-		renderCell: (row) => {
+		title: 'Actions',
+		dataIndex: 'action',
+		render: (row) => {
 			return (
 				<Button
 					size={'small'}
@@ -57,7 +57,12 @@ export default function TableStorePage() {
 				onSearch={run}
 				loading={loading}
 			/>
-			<Table rows={table.tableData || []} columns={columns} loading={loading} />
+			<Table
+				rowKey={'name'}
+				data={table.tableData || []}
+				columns={columns}
+				// loading={loading}
+			/>
 		</Box>
 	);
 }

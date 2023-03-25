@@ -1,32 +1,36 @@
 import { fetchTableData } from '@/apis/demo';
 import { SearchInput } from '@/components/SearchInput';
-import { useHttp } from '@/utils/hooks';
-import { Box, Button } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { Link } from 'umi';
 import type { Columns } from '@/components/Table';
 import { Table } from '@/components/Table';
+import { useHttp } from '@/utils/hooks';
+import { Box, Button } from '@mui/material';
 import type { PickPromiseType } from 'great-async';
+import { useEffect, useState } from 'react';
+import { Link } from 'umi';
 
 type Rows = PickPromiseType<typeof fetchTableData>;
 
 const columns: Columns<Rows[0]> = [
 	{
-		headerName: 'Name',
-		field: 'name',
+		title: 'Name',
+		dataIndex: 'name',
+		width: 100,
+		fixed: 'left',
 	},
 	{
-		headerName: 'Date',
-		field: 'date',
+		title: 'Date',
+		dataIndex: 'date',
 	},
 	{
-		headerName: 'Address',
-		field: 'address',
+		title: 'Address',
+		dataIndex: 'address',
 	},
 	{
-		headerName: 'Actions',
-		field: 'action',
-		renderCell: (row) => {
+		title: 'Actions',
+		dataIndex: 'action',
+		width: 100,
+		fixed: 'right',
+		render: (row) => {
 			return (
 				<Button
 					size={'small'}
@@ -56,7 +60,7 @@ export default function TablePage() {
 	useEffect(() => {
 		run();
 	}, [run]);
-
+	console.log('data', data);
 	return (
 		<Box sx={{ p: 1 }}>
 			<Link to="/table-store">table store</Link>
@@ -71,7 +75,19 @@ export default function TablePage() {
 				onSearch={() => run()}
 				loading={loading}
 			/>
-			<Table getRowId={(d) => d.name} rows={data || []} columns={columns} loading={loading} />
+			<Table
+				sx={{mt: 1}}
+				rowKey={'name'}
+				data={data || []}
+				columns={columns}
+				loading={loading}
+				scroll={{ x: 1200, y: 500 }}
+				pagination={{
+					pageNum: 1,
+					pageSize: 10,
+					total: 100
+				}}
+			/>
 		</Box>
 	);
 }
