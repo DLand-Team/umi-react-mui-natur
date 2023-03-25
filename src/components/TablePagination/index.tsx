@@ -75,12 +75,14 @@ export function TablePagination({
 
 	const onPaginationChange = useCallback(
 		(e: any, newPageNum: number) => {
-			onChangeRef.current?.({
-				pageNum: newPageNum,
-				pageSize,
-			});
+			if (newPageNum !== pageNum) {
+				onChangeRef.current?.({
+					pageNum: newPageNum,
+					pageSize,
+				});
+			}
 		},
-		[pageSize],
+		[pageNum, pageSize],
 	);
 
 	return (
@@ -88,7 +90,7 @@ export function TablePagination({
 			<MuiPagination
 				color="primary"
 				count={rowCount ? Math.ceil(rowCount / pageSize) : 0}
-				page={(page || 0) + 1}
+				page={page}
 				onChange={onPaginationChange}
 				renderItem={renderItem}
 			/>

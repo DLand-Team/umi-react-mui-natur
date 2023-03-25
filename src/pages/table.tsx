@@ -14,7 +14,6 @@ const columns: Columns<Rows[0]> = [
 	{
 		title: 'Name',
 		dataIndex: 'name',
-		width: 100,
 		fixed: 'left',
 	},
 	{
@@ -81,12 +80,6 @@ export default function TablePage() {
 				data={data || []}
 				columns={columns}
 				loading={loading}
-				scroll={{ x: 1200, y: 500 }}
-				pagination={{
-					pageNum: 1,
-					pageSize: 10,
-					total: 100
-				}}
 			/>
 		</Box>
 	);

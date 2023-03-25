@@ -75,15 +75,15 @@ export const TableBox = styled(LoadingBox)`
 				}
 			}
 
-			&&-ellipsis {
+			&-ellipsis {
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 
-				// Fixed first or last should special process
 				&.mui-table-cell-fix-left-first,
 				&.mui-table-cell-fix-left-last,
-				&.mui-table-cell-fix-right-first &.mui-table-cell-fix-right-last {
+				&.mui-table-cell-fix-right-first,
+				&.mui-table-cell-fix-right-last {
 					overflow: visible;
 
 					.mui-table-cell-content {
@@ -92,8 +92,9 @@ export const TableBox = styled(LoadingBox)`
 						text-overflow: ellipsis;
 					}
 				}
+				// Fixed first or last should special process
 			}
-
+			
 			&&-row-hover {
 				background: rgba(255, 0, 0, 0.05);
 			}
