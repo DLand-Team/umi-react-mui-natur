@@ -14,6 +14,7 @@ import type { TablePaginationProps } from '@/components/TablePagination';
 import { TablePagination } from '@/components/TablePagination';
 import { TableBox } from './style';
 import { useMemo } from 'react';
+import { merge } from 'lodash';
 
 export type Columns<D extends Record<any, any>> = RcTableProps<D>['columns'];
 
@@ -60,9 +61,12 @@ function Table<R extends Row = Row>({
 		...theme.MyMuiTable?.sxOverrides,
 		...sx,
 	}), [sx, theme.MyMuiTable?.sxOverrides]);
+
+	const finalComponents = useMemo(() => merge({}, components, restProps.components), [restProps.components]);
+
 	return (
 		<TableBox sx={finalSx} loading={loading} loadingZIndex={2}>
-				<RcTable components={components} prefixCls='mui-table' data={data} columns={columns} emptyText={emptyTableUI} {...restProps} />
+				<RcTable components={finalComponents} prefixCls='mui-table' data={data} columns={columns} emptyText={emptyTableUI} {...restProps} />
 				{pagination ? <TablePagination {...pagination} onChange={onPageChange} mt={1} /> : null}
 		</TableBox>
 	);
