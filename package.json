@@ -16,7 +16,6 @@
     "@mui/icons-material": "^5.10.16",
     "@mui/lab": "^5.0.0-alpha.113",
     "@mui/material": "^5.10.16",
-    "@mui/x-data-grid": "^6.0.0",
     "axios": "^1.2.0",
     "color": "^4.2.3",
     "dayjs": "^1.11.6",
