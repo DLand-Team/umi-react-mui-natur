@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import { Message } from '@/utils/message';
 import { sleep } from '@/utils';
 import { Modal } from '@/utils/modal';
-import { useState } from 'react';
 
 export default function FormPage() {
 	const form = useForm({
