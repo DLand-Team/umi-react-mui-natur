@@ -2,7 +2,7 @@ import { fetchTableData } from '@/apis/demo';
 import { SearchInput } from '@/components/SearchInput';
 import type { Columns } from '@/components/Table';
 import { Table } from '@/components/Table';
-import { useHttp } from '@/utils/hooks';
+import { useHttp, useLoading } from '@/utils/hooks';
 import { Box, Button } from '@mui/material';
 import type { PickPromiseType } from 'great-async';
 import { useEffect, useState } from 'react';
@@ -59,6 +59,8 @@ export default function TablePage() {
 	useEffect(() => {
 		run();
 	}, [run]);
+
+	useLoading(loading)
 
 	return (
 		<Box sx={{ p: 1 }}>

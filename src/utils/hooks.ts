@@ -56,13 +56,13 @@ export { useAsyncFunction as useHttp } from 'great-async';
 
 
 export function useLoading(loading: boolean) {
-  const [{ show, hide }] = useFlatInject("loading");
+  const [{ show, hide }] = useFlatInject("loading", {});
 	const showLoadingRef = useRef(0);
   useEffect(() => {
-    if (loading) {
+    if (loading && showLoadingRef.current === 0) {
       show();
 			showLoadingRef.current++;
-    } else {
+    } else if(!loading && showLoadingRef.current > 0) {
       hide();
 			showLoadingRef.current--;
     }
