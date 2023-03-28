@@ -1,5 +1,6 @@
 import { ReactComponent as LoadingSvg } from '@/assets/svg/loading.svg';
-import type { BoxProps } from '@mui/material';
+import type { BoxProps} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { Box, Fade, keyframes, styled } from '@mui/material';
 
 const rotate = keyframes`
@@ -39,7 +40,8 @@ export function LoadingBox({
 	const loadingUI = (
 		<Fade in={loading}>
 			<SpiningLoadingBox zIndex={loadingZIndex}>
-				<SpiningLoadingSvg style={{ width: size, height: size }} />
+				<CircularProgress thickness={3} size={size} />
+				{/* <SpiningLoadingSvg style={{ width: size, height: size }} /> */}
 			</SpiningLoadingBox>
 		</Fade>
 	);

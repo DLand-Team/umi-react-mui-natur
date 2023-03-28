@@ -60,7 +60,7 @@ export default function TablePage() {
 		run();
 	}, [run]);
 
-	useLoading(loading)
+	// useLoading(loading);
 
 	return (
 		<Box sx={{ p: 1 }}>
