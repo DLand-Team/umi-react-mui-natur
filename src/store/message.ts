@@ -1,4 +1,4 @@
-import type { ImmerThunkParams } from 'natur-immer';
+import type { ITP } from 'natur-immer';
 
 type MessageType = 'info' | 'success' | 'warning' | 'error';
 
@@ -29,12 +29,10 @@ const createMessageItem = ({
 const createMessageAction =
 	(type: MessageType = 'info') =>
 	(text: string, duration: number = 3000) =>
-	({ setState, localDispatch }: ImmerThunkParams<typeof state>) => {
+	({ setState, localDispatch }: ITP<typeof state>) => {
 		const messageItem = createMessageItem({ text, duration, type });
 		// 隐藏message，触发message ui退出动画
 		setTimeout(() => localDispatch('hide', messageItem.id), duration);
-		// 触发message ui退出动画3秒后，message ui应该已经退出完成了，此时删除message数据
-		setTimeout(() => localDispatch('remove', messageItem.id), duration + 3000);
 		return setState((s) => {
 			s.push(messageItem);
 		});
@@ -51,11 +49,11 @@ export default {
 		error: createMessageAction('error'),
 		hide:
 			(id: string) =>
-			({ getState }: ImmerThunkParams<typeof state>) =>
+			({ getState }: ITP<typeof state>) =>
 				getState().map((i) => (i.id === id ? { ...i, show: false } : i)),
 		remove:
 			(id: string) =>
-			({ getState }: ImmerThunkParams<typeof state>) =>
+			({ getState }: ITP<typeof state>) =>
 				getState().filter((i) => i.id !== id),
 	},
 };

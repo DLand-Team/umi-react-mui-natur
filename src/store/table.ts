@@ -1,7 +1,7 @@
 import { fetchTableData } from '@/apis/demo';
 import type { TableData } from './../apis/demo';
 import { withAPI } from 'natur-immer';
-import type { ImmerThunkParams, WIA } from 'natur-immer';
+import type { WIA , ITP} from 'natur-immer';
 import type { WatchEvent } from 'natur';
 
 const state = {
@@ -14,12 +14,11 @@ const state = {
 };
 
 type State = typeof state;
-type ITP = ImmerThunkParams<State>;
 
 const actions = {
 	updateListQuery:
 		(listQuery: Partial<State['listQuery']>) =>
-		({ setState }: ITP) => {
+		({ setState }: ITP<State>) => {
 			setState((nowState) => {
 				nowState.listQuery = {
 					...nowState.listQuery,
