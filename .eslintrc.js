@@ -10,6 +10,7 @@ module.exports = {
   rules: {
     // your rules
     // "indent": ["error", 2]
-		"@typescript-eslint/no-unused-vars": 1
+		"@typescript-eslint/no-unused-vars": 1,
+		"react/no-unknown-property": 1
   },
 };

@@ -28,6 +28,20 @@ export default [
 				component: 'form',
 			},
 			{
+				path: '/three',
+				component: '@/layouts/empty',
+				routes: [
+					{
+						path: 'demo1',
+						component: 'three/demo1',
+					},
+					{
+						path: 'demo2',
+						component: 'three/demo2',
+					}
+				]
+			},
+			{
 				path: '/docs',
 				component: 'docs',
 				meta: {

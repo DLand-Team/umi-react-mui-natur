@@ -57,9 +57,7 @@ function LoginLayout() {
 	}
 
 	return (
-		<div>
-			<Outlet />
-		</div>
+		<Outlet />
 	);
 }
 
