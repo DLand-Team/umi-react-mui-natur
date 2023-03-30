@@ -16,9 +16,6 @@
     "@mui/icons-material": "^5.10.16",
     "@mui/lab": "^5.0.0-alpha.113",
     "@mui/material": "^5.10.16",
-    "@react-three/drei": "^9.58.5",
-    "@react-three/fiber": "^8.12.0",
-    "@react-three/postprocessing": "^2.7.1",
     "axios": "^1.2.0",
     "classnames": "^2.3.2",
     "color": "^4.2.3",
@@ -30,7 +27,6 @@
     "hoist-non-react-statics": "^3.3.2",
     "immer": "^9.0.19",
     "lodash": "^4.17.21",
-    "maath": "^0.5.3",
     "natur": "^3.0.0",
     "natur-immer": "^1.0.10",
     "numeral": "^2.0.6",
@@ -39,10 +35,8 @@
     "react-markdown": "^8.0.6",
     "recharts": "^2.1.16",
     "rxjs": "^7.8.0",
-    "three": "^0.150.1",
     "umi": "^4.0.34",
     "use-immer": "^0.8.1",
-    "valtio": "^1.10.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {
