@@ -4,7 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { easing } from 'maath';
 import type { ReactNode } from 'react';
 import { useRef, useState } from 'react';
-import { useStore } from './demo1-store';
+import { useFlatInject } from 'umi';
 
 function Box(props) {
 	// This reference gives us direct access to the THREE.Mesh object
@@ -32,17 +32,17 @@ function Box(props) {
 
 function Selector({ children }: { children: ReactNode }) {
 	const ref = useRef<any>();
-	const store = useStore();
+	const [{ open, setOpen }] = useFlatInject('threeDemo1');
 	useFrame(({ viewport, camera, pointer }, delta) => {
 		const { width, height } = viewport.getCurrentViewport(camera, [0, 0, 3]);
 		easing.damp3(
 			ref.current.position,
 			[(pointer.x * width) / 2, (pointer.y * height) / 2, 3],
-			store.open ? 0 : 0.1,
+			open ? 0 : 0.1,
 			delta,
 		);
-		easing.damp3(ref.current.scale, store.open ? 4 : 0.01, store.open ? 0.5 : 0.2, delta);
-		easing.dampC(ref.current.material.color, store.open ? '#f0f0f0' : '#ccc', 0.1, delta);
+		easing.damp3(ref.current.scale, open ? 4 : 0.01, open ? 0.5 : 0.2, delta);
+		easing.dampC(ref.current.material.color, open ? '#f0f0f0' : '#ccc', 0.1, delta);
 	});
 	return (
 		<>
@@ -60,10 +60,10 @@ function Selector({ children }: { children: ReactNode }) {
 				/>
 			</mesh>
 			<group
-				onPointerOver={() => (store.open = true)}
-				onPointerOut={() => (store.open = false)}
-				onPointerDown={() => (store.open = true)}
-				onPointerUp={() => (store.open = false)}
+				onPointerOver={() => setOpen(true)}
+				onPointerOut={() => setOpen(false)}
+				onPointerDown={() => setOpen(true)}
+				onPointerUp={() => setOpen(false)}
 			>
 				{children}
 			</group>

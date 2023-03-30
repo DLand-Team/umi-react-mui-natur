@@ -42,7 +42,6 @@
     "three": "^0.150.1",
     "umi": "^4.0.34",
     "use-immer": "^0.8.1",
-    "valtio": "^1.10.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {

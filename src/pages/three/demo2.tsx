@@ -35,7 +35,7 @@ function Kamdo(props: any) {
   const head = useRef<any>()
   const stripe = useRef<any>()
   const light = useRef<any>()
-  const { nodes, materials } = useGLTF(kamdoGlb)
+  const { nodes, materials } = useGLTF(kamdoGlb);
   useFrame((state, delta) => {
     const t = (1 + Math.sin(state.clock.elapsedTime * 2)) / 2
     stripe.current.color.setRGB(1 + t * 10, 2, 20 + t * 50)
