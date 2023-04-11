@@ -38,6 +38,10 @@ export default [
 					{
 						path: 'demo2',
 						component: 'three/demo2',
+					},
+					{
+						path: 'demo3',
+						component: 'three/demo3',
 					}
 				]
 			},
