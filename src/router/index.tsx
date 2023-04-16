@@ -44,4 +44,8 @@ export default [
 		path: '/register',
 		component: 'register',
 	},
+	{
+		path: '/common-usage-of-general-ui-framework',
+		component: 'common-usage-of-general-ui-framework',
+	},
 ];

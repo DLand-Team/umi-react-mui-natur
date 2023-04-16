@@ -17,7 +17,7 @@ export const defaultTheme = createTheme({
 			main: red.A400,
 		},
 	},
-	spacing: (n: number) => `${n * spaceUnit}px`,
+	spacing: (...args: (string|number)[]) => args.reduce((res, i) => `${res} ${(typeof i === 'number' && i !== 0) ? `${i * spaceUnit}px` : i}`, ''),
 	components: {
 		MuiButton: {
 			styleOverrides: {
@@ -65,9 +65,7 @@ export const defaultTheme = createTheme({
 			'& table': {
 				width: '100%',
 				textAlign: 'start',
-				borderRadius: '8px 8px 0 0',
-				borderCollapse: 'separate',
-				borderSpacing: 0,
+				borderRadius: (theme) => theme.spacing(1,1,0,0),
 			}
 		}
 	}
