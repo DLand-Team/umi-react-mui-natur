@@ -104,6 +104,7 @@ export const TableBox = styled(LoadingBox)`
 			.mui-table-cell-fix-left-first::after,
 			.mui-table-cell-fix-left-last::after {
 				box-shadow: inset 10px 0 8px -8px ${fixShadowColor};
+				/* box-shadow: inset ${({theme}) => theme.spacing(1, 0, 1, -1)} ${fixShadowColor}; */
 			}
 		}
 
