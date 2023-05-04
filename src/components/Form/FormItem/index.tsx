@@ -58,7 +58,7 @@ export default function FormItem({
 	const onChange = useCallback(
 		(event: any) => {
 			restProps?.onChange?.(event);
-			setFieldValue(name, event?.target?.value);
+			setFieldValue(name, event?.target?.value || event);
 		},
 		[name, restProps?.onChange, setFieldValue],
 	);
