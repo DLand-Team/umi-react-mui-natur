@@ -22,7 +22,7 @@
     "dayjs": "^1.11.6",
     "decimal.js": "^10.4.2",
     "formik": "^2.2.9",
-    "great-async": "^1.0.2",
+    "great-async": "^1.0.3",
     "highlight.js": "^11.7.0",
     "hoist-non-react-statics": "^3.3.2",
     "immer": "^9.0.19",
