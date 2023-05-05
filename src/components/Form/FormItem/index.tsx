@@ -49,7 +49,7 @@ export default function FormItem({
 	...restProps
 }: FormItemProps) {
 	const [field, helper] = useField({ name, validate });
-	const { setFieldValue } = useFormikContext();
+	const { setFieldValue, setFieldTouched } = useFormikContext();
 	const errorMsg = helper.touched ? helper.error : '';
 	const id = useId();
 	const ctx = useContext(FormContext);
@@ -57,10 +57,10 @@ export default function FormItem({
 
 	const onChange = useCallback(
 		(event: any) => {
-			restProps?.onChange?.(event);
+			// restProps?.onChange?.(event);
 			setFieldValue(name, event?.target?.value || event);
 		},
-		[name, restProps?.onChange, setFieldValue],
+		[name, setFieldValue, restProps?.onChange],
 	);
 
 	const boxyStyle = useMemo(
@@ -77,14 +77,28 @@ export default function FormItem({
 		[ctx.fieldStyle, fieldStyle],
 	);
 
+	const onBlur = useCallback(() => {
+		setFieldTouched(name, true);
+	}, [name, setFieldTouched])
+
 	const fieldComponentUI = useMemo(
 		() => (
-			<Comp {...restProps} {...field} onChange={onChange} id={id} {...errorPropMapper(errorMsg)}>
+			<Comp {...restProps} {...field} onBlur={onBlur} onChange={onChange} id={id} {...errorPropMapper(errorMsg)}>
 				{children}
 			</Comp>
 		),
-		[Comp, children, errorMsg, errorPropMapper, field, id, onChange, restProps],
+		[Comp, children, errorMsg, errorPropMapper, field, id, onBlur, onChange, restProps],
 	);
+
+	const finalLabelSx = useMemo(() => ({
+		...(ctx.labelSx || {}),
+		...(labelSx || {})
+	}), [ctx.labelSx, labelSx]);
+
+	const finalFieldSx = useMemo(() => ({
+		...(ctx.fieldSx || {}),
+		...(fieldSx || {})
+	}), [ctx.fieldSx, fieldSx])
 
 	return (
 		<FormItemBox display={displayMap[layout]}>
@@ -95,7 +109,7 @@ export default function FormItem({
 					htmlFor={id}
 					display={fieldDisplayMap[layout]}
 					style={boxyStyle}
-					sx={labelSx || ctx.labelSx}
+					sx={finalLabelSx}
 				>
 					{required && (
 						<Box color="error.main" component={'span'}>
@@ -105,12 +119,11 @@ export default function FormItem({
 					{label}:
 				</Box>
 			)}
-			<Box display={fieldDisplayMap[layout]} sx={fieldSx || ctx.fieldSx} style={finalFieldStyle}>
+			<Box display={fieldDisplayMap[layout]} sx={finalFieldSx} style={finalFieldStyle}>
 				{fieldComponentUI}
 				{errorMsg ? (
 					<>
-						<br />
-						<Box color="error.main" component={'span'}>
+						<Box color="error.main" component={'span'} display={'block'}>
 							{<ErrorMessage name={name} />}
 						</Box>
 					</>

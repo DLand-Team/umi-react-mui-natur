@@ -5,7 +5,7 @@ export const FormItemBox = styled(Box)`
 	margin-bottom: ${({ theme }) => theme.spacing(1)};
 	.label-box {
 		flex: none;
-		margin-top: ${({ theme }) => theme.spacing(1)};
+		margin-top: ${({ theme }) => theme.spacing(0.5)};
 		margin-right: ${({ theme }) => theme.spacing(1)};
 		font-weight: bold;
 		white-space: pre-wrap;

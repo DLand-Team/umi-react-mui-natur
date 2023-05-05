@@ -6,9 +6,9 @@ import { omit, pick } from 'lodash';
 import React, { useMemo } from 'react';
 import type { FormContextType } from './context';
 import { FormContext } from './context';
+import type { FormType } from './type';
 
-
-export interface FormType<T> extends FormikContextType<T>, FormContextType {}
+export * from './type'
 
 const formProps = [
 	// 'layout',
