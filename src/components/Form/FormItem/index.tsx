@@ -1,14 +1,11 @@
 import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
 import type { FieldAttributes } from 'formik';
-import { useFormikContext } from 'formik';
-import { useField } from 'formik';
-import { ErrorMessage } from 'formik';
+import { ErrorMessage, useField, useFormikContext } from 'formik';
 import type { CSSProperties } from 'react';
-import { useCallback, useMemo } from 'react';
-import { useContext, useId } from 'react';
-import { FormItemBox } from './style';
+import { useCallback, useContext, useId, useMemo } from 'react';
 import { FormContext } from '../context';
+import { FormItemBox } from './style';
 
 export interface FormItemProps extends FieldAttributes<any> {
 	labelStyle?: CSSProperties;
@@ -79,26 +76,39 @@ export default function FormItem({
 
 	const onBlur = useCallback(() => {
 		setFieldTouched(name, true);
-	}, [name, setFieldTouched])
+	}, [name, setFieldTouched]);
 
 	const fieldComponentUI = useMemo(
 		() => (
-			<Comp {...restProps} {...field} onBlur={onBlur} onChange={onChange} id={id} {...errorPropMapper(errorMsg)}>
+			<Comp
+				{...restProps}
+				{...field}
+				onBlur={onBlur}
+				onChange={onChange}
+				id={id}
+				{...errorPropMapper(errorMsg)}
+			>
 				{children}
 			</Comp>
 		),
 		[Comp, children, errorMsg, errorPropMapper, field, id, onBlur, onChange, restProps],
 	);
 
-	const finalLabelSx = useMemo(() => ({
-		...(ctx.labelSx || {}),
-		...(labelSx || {})
-	}), [ctx.labelSx, labelSx]);
+	const finalLabelSx = useMemo(
+		() => ({
+			...(ctx.labelSx || {}),
+			...(labelSx || {}),
+		}),
+		[ctx.labelSx, labelSx],
+	);
 
-	const finalFieldSx = useMemo(() => ({
-		...(ctx.fieldSx || {}),
-		...(fieldSx || {})
-	}), [ctx.fieldSx, fieldSx])
+	const finalFieldSx = useMemo(
+		() => ({
+			...(ctx.fieldSx || {}),
+			...(fieldSx || {}),
+		}),
+		[ctx.fieldSx, fieldSx],
+	);
 
 	return (
 		<FormItemBox display={displayMap[layout]}>
