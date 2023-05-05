@@ -2,6 +2,8 @@ import { http } from '@/http';
 import { createAsyncController } from 'great-async';
 import dayjs from 'dayjs';
 import { sleep } from '@/utils';
+import { createObjectConvertor } from 'convert-key';
+
 
 export interface TableDataParams {
 	pageNum: number;
@@ -14,6 +16,9 @@ export type TableData = {
 	name: string;
 	address: string;
 }[];
+
+
+
 
 export const fetchTableData = async (p: TableDataParams) => {
 	// const res = await http.post<TableData>('/getTableData', p);
