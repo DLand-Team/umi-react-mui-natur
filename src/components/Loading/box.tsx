@@ -1,7 +1,9 @@
 import { ReactComponent as LoadingSvg } from '@/assets/svg/loading.svg';
-import type { BoxProps} from '@mui/material';
-import { CircularProgress } from '@mui/material';
-import { Box, Fade, keyframes, styled } from '@mui/material';
+import type { BoxProps, Theme } from '@mui/material';
+import { Box, CircularProgress, Fade, keyframes, styled } from '@mui/material';
+import type { BoxTypeMap } from '@mui/system';
+import type { OverridableComponent } from '@mui/types';
+import { forwardRef, useState } from 'react';
 
 const rotate = keyframes`
 	100% {
@@ -23,35 +25,35 @@ const SpiningLoadingBox = styled(Box)`
 	justify-content: center;
 `;
 
-export interface LoadingBoxProps extends BoxProps {
+export interface LoadingBoxBaseProps {
 	children: React.ReactNode;
 	loading?: boolean;
 	size?: number;
 	loadingZIndex?: number;
 }
 
-export function LoadingBox({
-	children,
-	loading = false,
-	size = 50,
-	loadingZIndex = 1,
-	...props
-}: LoadingBoxProps) {
-	const loadingUI = (
-		<Fade in={loading}>
-			<SpiningLoadingBox zIndex={loadingZIndex}>
-				<CircularProgress thickness={3} size={size} />
-				{/* <SpiningLoadingSvg style={{ width: size, height: size }} /> */}
-			</SpiningLoadingBox>
-		</Fade>
-	);
-	return (
-		<Box position="relative" {...props}>
-			{loadingUI}
-			{children}
-		</Box>
-	);
-}
+export interface LoadingBoxProps extends Omit<BoxProps, 'children'>, LoadingBoxBaseProps {}
+
+export const LoadingBox = forwardRef<HTMLDivElement, LoadingBoxProps>(
+	({ children, loading = false, size = 50, loadingZIndex = 1, ...props }: LoadingBoxProps, ref) => {
+		const [fadeEnd, setFadeEnd] = useState(false);
+
+		const loadingUI = (
+			<Fade in={loading} onExited={() => setFadeEnd(true)}>
+				<SpiningLoadingBox zIndex={loadingZIndex}>
+					<CircularProgress thickness={3} size={size} />
+					{/* <SpiningLoadingSvg style={{ width: size, height: size }} /> */}
+				</SpiningLoadingBox>
+			</Fade>
+		);
+		return (
+			<Box position="relative" ref={ref} {...props}>
+				{fadeEnd && !loading ? null : loadingUI}
+				{children}
+			</Box>
+		);
+	},
+) as OverridableComponent<BoxTypeMap<LoadingBoxBaseProps, 'div', Theme>>;
 
 export function LoadingOverlay() {
 	return (
