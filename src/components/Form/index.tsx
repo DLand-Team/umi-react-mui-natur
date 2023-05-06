@@ -1,3 +1,4 @@
+import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
 import type { FormikConfig, FormikContextType, FormikValues } from 'formik';
 import { useFormik } from 'formik';
@@ -29,6 +30,7 @@ export { default as FormItem } from './FormItem';
 export interface FormProps<T> extends FormContextType {
 	form: FormType<T>;
 	children: React.ReactNode;
+	formSx?: BoxProps['sx'];
 }
 
 export default function Form({
@@ -39,18 +41,21 @@ export default function Form({
 	fieldStyle,
 	labelSx,
 	fieldSx,
+	formItemSx,
+	formSx,
 }: FormProps<any>) {
 	const v = useMemo(() => ({
 		layout,
 		labelStyle,
 		fieldStyle,
 		labelSx,
-		fieldSx
-	}), [fieldStyle, fieldSx, labelStyle, labelSx, layout]);
+		fieldSx,
+		formItemSx,
+	}), [fieldStyle, fieldSx, formItemSx, labelStyle, labelSx, layout]);
 	return (
 		<FormContext.Provider value={v}>
 			<FormikProvider value={form}>
-				<Box>{children}</Box>
+				<Box sx={formSx}>{children}</Box>
 			</FormikProvider>
 		</FormContext.Provider>
 	);

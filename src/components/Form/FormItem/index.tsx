@@ -12,6 +12,8 @@ export interface FormItemProps extends FieldAttributes<any> {
 	labelSx?: BoxProps['sx'];
 	fieldStyle?: CSSProperties;
 	fieldSx?: BoxProps['sx'];
+	formItemSx?: BoxProps['sx'];
+
 	/**
 	 * show required sign(*)
 	 */
@@ -42,6 +44,7 @@ export default function FormItem({
 	labelSx,
 	fieldSx,
 	required = false,
+	formItemSx,
 	errorPropMapper = (error?: string) => ({ error: !!error }),
 	...restProps
 }: FormItemProps) {
@@ -110,8 +113,16 @@ export default function FormItem({
 		[ctx.fieldSx, fieldSx],
 	);
 
+	const finalFormItemSx = useMemo(
+		() => ({
+			...(ctx.formItemSx || {}),
+			...(formItemSx || {}),
+		}),
+		[ctx.formItemSx, formItemSx],
+	);
+
 	return (
-		<FormItemBox display={displayMap[layout]}>
+		<FormItemBox display={displayMap[layout]} sx={finalFormItemSx}>
 			{label && (
 				<Box
 					className="label-box"
