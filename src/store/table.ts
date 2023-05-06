@@ -31,15 +31,6 @@ const actions = {
 	},
 };
 
-const a = {
-	fetchTableData: () => async (api: ITP<State>) => {
-		const res = await fetchTableData(api.getState().listQuery);
-		return {
-			tableData: res,
-		};
-	},
-};
-
 const watch = {
 	route: (watchEvent: WatchEvent) => {
 		console.log(watchEvent.type);
