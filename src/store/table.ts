@@ -1,13 +1,12 @@
-import { fetchTableData } from '@/apis/demo';
-import type { TableData } from './../apis/demo';
-import { withAPI } from 'natur-immer';
-import type { WIA , ITP} from 'natur-immer';
-import type { WatchEvent } from 'natur';
+import { fetchTableData } from "@/apis/demo";
+import type { WatchEvent } from "natur";
+import type { ITP } from "natur-immer";
+import type { TableData } from "./../apis/demo";
 
 const state = {
 	tableData: [] as TableData,
 	listQuery: {
-		name: '',
+		name: "",
 		pageSize: 10,
 		pageNum: 1,
 	},
@@ -17,7 +16,7 @@ type State = typeof state;
 
 const actions = {
 	updateListQuery:
-		(listQuery: Partial<State['listQuery']>) =>
+		(listQuery: Partial<State["listQuery"]>) =>
 		({ setState }: ITP<State>) => {
 			setState((nowState) => {
 				nowState.listQuery = {
@@ -26,12 +25,14 @@ const actions = {
 				};
 			});
 		},
-	fetchTableData: withAPI(async ({ getState }: WIA<State>) => {
-		const res = await fetchTableData(getState().listQuery);
-		return {
-			tableData: res,
-		};
-	}),
+	fetchTableData:
+		() =>
+		async ({ getState }: ITP<State>) => {
+			const res = await fetchTableData(getState().listQuery);
+			return {
+				tableData: res,
+			};
+		},
 };
 
 const watch = {

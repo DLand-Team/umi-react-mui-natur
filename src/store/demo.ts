@@ -1,5 +1,4 @@
-import type { ITP, WIA } from 'natur-immer';
-import { withAPI } from 'natur-immer';
+import type { ITP } from 'natur-immer';
 
 const state = {
 	routePath: '',
@@ -12,15 +11,15 @@ const state = {
 type State = typeof state;
 
 const actions = {
-	updateLoadingText: withAPI((loadingText: string, { setState }: WIA<State>) =>
+	updateLoadingText: (loadingText: string) => ({ setState }: ITP<State>) => (
 		setState((s) => {
 			s.text.loading = loadingText;
-		}),
+		})
 	),
-	updateMessageText: withAPI((messageText: string, { setState }: WIA<State>) =>
+	updateMessageText: (messageText: string) => ({ setState }: ITP<State>) => (
 		setState((s) => {
 			s.text.message = messageText;
-		}),
+		})
 	),
 };
 

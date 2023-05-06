@@ -1,5 +1,4 @@
-import type { WIA } from 'natur-immer';
-import { withAPI } from 'natur-immer';
+import type { ITP, WIA } from 'natur-immer';
 /**
  * 全局loading状态管理
  */
@@ -24,12 +23,12 @@ export default {
 		showLoading: ['loadingCount', (lc: number) => !!lc],
 	},
 	actions: {
-		show: withAPI(({ getState }: WIA<State>) => ({
+		show: () => ({ getState }: ITP<State>) => ({
 			loadingCount: getState().loadingCount + 1,
-		})),
-		hide: withAPI(({ getState }: WIA<State>) => ({
+		}),
+		hide: () => ({ getState }: ITP<State>) => ({
 			loadingCount: getState().loadingCount - 1,
-		})),
+		}),
 		changeLoadingText: (loadingText: string) => ({ loadingText }),
 		changeLoadingZIndex: (loadingZIndex: number) => ({
 			loadingZIndex,
