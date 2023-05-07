@@ -1,5 +1,5 @@
 import { isBrowser } from './index';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFlatInject, useLocation as useOriginLocation } from 'umi';
 import qs from 'qs';
 
@@ -76,3 +76,21 @@ export function useLoading(loading: boolean) {
 	}, [hide])
 }
 
+
+export const useMousePosition = () => {
+	const [position, setPosition] = useState({
+		x: 0,
+		y: 0,
+	});
+	useEffect(() => {
+		const eventListner = (event: MouseEvent) => {
+			setPosition({
+				x: event.clientX,
+				y: event.clientY,
+			});
+		}
+		document.addEventListener('mousemove', eventListner);
+		return () => document.removeEventListener('mousemove', eventListner);
+	}, []);
+	return position;
+}
