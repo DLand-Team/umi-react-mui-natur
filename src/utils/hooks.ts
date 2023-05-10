@@ -2,6 +2,7 @@ import { isBrowser } from './index';
 import { useEffect, useRef, useState } from 'react';
 import { useFlatInject, useLocation as useOriginLocation } from 'umi';
 import qs from 'qs';
+import type { Observable } from 'rxjs';
 
 export {
 	useInject,
@@ -94,3 +95,23 @@ export const useMousePosition = () => {
 	}, []);
 	return position;
 }
+
+export const useObservable = <T extends any = any>(observer: Observable<T>, listener: (v: T) => any) => {
+  const listenerRef = useRef(listener);
+  listenerRef.current = listener;
+  useEffect(() => {
+    const unsubHandler = observer.subscribe((value) => {
+      listenerRef.current?.(value);
+    });
+    return () => unsubHandler.unsubscribe();
+  }, [observer]);
+};
+
+export const useObservableState = <T extends any = any>(observer: Observable<T>, defaultState: T) => {
+  const [state, setState] = useState(defaultState);
+  useEffect(() => {
+    const unsubHandler = observer.subscribe(setState);
+    return () => unsubHandler.unsubscribe();
+  }, [observer]);
+  return state;
+};
