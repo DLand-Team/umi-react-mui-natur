@@ -15,6 +15,7 @@ const columns: Columns<Rows[0]> = [
 		title: 'Name',
 		dataIndex: 'name',
 		fixed: 'left',
+		width: 100
 	},
 	{
 		title: 'Date',
@@ -81,6 +82,7 @@ export default function TableDemo() {
 				rowKey={'name'}
 				data={data || []}
 				columns={columns}
+				scroll={{x: 1500}}
 				loading={loading}
 			/>
 		</Box>
