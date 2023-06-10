@@ -14,7 +14,7 @@ const CodeHOC: (o: {showLineNumber: boolean}) => CodeComponent = ({showLineNumbe
         }
         className += ' hljs';
     } else if(className) {
-        codeStr = hljs.highlightAuto(props.children[0] as string).value;
+        codeStr = hljs.highlightAuto((props.children[0] as string)?.trim()).value;
 				if (showLineNumber) {
 					codeStr = addLineNumbers(codeStr);
 				}

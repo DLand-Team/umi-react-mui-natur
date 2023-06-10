@@ -10,8 +10,8 @@ import { Modal } from '@/utils/modal';
 export default function FormDemo() {
 	const form = useForm({
 		initialValues: {
-			name: '111111',
-			sex: 'man',
+			name: '',
+			sex: '',
 		},
 		onSubmit: async (formData, helpers) => {
 			await helpers.validateForm();

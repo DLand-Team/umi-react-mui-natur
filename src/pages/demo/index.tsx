@@ -74,23 +74,29 @@ const DemoPage = () => {
 					</ListItem>
 				</List>
 			</Box>
-			<Box ml={4} height={'100%'} overflow={'auto'}>
-				<Box component={'a'} id="form">
+			<Box p={4} height={'100%'} overflow={'auto'}>
+				<Box>
+					<Box component={'a'} id="form" />
 					<FormDemo />
 				</Box>
-				<Box component={'a'} id="loading">
+				<Box>
+					<Box component={'a'} id="loading" />
 					<LoadingDemo />
 				</Box>
-				<Box component={'a'} id="message">
+				<Box>
+					<Box component={'a'} id="message" />
 					<MessageDemo />
 				</Box>
-				<Box component={'a'} id="table">
+				<Box>
+					<Box component={'a'} id="table"/>
 					<TableDemo />
 				</Box>
-				<Box component={'a'} id="code-render">
+				<Box>
+					<Box component={'a'} id="code-render" />
 					<CodeRenderDemo />
 				</Box>
-				<Box component={'a'} id="markdown-render">
+				<Box>
+					<Box component={'a'} id="markdown-render" />
 					<MDRenderDemo />
 				</Box>
 				<Box />
