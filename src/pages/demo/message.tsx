@@ -1,7 +1,6 @@
 import { Button, Box, TextField } from '@mui/material';
 import { useFlatInject } from 'umi';
 
-import AuthButton from '@/components/Button';
 
 export const MessageDemo = () => {
 	const [demo] = useFlatInject('demo', { state: [(s) => s.text.message] });
@@ -35,9 +34,6 @@ export const MessageDemo = () => {
 					show warning message
 				</Button>
 			</Box>
-			<AuthButton variant="contained" color="warning" auth="aaa" onClick={showToast('warning')}>
-				auth btn
-			</AuthButton>
 		</Box>
 	);
 };

@@ -8,6 +8,7 @@ import { LoadingDemo } from './loading';
 import { MDRenderDemo } from './mdRender';
 import { MessageDemo } from './message';
 import TableDemo from './table';
+import { AuthDemo } from './auth';
 
 const MyListItemLink = ({ href, ...props }: ListItemButtonProps & { href: string }) => {
 	return (
@@ -72,6 +73,11 @@ const DemoPage = () => {
 							<ListItemText primary="Markdown" />
 						</MyListItemLink>
 					</ListItem>
+					<ListItem disablePadding>
+						<MyListItemLink href="#auth">
+							<ListItemText primary="Auth" />
+						</MyListItemLink>
+					</ListItem>
 				</List>
 			</Box>
 			<Box p={4} height={'100%'} overflow={'auto'}>
@@ -98,6 +104,10 @@ const DemoPage = () => {
 				<Box>
 					<Box component={'a'} id="markdown-render" />
 					<MDRenderDemo />
+				</Box>
+				<Box>
+					<Box component={'a'} id="auth" />
+					<AuthDemo />
 				</Box>
 				<Box />
 			</Box>
