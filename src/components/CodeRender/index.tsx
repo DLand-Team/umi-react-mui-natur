@@ -15,13 +15,14 @@ export default function CodeRender({
 	showLineNumber = false,
 	startLineNumber = 1,
 }: CodeRenderProps) {
+	const trimedCode = code?.trim();
 	const codeHtml = useMemo(() => {
 		let res = '';
-		if (code) {
+		if (trimedCode) {
 			if (language) {
-				res = hljs.highlight(code, { language: language }).value;
+				res = hljs.highlight(trimedCode, { language: language }).value;
 			} else {
-				res = hljs.highlightAuto(code).value;
+				res = hljs.highlightAuto(trimedCode).value;
 			}
 			if (showLineNumber) {
 				res = addLineNumbers(res, {
@@ -30,7 +31,7 @@ export default function CodeRender({
 			}
 		}
 		return { __html: res };
-	}, [code, language, showLineNumber, startLineNumber]);
+	}, [trimedCode, language, showLineNumber, startLineNumber]);
 	return (
 		<Pre>
 			<code

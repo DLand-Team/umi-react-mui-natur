@@ -18,7 +18,8 @@ const jsonCode = JSON.stringify({
  ]
 }, null, 2);
 
-const tsxCode = `import CodeRender from '@/components/CodeRender';
+const tsxCode = `
+import CodeRender from '@/components/CodeRender';
 import { Box } from '@mui/material';
 
 export const CodeRenderDemo = () => {
