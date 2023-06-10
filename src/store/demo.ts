@@ -4,7 +4,7 @@ const state = {
 	routePath: '',
 	text: {
 		loading: '',
-		message: '1111',
+		message: 'message a',
 	},
 };
 

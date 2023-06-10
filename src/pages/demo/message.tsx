@@ -14,7 +14,6 @@ export const MessageDemo = () => {
 		<Box>
 			<h1>Message Demo</h1>
 			<TextField margin="normal" label="demo message text" name="demo message" value={demo.text.message} onChange={(e) => demo.updateMessageText(e.target.value)} />
-			<TextField margin="normal" label="demo loading text" name="demo loading" value={demo.text.loading} onChange={(e) => demo.updateLoadingText(e.target.value)} />
 			<br />
 			<Box mr={1} component="span">
 				<Button variant="contained" color="error" onClick={showToast('error')}>
