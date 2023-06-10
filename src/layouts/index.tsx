@@ -8,6 +8,7 @@ export default function Layout() {
   useEffect(() => {
     // 监听路由变化，并同步到store
     store.dispatch('route', 'updatePath', location.pathname);
+    store.dispatch('route', 'updateQuery', location.query);
   }, [location])
   
   return (

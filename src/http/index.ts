@@ -21,7 +21,7 @@ _http.interceptors.request.use(
 
 _http.interceptors.response.use(
 	(response) => {
-		// 如果401是未登录状态, 则跳转到登录页面
+		// if response code is 401 which stand for unlogin then page will navigate to login page
 		if (response.data.code == '401') {
 			const redirect = location.pathname + location.search;
 			history.replace(`/login?redirect=${redirect}`);

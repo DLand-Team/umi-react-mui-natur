@@ -10,7 +10,7 @@ export type ResponseType<D> = {
 
 export const overrideHttpType = (_http: AxiosInstance) => {
 
-	// 重写axios的类型
+	// rewrite axios's type
 	type GetParams = Parameters<typeof _http.get>;
 	type PostParams = Parameters<typeof _http.post>;
 	type PatchParams = Parameters<typeof _http.patch>;
