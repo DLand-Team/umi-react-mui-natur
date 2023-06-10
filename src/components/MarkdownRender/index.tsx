@@ -13,11 +13,10 @@ export interface MarkdownRenderProps extends BoxProps {
     showLineNumber?: boolean;
 }
 
-const MarkdownRender = ({children, text, showLineNumber = true, className, ...boxProps}: MarkdownRenderProps) => {
+const MarkdownRender = ({children, text, showLineNumber = false, className, ...boxProps}: MarkdownRenderProps) => {
     const finalCls = classnames(className, {
         [showLineNumberStyle]: showLineNumber
     });
-
     const components = useMemo(() => ({code: showLineNumber ? CodeWithLineNumber : Code}), [showLineNumber]);
 
     return (

@@ -1,5 +1,7 @@
 import { addLineNumbers, hljs } from '@/plugins/highlight';
+import { Box } from '@mui/material';
 import type { CodeComponent, CodeProps } from 'react-markdown/lib/ast-to-react';
+import CodeRender from '../CodeRender';
 
 
 const CodeHOC: (o: {showLineNumber: boolean}) => CodeComponent = ({showLineNumber}) => (props: CodeProps) => {
@@ -13,12 +15,15 @@ const CodeHOC: (o: {showLineNumber: boolean}) => CodeComponent = ({showLineNumbe
         className += ' hljs';
     } else if(className) {
         codeStr = hljs.highlightAuto(props.children[0] as string).value;
+				if (showLineNumber) {
+					codeStr = addLineNumbers(codeStr);
+				}
         className += ' hljs'
     } else {
         codeStr = props.children[0] as string;
     }
     return (
-        <code className={className} dangerouslySetInnerHTML={{__html: codeStr}} />
+        <Box component='code' className={className} dangerouslySetInnerHTML={{__html: codeStr}} />
     );
 }
 

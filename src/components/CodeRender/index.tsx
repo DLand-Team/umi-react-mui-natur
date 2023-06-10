@@ -4,7 +4,7 @@ import { Pre } from './style';
 
 export interface CodeRenderProps {
 	code: string;
-	language?: 'json' | 'markdown';
+	language?: 'json' | 'markdown' | 'tsx';
 	showLineNumber?: boolean;
 	startLineNumber?: number;
 }
