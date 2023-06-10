@@ -17,6 +17,7 @@ export const NaturStoreDemo = () => {
 			<ul>
 				<li>demo store code locate in <code>/store/demo.ts</code> directory</li>
 				<li>you can install redux devtool extention in chrome to view the state</li>
+				<li>more detail in <a href="https://www.npmjs.com/package/natur" target="_blank" rel="noreferrer">natur store</a></li>
 			</ul>
 			
 			<br />
