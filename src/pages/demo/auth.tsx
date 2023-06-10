@@ -4,7 +4,6 @@ import AuthButton from '@/components/Button';
 import { useFlatInject } from "umi";
 
 
-
 export const AuthDemo = () => {
 	
 	const [{hasAuth}] = useFlatInject('user');
@@ -13,7 +12,7 @@ export const AuthDemo = () => {
 		<Box>
 			<h1>Auth demo</h1>
 
-			<p>Auth config is in user store&apos;s state</p>
+			<p>Auth config is authList state in user store</p>
 			<AuthButton auth="aaa" variant="contained">aaa button</AuthButton>
 			<AuthButton auth="b">b button</AuthButton>
 

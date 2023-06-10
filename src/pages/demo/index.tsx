@@ -9,6 +9,7 @@ import { MDRenderDemo } from './mdRender';
 import { MessageDemo } from './message';
 import TableDemo from './table';
 import { AuthDemo } from './auth';
+import { NaturStoreDemo } from './store';
 
 const MyListItemLink = ({ href, ...props }: ListItemButtonProps & { href: string }) => {
 	return (
@@ -78,6 +79,11 @@ const DemoPage = () => {
 							<ListItemText primary="Auth" />
 						</MyListItemLink>
 					</ListItem>
+					<ListItem disablePadding>
+						<MyListItemLink href="#store">
+							<ListItemText primary="Natur Store" />
+						</MyListItemLink>
+					</ListItem>
 				</List>
 			</Box>
 			<Box p={4} height={'100%'} overflow={'auto'}>
@@ -108,6 +114,10 @@ const DemoPage = () => {
 				<Box>
 					<Box component={'a'} id="auth" />
 					<AuthDemo />
+				</Box>
+				<Box>
+					<Box component={'a'} id="store" />
+					<NaturStoreDemo />
 				</Box>
 				<Box />
 			</Box>

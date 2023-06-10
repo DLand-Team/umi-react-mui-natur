@@ -6,6 +6,9 @@ const state = {
 		loading: '',
 		message: 'message a',
 	},
+	naturStore: {
+		text: '',
+	}
 };
 
 type State = typeof state;
@@ -19,6 +22,11 @@ const actions = {
 	updateMessageText: (messageText: string) => ({ setState }: ITP<State>) => (
 		setState((s) => {
 			s.text.message = messageText;
+		})
+	),
+	updateNaturStoreText: (text: string) => ({ setState }: ITP<State>) => (
+		setState((s) => {
+			s.naturStore.text = text;
 		})
 	),
 };
