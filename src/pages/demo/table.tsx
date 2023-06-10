@@ -6,7 +6,6 @@ import { useHttp, useLoading } from '@/utils/hooks';
 import { Box, Button } from '@mui/material';
 import type { PickPromiseType } from 'great-async';
 import { useEffect, useState } from 'react';
-import { Link } from 'umi';
 
 type Rows = PickPromiseType<typeof fetchTableData>;
 
