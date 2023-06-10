@@ -1,11 +1,12 @@
-import { sleep } from "@/utils";
-import { Box, Button, TextField } from "@mui/material"
-import { useFlatInject } from "umi";
-
-
+import { LoadingBox } from '@/components/Loading/box';
+import { sleep } from '@/utils';
+import { Box, Button, TextField } from '@mui/material';
+import { useState } from 'react';
+import { useFlatInject } from 'umi';
 
 export const LoadingDemo = () => {
 	const [loading] = useFlatInject('loading', {});
+	const [loading2, setLoading2] = useState(false);
 
 	const showLoading = async () => {
 		loading.show();
@@ -15,7 +16,9 @@ export const LoadingDemo = () => {
 	return (
 		<Box>
 			<h1>Loading Demo</h1>
-			<TextField
+			<Box display={'flex'}>
+				<Box>
+					<TextField
 						margin="normal"
 						label="loading text"
 						name="loading"
@@ -26,8 +29,30 @@ export const LoadingDemo = () => {
 					/>
 					<br />
 					<Button variant="contained" color="info" onClick={showLoading}>
-						show loading
+						show global loading
 					</Button>
+				</Box>
+				<LoadingBox
+					bgcolor={'lightblue'}
+					display={'flex'}
+					alignItems={'center'}
+					justifyContent={'center'}
+					width={200}
+					height={200}
+					ml={50}
+					loading={loading2}
+				>
+					<Button
+						onClick={async () => {
+							setLoading2(true);
+							await sleep(2000);
+							setLoading2(false);
+						}}
+					>
+						show loading box
+					</Button>
+				</LoadingBox>
+			</Box>
 		</Box>
-	)
-}
+	);
+};

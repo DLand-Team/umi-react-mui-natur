@@ -9,7 +9,7 @@ export default [
 			},
 			{
 				path: '/home',
-				component: 'home',
+				component: 'demo',
 			},
 			{
 				path: '/demo',
