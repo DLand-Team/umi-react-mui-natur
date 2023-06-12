@@ -1,5 +1,5 @@
 import { sleep } from '@/utils';
-import { useAsyncFunction } from '@/utils/greate-async';
+import { useAsyncFunction } from 'great-async';
 import '@testing-library/jest-dom/extend-expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useEffect, useState } from 'react';

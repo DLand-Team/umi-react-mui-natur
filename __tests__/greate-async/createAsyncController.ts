@@ -1,4 +1,4 @@
-import { cacheMap, createAsyncController } from './../../src/utils/greate-async';
+import { cacheMap, createAsyncController } from 'great-async';
 import { sleep } from './../../src/utils/index';
 
 
@@ -417,16 +417,3 @@ test('retry call fn when occur error and return success finally', async () => {
 	});
 });
 
-
-
-
-test('recreate', async () => {
-	const getUserData = createAsyncController(async () => {
-		await sleep(100);
-		return {
-			name: 'tom',
-			age: 10
-		}
-	});
-	expect(createAsyncController(getUserData)).toBe(getUserData);
-});

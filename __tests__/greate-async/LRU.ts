@@ -1,4 +1,4 @@
-import { LRU } from "@/utils/greate-async/LRU";
+import { LRU } from "great-async/dist/LRU";
 
 
 
