@@ -113,5 +113,12 @@ export const TableBox = styled(LoadingBox)`
 				box-shadow: inset -10px 0 8px -8px ${fixShadowColor};
 			}
 		}
+		&-has-fix-left {
+			.mui-table-expanded-row {
+				.mui-table-expanded-row-fixed {
+					position: static !important;
+				}
+			}
+		}
 	}
 `;

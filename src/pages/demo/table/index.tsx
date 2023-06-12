@@ -3,9 +3,13 @@ import { SearchInput } from '@/components/SearchInput';
 import type { Columns } from '@/components/Table';
 import { Table } from '@/components/Table';
 import { useHttp, useLoading } from '@/utils/hooks';
+import { css } from '@emotion/css';
 import { Box, Button } from '@mui/material';
 import type { PickPromiseType } from 'great-async';
 import { useEffect, useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 type Rows = PickPromiseType<typeof fetchTableData>;
 
@@ -65,17 +69,8 @@ export default function TableDemo() {
 	return (
 		<Box sx={{ p: 1 }}>
 			<h1>Table Demo</h1>
-			<SearchInput
-				value={listQuery.name}
-				onChange={(e) => {
-					setListQuery({
-						...listQuery,
-						name: e.target.value,
-					});
-				}}
-				onSearch={() => run()}
-				loading={loading}
-			/>
+			<b>More detail you look for in <a href="https://www.npmjs.com/package/rc-table" target='_blank' rel="noreferrer">npm link</a></b>
+			<p>expandable and fixed columns table</p>
 			<Table
 				sx={{mt: 1}}
 				rowKey={'name'}
@@ -83,6 +78,27 @@ export default function TableDemo() {
 				columns={columns}
 				scroll={{x: 1500}}
 				loading={loading}
+				expandable={{
+					columnTitle: <i>Expand</i>,
+					columnWidth: 80,
+					expandedRowClassName: () => 'expand-row-class',
+					expandedRowRender: (record) => {
+						return <div style={{position: 'static'}}>{record.name}-{record.address}-{record.date}</div>
+					},
+					expandIcon: (props) => {
+						return (
+							<Box onClick={e => props.onExpand(props.record, e)}>
+								<Box component={ChevronRightIcon} sx={{
+									transition: 'transform 0.2s',
+									transform: props.expanded ? 'rotate(90deg)' : ''
+								}} />
+								{/* {
+								props.expanded ? <RemoveIcon /> : <AddIcon />
+							} */}
+							</Box>
+						);
+					}
+				}}
 			/>
 		</Box>
 	);

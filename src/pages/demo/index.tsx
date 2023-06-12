@@ -10,6 +10,7 @@ import { MessageDemo } from './message';
 import TableDemo from './table';
 import { AuthDemo } from './auth';
 import { NaturStoreDemo } from './store';
+import { DatePickerDemo } from './date-picker';
 
 const MyListItemLink = ({ href, ...props }: ListItemButtonProps & { href: string }) => {
 	return (
@@ -84,9 +85,15 @@ const DemoPage = () => {
 							<ListItemText primary="Natur Store" />
 						</MyListItemLink>
 					</ListItem>
+					<ListItem disablePadding>
+						<MyListItemLink href="#date-picker">
+							<ListItemText primary="Date Picker" />
+						</MyListItemLink>
+					</ListItem>
+					
 				</List>
 			</Box>
-			<Box p={4} height={'100%'} overflow={'auto'}>
+			<Box p={4} pb={20} height={'100%'} overflow={'auto'}>
 				<Box>
 					<Box component={'a'} id="form" />
 					<FormDemo />
@@ -118,6 +125,10 @@ const DemoPage = () => {
 				<Box>
 					<Box component={'a'} id="store" />
 					<NaturStoreDemo />
+				</Box>
+				<Box>
+					<Box component={'a'} id="date-picker" />
+					<DatePickerDemo />
 				</Box>
 				<Box />
 			</Box>
