@@ -17,6 +17,7 @@ import { sleep } from '@/utils';
 
 export interface ConfirmDialogProps {
 	title?: ReactNode;
+	icon?: ReactNode;
 	content?: ReactNode;
 	cancelText?: string;
 	confirmText?: string;
@@ -33,6 +34,7 @@ const Transition = React.forwardRef(function Transition(
 
 function MyDialog({
 	title,
+	icon,
 	content,
 	cancelText,
 	confirmText,
@@ -75,7 +77,7 @@ function MyDialog({
 			aria-describedby="alert-dialog-description"
 		>
 			<DialogTitle id="alert-dialog-title" sx={{ display: 'flex', alignItems: 'center' }}>
-				<ErrorIcon color={'warning'} sx={{ mr: 1 }} />
+				{ icon || <ErrorIcon color={'warning'} sx={{ mr: 1 }} />}
 				{title}
 			</DialogTitle>
 			<DialogContent>
@@ -83,7 +85,7 @@ function MyDialog({
 				{content}
 			</DialogContent>
 			<DialogActions sx={{ padding: 2 }}>
-				<Button variant={'contained'} onClick={localConfirm} autoFocus>
+				<Button variant={'contained'} onClick={localConfirm}>
 					{confirmText}
 				</Button>
 				<Button variant={'outlined'} onClick={localCancel}>

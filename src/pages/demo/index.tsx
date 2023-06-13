@@ -11,6 +11,7 @@ import TableDemo from './table';
 import { AuthDemo } from './auth';
 import { NaturStoreDemo } from './store';
 import { DatePickerDemo } from './date-picker';
+import { ModalDemo } from './modal';
 
 const MyListItemLink = ({ href, ...props }: ListItemButtonProps & { href: string }) => {
 	return (
@@ -43,7 +44,7 @@ const DemoPage = () => {
 
 	return (
 		<Box display={'flex'} height={'100%'}>
-			<Box component={Paper} height={'100%'} elevation={10} width={300} borderRadius={0}>
+			<Box component={Paper} height={'100%'} flex={'none'} elevation={10} width={300} borderRadius={0}>
 				<List>
 					<ListItem disablePadding>
 						<MyListItemLink href="#form">
@@ -58,6 +59,12 @@ const DemoPage = () => {
 					<ListItem disablePadding>
 						<MyListItemLink href="#message">
 							<ListItemText primary="Message" />
+						</MyListItemLink>
+					</ListItem>
+
+					<ListItem disablePadding>
+						<MyListItemLink href="#modal-confirm">
+							<ListItemText primary="Confirm Modal" />
 						</MyListItemLink>
 					</ListItem>
 					<ListItem disablePadding>
@@ -90,6 +97,7 @@ const DemoPage = () => {
 							<ListItemText primary="Date Picker" />
 						</MyListItemLink>
 					</ListItem>
+
 					
 				</List>
 			</Box>
@@ -105,6 +113,10 @@ const DemoPage = () => {
 				<Box>
 					<Box component={'a'} id="message" />
 					<MessageDemo />
+				</Box>
+				<Box>
+					<Box component={'a'} id="modal-confirm" />
+					<ModalDemo />
 				</Box>
 				<Box>
 					<Box component={'a'} id="table"/>
