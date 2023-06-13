@@ -37,8 +37,8 @@ export const CodeRenderDemo = () => {
 			<CodeRender code={tsxCode} language="tsx" showLineNumber />
 		</Box>
 	);
-};
-`.replaceAll('	', '  ');
+}; 
+`.replaceAll('	', '  '); // replace tab to 2 space
 
 export const CodeRenderDemo = () => {
 	return (

@@ -1,13 +1,13 @@
-# 开发指南
+# Development Guide
 
 
-## 目录
+## Table of Contents
 
-1. [目录说明](#目录说明)
-1. [开源库说明](#开源库说明)
+1. [Directory Explanation](#directory-explanation)
+1. [Open Source Library Description](#open-source-library-description)
 
 
-## 安装依赖
+## Installing Dependencies
 
 
 ```bash
@@ -16,7 +16,7 @@ npm i
 yarn
 ```
 
-## 启动项目
+## Starting the Project
 
 ```bash
 npm run dev
@@ -24,10 +24,10 @@ npm run dev
 yarn dev
 ```
 
-## 部署
+## Deployment
 
 
-### 打包
+### Building
 ```bash
 npm run build
 # or
@@ -35,29 +35,28 @@ yarn build
 
 ```
 
-## 目录说明
+## Directory Explanation
 
-1. `/page` 存放页面
-1. `/components` 存放组件
-1. `/constants` 存放常量和枚举
-1. `/plugins` 存放插件和库相关
-1. `/utils` 存放工具方法
-1. `/assets` 存放静态资源
-1. `/http` 存放http相关如：请求入口，请求相关hook，文件上传，图片传输等
-1. `global.scss` 存放全局样式
-1. `app.tsx` 运行时配置，详情见umi文档
+1. `/page` - Stores pages.
+1. `/components` - Stores components.
+1. `/constants` - Stores constants and enumerations.
+1. `/plugins` - Stores plugins and library-related files.
+1. `/utils` - Stores utility methods.
+1. `/assets` - Stores static resources.
+1. `/http` - Stores HTTP-related files such as request entry points, request hooks, file uploads, image transfers, etc.
+1. `global.scss` - Stores global styles.
+1. `app.tsx` - Runtime configuration, details can be found in the Umi documentation.
 
 
-## 开源库说明
+## Open Source Library Description
 
-1. UI库[mui](https://mui.com/)
-1. 状态管理[natur](https://www.npmjs.com/package/natur)
-1. 事件管理[rxjs](https://rxjs.dev/guide/overview)
-1. 基础工具函数[lodash](https://www.npmjs.com/package/lodash)
-1. 表单校验组件[formik](https://www.npmjs.com/package/formik)
-1. 数据校验工具[yup](https://www.npmjs.com/package/yup)
-1. URL工具[qs](https://www.npmjs.com/package/qs)
-1. 计算库[decimal.js](https://www.npmjs.com/package/decimal.js)
-1. 颜色处理库[color](https://www.npmjs.com/package/color)
-1. 时间处理库[dayjs](https://www.npmjs.com/package/dayjs)
-
+1. UI library [mui](https://mui.com/)
+1. State management [natur](https://www.npmjs.com/package/natur)
+1. Event management [rxjs](https://rxjs.dev/guide/overview)
+1. Basic utility functions [lodash](https://www.npmjs.com/package/lodash)
+1. Form validation component [formik](https://www.npmjs.com/package/formik)
+1. Data validation tool [yup](https://www.npmjs.com/package/yup)
+1. URL utility [qs](https://www.npmjs.com/package/qs)
+1. Calculation library [decimal.js](https://www.npmjs.com/package/decimal.js)
+1. Color processing library [color](https://www.npmjs.com/package/color)
+1. Date and time processing library [dayjs](https://www.npmjs.com/package/dayjs)
