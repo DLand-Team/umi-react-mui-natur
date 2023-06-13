@@ -5,13 +5,13 @@ import type { ITP, WIA } from 'natur-immer';
 
 const state = {
 	/**
-	 * loading次数
+	 * loading count
 	 */
 	loadingCount: 0,
 	/**
-	 * loading文本
+	 * loading text 
 	 */
-	loadingText: '加载中',
+	loadingText: 'loading',
 	loadingZIndex: 100,
 };
 

@@ -81,7 +81,7 @@ const DemoPage = () => {
 						</MyListItemLink>
 					</ListItem>
 					<ListItem disablePadding>
-						<MyListItemLink href="#store">
+						<MyListItemLink href="#natur-store">
 							<ListItemText primary="Natur Store" />
 						</MyListItemLink>
 					</ListItem>
@@ -123,7 +123,7 @@ const DemoPage = () => {
 					<AuthDemo />
 				</Box>
 				<Box>
-					<Box component={'a'} id="store" />
+					<Box component={'a'} id="natur-store" />
 					<NaturStoreDemo />
 				</Box>
 				<Box>

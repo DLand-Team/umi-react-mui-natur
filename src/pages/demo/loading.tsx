@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useFlatInject } from 'umi';
 
 export const LoadingDemo = () => {
-	const [loading] = useFlatInject('loading', {});
+	const [loading] = useFlatInject('loading');
 	const [loading2, setLoading2] = useState(false);
 
 	const showLoading = async () => {
