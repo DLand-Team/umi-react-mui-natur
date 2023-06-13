@@ -12,6 +12,7 @@ import { AuthDemo } from './auth';
 import { NaturStoreDemo } from './store';
 import { DatePickerDemo } from './date-picker';
 import { ModalDemo } from './modal';
+import { CascaderDemo } from './cascader';
 
 const MyListItemLink = ({ href, ...props }: ListItemButtonProps & { href: string }) => {
 	return (
@@ -97,6 +98,11 @@ const DemoPage = () => {
 							<ListItemText primary="Date Picker" />
 						</MyListItemLink>
 					</ListItem>
+					<ListItem disablePadding>
+						<MyListItemLink href="#cascader">
+							<ListItemText primary="Cascader" />
+						</MyListItemLink>
+					</ListItem>
 
 					
 				</List>
@@ -141,6 +147,10 @@ const DemoPage = () => {
 				<Box>
 					<Box component={'a'} id="date-picker" />
 					<DatePickerDemo />
+				</Box>
+				<Box>
+					<Box component={'a'} id="cascader" />
+					<CascaderDemo />
 				</Box>
 				<Box />
 			</Box>

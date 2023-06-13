@@ -32,6 +32,7 @@
     "natur-immer": "^1.0.11",
     "numeral": "^2.0.6",
     "qs": "^6.11.0",
+    "rc-cascader": "^3.8.0",
     "rc-picker": "^3.8.1",
     "rc-table": "^7.31.1",
     "react-markdown": "^8.0.6",
@@ -60,6 +61,6 @@
     "sass": "^1.56.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.1.2",
-    "umi-natur": "^2.0.0"
+    "umi-natur": "^2.0.1"
   }
 }
