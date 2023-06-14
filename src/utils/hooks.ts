@@ -115,3 +115,33 @@ export const useObservableState = <T extends any = any>(observer: Observable<T>,
   }, [observer]);
   return state;
 };
+
+
+
+export function useEventListener<
+	E extends HTMLElement,
+	ET extends keyof HTMLElementEventMap
+> (ele: E | null, eventType: ET, eventHandler: (e: HTMLElementEventMap[ET]) => any): void;
+export function useEventListener<
+	E extends Document,
+	ET extends keyof DocumentEventMap
+// eslint-disable-next-line @typescript-eslint/unified-signatures
+> (ele: E | null, eventType: ET, eventHandler: (e: DocumentEventMap[ET]) => any): void;
+export function useEventListener<
+	E extends HTMLElement,
+	ET extends keyof HTMLElementEventMap
+> (ele: E | null, eventType: ET, eventHandler: (e: HTMLElementEventMap) => any) {
+	const eventHandlerRef = useRef(eventHandler);
+	eventHandlerRef.current = eventHandler;
+	useEffect(() => {
+		if (ele) {
+			const eventHandle = (e: HTMLElementEventMap[ET]) => {
+				eventHandlerRef.current?.(e);
+			}
+			ele.addEventListener(eventType, eventHandle);
+			return () => {
+				ele.removeEventListener(eventType, eventHandle);
+			}
+		}
+	}, [ele, eventType])
+}
