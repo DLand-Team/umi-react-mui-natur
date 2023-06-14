@@ -123,10 +123,20 @@ export function useEventListener<
 	ET extends keyof HTMLElementEventMap
 > (ele: E | null, eventType: ET, eventHandler: (e: HTMLElementEventMap[ET]) => any): void;
 export function useEventListener<
+	E extends SVGElement,
+	ET extends keyof SVGElementEventMap
+// eslint-disable-next-line @typescript-eslint/unified-signatures
+> (ele: E | null, eventType: ET, eventHandler: (e: SVGElementEventMap[ET]) => any): void;
+export function useEventListener<
 	E extends Document,
 	ET extends keyof DocumentEventMap
 // eslint-disable-next-line @typescript-eslint/unified-signatures
 > (ele: E | null, eventType: ET, eventHandler: (e: DocumentEventMap[ET]) => any): void;
+export function useEventListener<
+	E extends Window,
+	ET extends keyof WindowEventMap
+// eslint-disable-next-line @typescript-eslint/unified-signatures
+> (ele: E | null, eventType: ET, eventHandler: (e: WindowEventMap[ET]) => any): void;
 export function useEventListener<
 	E extends HTMLElement,
 	ET extends keyof HTMLElementEventMap
