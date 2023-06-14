@@ -130,7 +130,7 @@ export function useEventListener<
 export function useEventListener<
 	E extends HTMLElement,
 	ET extends keyof HTMLElementEventMap
-> (ele: E | null, eventType: ET, eventHandler: (e: HTMLElementEventMap) => any) {
+> (ele: E | null, eventType: ET, eventHandler: (e: HTMLElementEventMap[ET]) => any) {
 	const eventHandlerRef = useRef(eventHandler);
 	eventHandlerRef.current = eventHandler;
 	useEffect(() => {
