@@ -1,8 +1,9 @@
 import { isBrowser } from './index';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFlatInject, useLocation as useOriginLocation } from 'umi';
 import qs from 'qs';
 import type { Observable } from 'rxjs';
+import { debounce } from 'lodash';
 
 export {
 	useInject,
@@ -164,4 +165,24 @@ export function useEventListener<E extends HTMLElement, ET extends keyof HTMLEle
 			};
 		}
 	}, [ele, eventType]);
+}
+
+
+
+export function useFnRef<T>(fn: T) {
+	const fnRef = useRef(fn);
+
+	fnRef.current = fn;
+
+	return fnRef;
+}
+
+export function useDebounceFn<T extends (...args: any) => any>(fn: T, time: number = 10) {
+	const fnRef = useFnRef(fn);
+	return useMemo(() => {
+		return debounce((...args: Parameters<T>) => {
+			// @ts-ignore
+			fnRef.current?.(...args);
+		}, time);
+	}, []);
 }
