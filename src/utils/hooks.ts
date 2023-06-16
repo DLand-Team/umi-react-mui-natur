@@ -1,5 +1,5 @@
 import { isBrowser } from './index';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFlatInject, useLocation as useOriginLocation } from 'umi';
 import qs from 'qs';
 import type { Observable } from 'rxjs';
@@ -169,20 +169,18 @@ export function useEventListener<E extends HTMLElement, ET extends keyof HTMLEle
 
 
 
-export function useFnRef<T>(fn: T) {
+export function useFn<T extends (...args: any) => any>(fn: T) {
 	const fnRef = useRef(fn);
-
 	fnRef.current = fn;
-
-	return fnRef;
+	return useCallback((...args: Parameters<T>) => {
+		// @ts-ignore
+		fnRef.current?.(...args);
+	}, []);
 }
 
 export function useDebounceFn<T extends (...args: any) => any>(fn: T, time: number = 10) {
-	const fnRef = useFnRef(fn);
+	const fnProxy = useFn(fn);
 	return useMemo(() => {
-		return debounce((...args: Parameters<T>) => {
-			// @ts-ignore
-			fnRef.current?.(...args);
-		}, time);
+		return debounce(fnProxy, time);
 	}, []);
 }
