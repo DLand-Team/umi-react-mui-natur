@@ -145,10 +145,10 @@ export function useEventListener<E extends HTMLElement, ET extends keyof HTMLEle
 ) {
 	const eventHandlerRef = useRef(eventHandler);
 	eventHandlerRef.current = eventHandler;
-	const [count, setCount] = useState(0);
+	const [,refresh] = useState({});
 	useEffect(() => {
 		if (!ele) {
-			setCount((c) => c + 0.001);
+			refresh({});
 		}
 	}, [ele]);
 	useEffect(() => {
