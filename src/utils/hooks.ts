@@ -118,40 +118,48 @@ export const useObservableState = <T extends any = any>(observer: Observable<T>,
 
 
 
-export function useEventListener<
-	E extends HTMLElement,
-	ET extends keyof HTMLElementEventMap
-> (ele: E | null, eventType: ET, eventHandler: (e: HTMLElementEventMap[ET]) => any): void;
+export function useEventListener<E extends HTMLElement, ET extends keyof HTMLElementEventMap>(
+	ele: E | null,
+	eventType: ET,
+	eventHandler: (e: HTMLElementEventMap[ET]) => any,
+): void;
 export function useEventListener<
 	E extends SVGElement,
-	ET extends keyof SVGElementEventMap
-// eslint-disable-next-line @typescript-eslint/unified-signatures
-> (ele: E | null, eventType: ET, eventHandler: (e: SVGElementEventMap[ET]) => any): void;
+	ET extends keyof SVGElementEventMap,
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+>(ele: E | null, eventType: ET, eventHandler: (e: SVGElementEventMap[ET]) => any): void;
 export function useEventListener<
 	E extends Document,
-	ET extends keyof DocumentEventMap
-// eslint-disable-next-line @typescript-eslint/unified-signatures
-> (ele: E | null, eventType: ET, eventHandler: (e: DocumentEventMap[ET]) => any): void;
+	ET extends keyof DocumentEventMap,
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+>(ele: E | null, eventType: ET, eventHandler: (e: DocumentEventMap[ET]) => any): void;
 export function useEventListener<
 	E extends Window,
-	ET extends keyof WindowEventMap
-// eslint-disable-next-line @typescript-eslint/unified-signatures
-> (ele: E | null, eventType: ET, eventHandler: (e: WindowEventMap[ET]) => any): void;
-export function useEventListener<
-	E extends HTMLElement,
-	ET extends keyof HTMLElementEventMap
-> (ele: E | null, eventType: ET, eventHandler: (e: HTMLElementEventMap[ET]) => any) {
+	ET extends keyof WindowEventMap,
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+>(ele: E | null, eventType: ET, eventHandler: (e: WindowEventMap[ET]) => any): void;
+export function useEventListener<E extends HTMLElement, ET extends keyof HTMLElementEventMap>(
+	ele: E | null,
+	eventType: ET,
+	eventHandler: (e: HTMLElementEventMap[ET]) => any,
+) {
 	const eventHandlerRef = useRef(eventHandler);
 	eventHandlerRef.current = eventHandler;
+	const [count, setCount] = useState(0);
+	useEffect(() => {
+		if (!ele) {
+			setCount((c) => c + 0.001);
+		}
+	}, [ele]);
 	useEffect(() => {
 		if (ele) {
 			const eventHandle = (e: HTMLElementEventMap[ET]) => {
 				eventHandlerRef.current?.(e);
-			}
+			};
 			ele.addEventListener(eventType, eventHandle);
 			return () => {
 				ele.removeEventListener(eventType, eventHandle);
-			}
+			};
 		}
-	}, [ele, eventType])
+	}, [ele, eventType]);
 }
