@@ -148,7 +148,9 @@ export function useEventListener<E extends HTMLElement, ET extends keyof HTMLEle
 	const [,refresh] = useState({});
 	useEffect(() => {
 		if (!ele) {
-			refresh({});
+			setTimeout(() => {
+				refresh({});
+			})
 		}
 	}, [ele]);
 	useEffect(() => {
