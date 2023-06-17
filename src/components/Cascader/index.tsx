@@ -1,7 +1,106 @@
+import { Box, Menu, MenuItem, OutlinedInput, Radio } from '@mui/material';
+import { cloneElement, useEffect, useState } from 'react';
 
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
+import { useFn } from '@/utils/hooks';
+import { isEqual } from 'lodash';
+import { CascaderOptions, CascaderProps } from './ts';
+import { findOptionList, findSelectedOptionNodes } from './utils';
 
+export { CascaderOptions, CascaderProps };
 
-export const Cascader = () => {
-	
-}
+export const Cascader = <V extends any = any>({
+	options,
+	children,
+	value = [],
+	onChange,
+	parentSelectable = false,
+	showRadio = true,
+}: CascaderProps<V>) => {
+	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+	const [selectedOptions, setSelectedOptions] = useState<CascaderOptions>(findSelectedOptionNodes(options, value));
+	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const optionList = findOptionList(
+		options,
+		selectedOptions.map((i) => i.value),
+	);
+
+	const onChangeProxy = useFn((currentOptionIndex: number, i: CascaderOptions[0]) => {
+		const newValue = selectedOptions.map((i1) => i1.value).slice(0, currentOptionIndex + 1);
+		newValue[currentOptionIndex] = i.value;
+		const newSelectedOptions = findSelectedOptionNodes(options, newValue);
+		setSelectedOptions(newSelectedOptions);
+		if (parentSelectable) {
+			onChange?.(newValue, newSelectedOptions);
+		} else {
+			if (!newSelectedOptions.at(-1)?.children?.length) {
+				onChange?.(newValue, newSelectedOptions);
+			}
+		}
+		if (!newSelectedOptions.at(-1)?.children?.length) {
+			handleClose();
+		}
+	});
+
+	useEffect(() => {
+		if (
+			!isEqual(
+				value,
+				selectedOptions.map((i) => i.value),
+			)
+		) {
+			setSelectedOptions(findSelectedOptionNodes(options, value));
+		}
+	}, [value, options]);
+
+	return (
+		<div>
+			{children ? (
+				cloneElement(children, {
+					onClick: handleClick,
+				})
+			) : (
+				<OutlinedInput
+					onClick={handleClick}
+					autoComplete={'off'}
+					readOnly
+					value={findSelectedOptionNodes(options, value)
+						.map((i) => i.labelString || i.label)
+						.join(',')}
+				/>
+			)}
+			<Menu open={!!anchorEl} anchorEl={anchorEl} onClose={handleClose} variant="selectedMenu">
+				<Box display={'flex'}>
+					{optionList.map((currentOption, currentOptionIndex) => (
+						<div key={currentOptionIndex}>
+							{currentOption.map((i, index) => (
+								<Box
+									component={MenuItem}
+									display={'flex'}
+									key={index}
+									onClick={() => onChangeProxy(currentOptionIndex, i)}
+									selected={i.value === selectedOptions[currentOptionIndex]?.value}
+								>
+									{showRadio && (
+										<Radio checked={i.value === selectedOptions[currentOptionIndex]?.value} sx={{ p: 0, mr: 1 }} />
+									)}
+									{i.label}
+									{i.children?.length && <ChevronRightIcon sx={{ ml: 2 }} />}
+								</Box>
+							))}
+						</div>
+					))}
+				</Box>
+			</Menu>
+		</div>
+	);
+};
