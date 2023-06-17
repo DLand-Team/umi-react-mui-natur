@@ -1,14 +1,14 @@
 import { Box, Menu, MenuItem, OutlinedInput, Radio } from '@mui/material';
 import { cloneElement, useEffect, useState } from 'react';
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
 import { useFn } from '@/utils/hooks';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { isEqual } from 'lodash';
 import { CascaderOptions, CascaderProps } from './ts';
 import { findOptionList, findSelectedOptionNodes } from './utils';
 
-export { CascaderOptions, CascaderProps };
+export { CascaderOptions, CascaderProps, findSelectedOptionNodes };
 
 export const Cascader = <V extends any = any>({
 	options,
@@ -17,6 +17,7 @@ export const Cascader = <V extends any = any>({
 	onChange,
 	parentSelectable = false,
 	showRadio = true,
+	placeholder,
 }: CascaderProps<V>) => {
 	const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -76,6 +77,8 @@ export const Cascader = <V extends any = any>({
 					onClick={handleClick}
 					autoComplete={'off'}
 					readOnly
+					placeholder={placeholder}
+					endAdornment={<ArrowDropDownIcon sx={{ transform: !!anchorEl ? 'rotate(180deg)' : undefined }} />}
 					value={findSelectedOptionNodes(options, value)
 						.map((i) => i.labelString || i.label)
 						.join(',')}

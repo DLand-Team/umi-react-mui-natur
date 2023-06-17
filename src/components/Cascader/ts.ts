@@ -16,6 +16,7 @@ export interface CascaderProps<V extends any = any> {
 	 * @default true
 	 */
 	showRadio?: boolean;
+	placeholder?: string;
 	/**
 	 * can select option which has children
 	 * @default false

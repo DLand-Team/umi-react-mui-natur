@@ -71,7 +71,7 @@ export const CascaderDemo = () => {
 			</b>
 			<br />
 			<Button onClick={() => setValue(['bj', 'chaoyang'])}>set value</Button>
-			<Cascader options={options} value={value} onChange={setValue} />
+			<Cascader placeholder="Please select city" options={options} value={value} onChange={setValue} />
 		</Box>
 	);
 };
