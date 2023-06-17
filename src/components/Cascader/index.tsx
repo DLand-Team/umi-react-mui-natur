@@ -35,6 +35,9 @@ export const Cascader = <V extends any = any>({
 	);
 
 	const onChangeProxy = useFn((currentOptionIndex: number, i: CascaderOptions[0]) => {
+		if (i.disabled) {
+			return;
+		}
 		const newValue = selectedOptions.map((i1) => i1.value).slice(0, currentOptionIndex + 1);
 		newValue[currentOptionIndex] = i.value;
 		const newSelectedOptions = findSelectedOptionNodes(options, newValue);
@@ -87,11 +90,17 @@ export const Cascader = <V extends any = any>({
 									component={MenuItem}
 									display={'flex'}
 									key={index}
+									sx={{ cursor: i.disabled ? 'not-allowed' : undefined }}
+									color={i.disabled ? '#ccc' : undefined}
 									onClick={() => onChangeProxy(currentOptionIndex, i)}
 									selected={i.value === selectedOptions[currentOptionIndex]?.value}
 								>
 									{showRadio && (
-										<Radio checked={i.value === selectedOptions[currentOptionIndex]?.value} sx={{ p: 0, mr: 1 }} />
+										<Radio
+											disabled={i.disabled}
+											checked={i.value === selectedOptions[currentOptionIndex]?.value}
+											sx={{ p: 0, mr: 1 }}
+										/>
 									)}
 									{i.label}
 									{i.children?.length && <ChevronRightIcon sx={{ ml: 2 }} />}

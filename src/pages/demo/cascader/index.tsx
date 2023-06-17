@@ -6,6 +6,7 @@ const options = [
 	{
 		label: '福建',
 		value: 'fj',
+		disabled: true,
 		children: [
 			{
 				label: '福州',
@@ -45,6 +46,7 @@ const options = [
 		children: [
 			{
 				label: '朝阳区',
+				disabled: true,
 				value: 'chaoyang',
 			},
 			{
@@ -69,7 +71,7 @@ export const CascaderDemo = () => {
 			</b>
 			<br />
 			<Button onClick={() => setValue(['bj', 'chaoyang'])}>set value</Button>
-			<Cascader options={options} showRadio={false} value={value} onChange={setValue} />
+			<Cascader options={options} value={value} onChange={setValue} />
 		</Box>
 	);
 };

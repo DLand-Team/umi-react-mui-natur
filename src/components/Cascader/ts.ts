@@ -4,6 +4,7 @@ export type CascaderOptions<V extends any = any> = {
 	value: V;
 	label: ReactNode;
 	labelString?: string;
+	disabled?: boolean;
 	children?: CascaderOptions<V>;
 }[];
 
