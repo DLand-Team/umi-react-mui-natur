@@ -2,17 +2,17 @@ import { sleep } from '@/utils';
 import type { ListItemButtonProps } from '@mui/material';
 import { Box, List, ListItem, ListItemButton, ListItemText, Paper } from '@mui/material';
 import { useFlatInject } from 'umi';
+import { AuthDemo } from './auth';
+import { CascaderDemo } from './cascader';
 import { CodeRenderDemo } from './codeRender';
+import { DatePickerDemo } from './date-picker';
 import FormDemo from './form';
 import { LoadingDemo } from './loading';
 import { MDRenderDemo } from './mdRender';
 import { MessageDemo } from './message';
-import TableDemo from './table';
-import { AuthDemo } from './auth';
-import { NaturStoreDemo } from './store';
-import { DatePickerDemo } from './date-picker';
 import { ModalDemo } from './modal';
-import { CascaderDemo } from './cascader';
+import { NaturStoreDemo } from './store';
+import TableDemo from './table';
 
 const MyListItemLink = ({ href, ...props }: ListItemButtonProps & { href: string }) => {
 	return (
@@ -103,11 +103,13 @@ const DemoPage = () => {
 							<ListItemText primary="Cascader" />
 						</MyListItemLink>
 					</ListItem>
-
-					
 				</List>
 			</Box>
 			<Box p={4} pb={20} height={'100%'} overflow={'auto'}>
+				<Box>
+					<Box component={'a'} id="date-picker" />
+					<DatePickerDemo />
+				</Box>
 				<Box>
 					<Box component={'a'} id="form" />
 					<FormDemo />
@@ -125,7 +127,7 @@ const DemoPage = () => {
 					<ModalDemo />
 				</Box>
 				<Box>
-					<Box component={'a'} id="table"/>
+					<Box component={'a'} id="table" />
 					<TableDemo />
 				</Box>
 				<Box>
@@ -143,10 +145,6 @@ const DemoPage = () => {
 				<Box>
 					<Box component={'a'} id="natur-store" />
 					<NaturStoreDemo />
-				</Box>
-				<Box>
-					<Box component={'a'} id="date-picker" />
-					<DatePickerDemo />
 				</Box>
 				<Box>
 					<Box component={'a'} id="cascader" />

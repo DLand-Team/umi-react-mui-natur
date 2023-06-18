@@ -87,7 +87,7 @@ export const Cascader = <V extends any = any>({
 			<Menu open={!!anchorEl} anchorEl={anchorEl} onClose={handleClose} variant="selectedMenu">
 				<Box display={'flex'}>
 					{optionList.map((currentOption, currentOptionIndex) => (
-						<div key={currentOptionIndex}>
+						<Box key={currentOptionIndex} maxHeight={'500px'} sx={{ overflowY: 'auto' }}>
 							{currentOption.map((i, index) => (
 								<Box
 									component={MenuItem}
@@ -109,7 +109,7 @@ export const Cascader = <V extends any = any>({
 									{i.children?.length && <ChevronRightIcon sx={{ ml: 2 }} />}
 								</Box>
 							))}
-						</div>
+						</Box>
 					))}
 				</Box>
 			</Menu>
