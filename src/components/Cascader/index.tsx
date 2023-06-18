@@ -56,6 +56,9 @@ export const Cascader = <V extends any = any>({
 	});
 
 	useEffect(() => {
+		if (!anchorEl) {
+			return;
+		}
 		if (
 			!isEqual(
 				value,
@@ -64,7 +67,7 @@ export const Cascader = <V extends any = any>({
 		) {
 			setSelectedOptions(findSelectedOptionNodes(options, value));
 		}
-	}, [value, options]);
+	}, [value, options, anchorEl]);
 
 	return (
 		<div>

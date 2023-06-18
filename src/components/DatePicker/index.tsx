@@ -56,6 +56,9 @@ export const DatePicker = forwardRef<DatePickRef<Dayjs> | CommonPickerMethods, D
 		return (
 			<Picker<Dayjs>
 				ref={innerRef}
+				components={{
+					button: Button,
+				}}
 				className="date-picker-component"
 				locale={locale || enUS}
 				picker={picker as any}
