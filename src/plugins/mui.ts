@@ -8,7 +8,7 @@ const spaceUnit = 8;
 export const defaultTheme = createTheme({
 	palette: {
 		primary: {
-			main: '#2775B6',
+			main: '#1976d2',
 		},
 		secondary: {
 			main: '#C06F98',
