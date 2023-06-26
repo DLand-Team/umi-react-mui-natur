@@ -5,11 +5,12 @@ export interface StyledDateItemButtonBoxProps {
 	isFirst?: boolean;
 	isLast?: boolean;
 	isInSelect?: boolean;
+	isInHover?: boolean;
 }
 
 export const StyledDateItemButtonBox = styled(Box, {
-	shouldForwardProp: (p: string) => !['isFirst', 'isLast', 'isInSelect'].includes(p),
-})<StyledDateItemButtonBoxProps>(({ isFirst, isLast, isInSelect, theme }) => ({
+	shouldForwardProp: (p: string) => !['isFirst', 'isLast', 'isInSelect', 'isInHover'].includes(p),
+})<StyledDateItemButtonBoxProps>(({ isFirst, isLast, isInSelect, isInHover, theme }) => ({
 	width: 40,
 	height: 40,
 	borderTopLeftRadius: isFirst ? '50%' : 0,
@@ -19,6 +20,10 @@ export const StyledDateItemButtonBox = styled(Box, {
 	backgroundColor: isInSelect
 		? new Color(theme.palette.primary.light).alpha(theme.palette.action.focusOpacity).toString()
 		: undefined,
+	borderTop: isInHover && !isInSelect ? '2px dashed #ccc' : '2px dashed transparent',
+	borderBottom: isInHover && !isInSelect ? '2px dashed #ccc' : '2px dashed transparent',
+	borderLeft: isInHover && !isInSelect && isFirst ? '2px dashed #ccc' : '2px dashed transparent',
+	borderRight: isInHover && !isInSelect && isLast ? '2px dashed #ccc' : '2px dashed transparent',
 }));
 
 export interface DateItemIconButtonProps {
@@ -32,8 +37,8 @@ export const StyledDateItemButton = styled(IconButton, {
 	shouldForwardProp: (p: string) => !['selected', 'isToday', 'isHover', 'isInSelect'].includes(p),
 	name: 'StyledDateItemButton',
 })<DateItemIconButtonProps>(({ selected, isHover, isToday, theme, isInSelect }) => ({
-	width: 39,
-	height: 39,
+	width: 38,
+	height: 38,
 	display: 'flex',
 	fontSize: 12,
 	alignItems: 'center',

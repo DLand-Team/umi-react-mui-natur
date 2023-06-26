@@ -29,3 +29,5 @@ export function getDayListOfMonth(year?: number, month?: number) {
 
 export const isToday = (d?: Dayjs | null) => !!d?.isSame(dayjs(), 'day');
 export const isSameDay = (a?: Dayjs | null, b?: Dayjs | null) => !!a?.isSame(b, 'day');
+
+export const sortDayjsList = (dayList: Dayjs[]) => dayList.slice().sort((a, b) => a.valueOf() - b.valueOf());
