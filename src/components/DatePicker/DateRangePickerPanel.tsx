@@ -13,13 +13,12 @@ const weekNameList = ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((i, index) => ({
 }));
 
 interface DatePickerPanelProps {
-	value?: Dayjs;
+	value?: Dayjs[];
 	date: Dayjs;
 	onChange: (v: Dayjs) => any;
 	onDateChange: (v: Dayjs) => any;
 	start?: boolean;
 	hoverDate?: Dayjs;
-	value2?: Dayjs;
 	onHoverValueChange?: (v?: Dayjs) => any;
 }
 
@@ -30,26 +29,20 @@ const DatePickerPanel = ({
 	onDateChange,
 	start = true,
 	hoverDate,
-	value2,
 	onHoverValueChange,
 }: DatePickerPanelProps) => {
 	const showNext = !start;
 	const showPrev = start;
 
-	const hoverValueIsBigger = !!hoverDate?.isAfter(value, 'day');
-	const value2IsBigger = !!value2?.isAfter(value, 'day');
-	const minSelectDate = value2IsBigger ? value : value2;
-	const maxSelectDate = value2IsBigger ? value2 : value;
+	const hoverValueIsBigger = !!hoverDate?.isAfter(value?.[0], 'day');
+	const value1 = value?.[0];
+	const value2 = value?.[1];
 
 	const isInSelect = (d: Dayjs) => {
 		if (!value2) {
 			return false;
 		}
-		return (
-			d.isBetween(minSelectDate, maxSelectDate, 'day') ||
-			d.isSame(minSelectDate, 'day') ||
-			d.isSame(maxSelectDate, 'day')
-		);
+		return d.isBetween(value1, value2, 'day') || d.isSame(value1, 'day') || d.isSame(value2, 'day');
 	};
 
 	const dayList = useMemo(() => getDayListOfMonth(date.year(), date.month()), [date]);
@@ -121,9 +114,9 @@ const DatePickerPanel = ({
 						<Box display={'flex'} flexWrap={'wrap'} my={'2px'} key={weekIndex} justifyContent={'center'}>
 							{week.map((day, dayIndex) => (
 								<StyledDateItemButtonBox
-									isFirst={dayIndex === 0 || !week[dayIndex - 1] || isSameDay(minSelectDate, day)}
+									isFirst={dayIndex === 0 || !week[dayIndex - 1] || isSameDay(value1, day)}
 									isInSelect={!!day && isInSelect(day)}
-									isLast={dayIndex === week.length - 1 || !week[dayIndex + 1] || isSameDay(maxSelectDate, day)}
+									isLast={dayIndex === week.length - 1 || !week[dayIndex + 1] || isSameDay(value2, day)}
 									key={`${weekIndex}-${dayIndex}`}
 								>
 									<Box>
@@ -138,7 +131,7 @@ const DatePickerPanel = ({
 												isHover={isSameDay(hoverDate, day)}
 												onMouseOver={() => onHoverValueChange?.(day.clone())}
 												onMouseLeave={() => onHoverValueChange?.()}
-												selected={isSameDay(day, value)}
+												selected={isSameDay(day, value1) || isSameDay(value2, day)}
 												isToday={isToday(day)}
 												key={`${weekIndex}-${dayIndex}`}
 											>
@@ -156,11 +149,22 @@ const DatePickerPanel = ({
 	);
 };
 
+const sortDayjsList = (dayList: Dayjs[]) => dayList.slice().sort((a, b) => a.valueOf() - b.valueOf());
+
 export const DateRangePickerPanel = () => {
 	const [targetMonth, setTargetMonth] = useState(dayjs());
 	const [hoverDate, setHoverDate] = useState<Dayjs | undefined>(dayjs());
 	const targetNextMonth = useMemo(() => targetMonth.add(1, 'month'), [targetMonth]);
 	const [value, setValue] = useState<Dayjs[]>([]);
+	const sortedValue = useMemo(() => sortDayjsList(value), [value]);
+
+	const pushValue = (v: Dayjs) => {
+		const newValue = [...value, v];
+		if (newValue.length > 2) {
+			newValue.shift();
+		}
+		setValue(newValue);
+	};
 
 	return (
 		<Box component={Paper} width={320 * 2 + 1} elevation={6} overflow={'hidden'} display={'flex'}>
@@ -168,20 +172,18 @@ export const DateRangePickerPanel = () => {
 				start
 				date={targetMonth}
 				onDateChange={setTargetMonth}
-				value={value[0]}
-				onChange={(value1) => setValue((nowValue) => [value1, nowValue[1]])}
+				value={sortedValue}
+				onChange={pushValue}
 				hoverDate={hoverDate}
-				value2={value[1]}
 				onHoverValueChange={setHoverDate}
 			/>
 			<Divider orientation="vertical" flexItem />
 			<DatePickerPanel
 				start={false}
 				date={targetNextMonth}
-				value2={value[0]}
 				onDateChange={(d) => setTargetMonth(d.subtract(1, 'month'))}
-				value={value[1]}
-				onChange={(value2) => setValue((nowValue) => [nowValue[0], value2])}
+				value={sortedValue}
+				onChange={pushValue}
 				hoverDate={hoverDate}
 				onHoverValueChange={setHoverDate}
 			/>
