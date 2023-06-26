@@ -29,8 +29,7 @@ export const defaultTheme = createTheme({
 		MuiInputBase: {
 			styleOverrides: {
 				root: {
-					[`&.${inputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
-					},
+					[`&.${inputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {},
 				},
 			},
 		},
@@ -47,13 +46,13 @@ export const defaultTheme = createTheme({
 			styleOverrides: {
 				head: {
 					fontWeight: 600,
-					textAlign: 'start'
+					textAlign: 'start',
 				},
 				body: {
-					overflowWrap: 'break-word'
-				}
-			}
-		}
+					overflowWrap: 'break-word',
+				},
+			},
+		},
 	},
 	MyMuiTable: {
 		sxOverrides: {
@@ -68,7 +67,7 @@ export const defaultTheme = createTheme({
 				borderRadius: '8px 8px 0 0',
 				borderCollapse: 'separate',
 				borderSpacing: 0,
-			}
-		}
-	}
+			},
+		},
+	},
 });

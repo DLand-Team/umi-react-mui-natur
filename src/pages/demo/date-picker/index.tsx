@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
-
-import { DatePicker } from '@/components/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
 export const DatePickerDemo = () => {
@@ -8,7 +7,12 @@ export const DatePickerDemo = () => {
 		<Box>
 			<h1>Date Picker demo</h1>
 			<p>date picker</p>
-			<DatePicker format={'YYYY-MM-DD'} value={dayjs().subtract(1, 'day')} />
+			<DatePicker
+				value={dayjs().subtract(2, 'day')}
+				onChange={(v) => {
+					console.log('select', v?.format('YYYY-MM-DD'));
+				}}
+			/>
 		</Box>
 	);
 };

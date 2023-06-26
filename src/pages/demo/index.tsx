@@ -1,3 +1,4 @@
+import { DateRangePickerPanel } from '@/components/DatePicker/DateRangePickerPanel';
 import { sleep } from '@/utils';
 import type { ListItemButtonProps } from '@mui/material';
 import { Box, List, ListItem, ListItemButton, ListItemText, Paper } from '@mui/material';
@@ -107,7 +108,7 @@ const DemoPage = () => {
 			</Box>
 			<Box p={4} pb={20} height={'100%'} overflow={'auto'}>
 				<Box>
-					<Box component={'a'} id="date-picker" />
+					<DateRangePickerPanel />
 					<DatePickerDemo />
 				</Box>
 				<Box>
@@ -145,6 +146,10 @@ const DemoPage = () => {
 				<Box>
 					<Box component={'a'} id="natur-store" />
 					<NaturStoreDemo />
+				</Box>
+				<Box>
+					<Box component={'a'} id="date-picker" />
+					<DatePickerDemo />
 				</Box>
 				<Box>
 					<Box component={'a'} id="cascader" />
