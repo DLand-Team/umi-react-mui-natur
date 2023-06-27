@@ -3,6 +3,8 @@
 ## Table of Contents
 
 1. [Directory Explanation](#directory-explanation)
+1. [Supplementary components](#supplementary-components)
+1. [Supplementary feature](#supplementary-feature)
 1. [Open Source Library Description](#open-source-library-description)
 
 ## Installing Dependencies
@@ -44,7 +46,7 @@ yarn build
 1. `global.scss` - Stores global styles.
 1. `app.tsx` - Runtime configuration, details can be found in the Umi documentation.
 
-## Supplementary components in the template.
+## Supplementary components
 
 1. [x] Form, based on Formik
 1. [x] Table, based on rc-table
@@ -52,6 +54,17 @@ yarn build
 1. [x] Date Range Picker
 1. [x] MarkdownRender
 1. [x] CodeRender
+1. [x] Loading
+1. [x] Confirm Modal
+1. [x] Alert Message
+
+## Supplementary feature
+
+1. [x] Integrated natur state management, ready to use out of the box.
+1. [x] Integrated permission functionality, ready to use out of the box.
+1. [x] Integrated global loading and message prompt, ready to use out of the box.
+1. [x] Integrated login verification logic.
+1. [x] Provided a pre-configured axios request library, ready to use out of the box.
 
 ## Open Source Library Description
 
