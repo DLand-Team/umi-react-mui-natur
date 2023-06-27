@@ -5,15 +5,24 @@ import { Box, IconButton, Popover, TextField } from '@mui/material';
 import type { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import type { BaseInputProps } from '../Form';
+import type { DateRangePickerPanelProps } from './DateRangePickerPanel';
 import { DateRangePickerPanel } from './DateRangePickerPanel';
 
 export interface DateRangePickerProps
 	extends BaseInputProps<Dayjs[]>,
-		Omit<TextFieldProps, 'value' | 'onChange' | 'onBlur'> {
+		Omit<TextFieldProps, 'value' | 'onChange' | 'onBlur'>,
+		Pick<DateRangePickerPanelProps, 'disableDate'> {
 	format?: string;
 }
 
-export const DateRangePicker = ({ value, onBlur, onChange, format = 'YYYY-MM-DD', sx }: DateRangePickerProps) => {
+export const DateRangePicker = ({
+	value,
+	onBlur,
+	onChange,
+	format = 'YYYY-MM-DD',
+	disableDate,
+	...fieldProps
+}: DateRangePickerProps) => {
 	const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
 
 	const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -42,7 +51,7 @@ export const DateRangePicker = ({ value, onBlur, onChange, format = 'YYYY-MM-DD'
 		<Box>
 			<TextField
 				onClick={handleClick}
-				sx={{ width: 300, ...sx }}
+				sx={{ width: 300 }}
 				value={textValue}
 				InputProps={{
 					readOnly: true,
@@ -66,6 +75,7 @@ export const DateRangePicker = ({ value, onBlur, onChange, format = 'YYYY-MM-DD'
 					),
 					sx: { cursor: 'pointer' },
 				}}
+				{...fieldProps}
 			/>
 			<Popover
 				anchorOrigin={{
@@ -78,6 +88,7 @@ export const DateRangePicker = ({ value, onBlur, onChange, format = 'YYYY-MM-DD'
 			>
 				<DateRangePickerPanel
 					elevation={0}
+					disableDate={disableDate}
 					value={value || []}
 					onChange={(v) => {
 						onChange?.(v);

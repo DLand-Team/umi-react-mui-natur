@@ -21,6 +21,7 @@ interface DatePickerPanelProps {
 	start?: boolean;
 	hoverDate?: Dayjs;
 	onHoverValueChange?: (v?: Dayjs) => any;
+	disableDate?: (date: Dayjs) => boolean;
 }
 
 const DatePickerPanel = ({
@@ -31,6 +32,7 @@ const DatePickerPanel = ({
 	start = true,
 	hoverDate,
 	onHoverValueChange,
+	disableDate = () => false,
 }: DatePickerPanelProps) => {
 	const showNext = !start;
 	const showPrev = start;
@@ -160,6 +162,7 @@ const DatePickerPanel = ({
 														onChange(day.clone());
 													}
 												}}
+												disabled={disableDate(day)}
 												isInSelect={!!day && isInSelect(day)}
 												isHover={isSameDay(hoverDate, day)}
 												onMouseOver={() => onHoverValueChange?.(day.clone())}
@@ -185,12 +188,18 @@ const DatePickerPanel = ({
 export interface DateRangePickerPanelProps extends Omit<PaperProps, 'value' | 'onChange'> {
 	value?: Dayjs[];
 	onChange?: (value: Dayjs[]) => any;
+	disableDate?: (date: Dayjs) => boolean;
 }
 
-export const DateRangePickerPanel = ({ value = [], onChange, ...paperProps }: DateRangePickerPanelProps) => {
+export const DateRangePickerPanel = ({
+	value = [],
+	onChange,
+	disableDate,
+	...paperProps
+}: DateRangePickerPanelProps) => {
 	const setValue = onChange;
 
-	const [targetMonth, setTargetMonth] = useState(dayjs());
+	const [targetMonth, setTargetMonth] = useState(value[0] || dayjs());
 	const [hoverDate, setHoverDate] = useState<Dayjs | undefined>(dayjs());
 	const targetNextMonth = useMemo(() => targetMonth.add(1, 'month'), [targetMonth]);
 	// const [value, setValue] = useState<Dayjs[]>([]);
@@ -214,6 +223,7 @@ export const DateRangePickerPanel = ({ value = [], onChange, ...paperProps }: Da
 				value={sortedValue}
 				onChange={pushValue}
 				hoverDate={hoverDate}
+				disableDate={disableDate}
 				onHoverValueChange={setHoverDate}
 			/>
 			<Divider orientation="vertical" flexItem />
@@ -223,6 +233,7 @@ export const DateRangePickerPanel = ({ value = [], onChange, ...paperProps }: Da
 				onDateChange={(d) => setTargetMonth(d.subtract(1, 'month'))}
 				value={sortedValue}
 				onChange={pushValue}
+				disableDate={disableDate}
 				hoverDate={hoverDate}
 				onHoverValueChange={setHoverDate}
 			/>
