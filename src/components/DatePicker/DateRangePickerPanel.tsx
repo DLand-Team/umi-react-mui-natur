@@ -1,5 +1,6 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import type { PaperProps } from '@mui/material';
 import { Box, Divider, IconButton, Paper } from '@mui/material';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
@@ -181,24 +182,31 @@ const DatePickerPanel = ({
 	);
 };
 
-export const DateRangePickerPanel = () => {
+export interface DateRangePickerPanelProps extends Omit<PaperProps, 'value' | 'onChange'> {
+	value?: Dayjs[];
+	onChange?: (value: Dayjs[]) => any;
+}
+
+export const DateRangePickerPanel = ({ value = [], onChange, ...paperProps }: DateRangePickerPanelProps) => {
+	const setValue = onChange;
+
 	const [targetMonth, setTargetMonth] = useState(dayjs());
 	const [hoverDate, setHoverDate] = useState<Dayjs | undefined>(dayjs());
 	const targetNextMonth = useMemo(() => targetMonth.add(1, 'month'), [targetMonth]);
-	const [value, setValue] = useState<Dayjs[]>([]);
+	// const [value, setValue] = useState<Dayjs[]>([]);
 	const sortedValue = useMemo(() => sortDayjsList(value), [value]);
 
 	const pushValue = (v: Dayjs) => {
-		let newValue = value.slice();
+		let newValue = value?.slice();
 		if (newValue.length == 2) {
 			newValue = [];
 		}
 		newValue.push(v);
-		setValue(newValue);
+		setValue?.(newValue);
 	};
 
 	return (
-		<Box component={Paper} width={320 * 2 + 1} elevation={6} overflow={'hidden'} display={'flex'}>
+		<Box component={Paper} width={320 * 2 + 1} elevation={6} overflow={'hidden'} display={'flex'} {...paperProps}>
 			<DatePickerPanel
 				start
 				date={targetMonth}
