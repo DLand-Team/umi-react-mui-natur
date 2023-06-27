@@ -1,14 +1,11 @@
 # Development Guide
 
-
 ## Table of Contents
 
 1. [Directory Explanation](#directory-explanation)
 1. [Open Source Library Description](#open-source-library-description)
 
-
 ## Installing Dependencies
-
 
 ```bash
 npm i
@@ -26,8 +23,8 @@ yarn dev
 
 ## Deployment
 
-
 ### Building
+
 ```bash
 npm run build
 # or
@@ -47,6 +44,14 @@ yarn build
 1. `global.scss` - Stores global styles.
 1. `app.tsx` - Runtime configuration, details can be found in the Umi documentation.
 
+## Supplementary components in the template.
+
+1. [x] Form, based on Formik
+1. [x] Table, based on rc-table
+1. [x] Cascader
+1. [x] Date Range Picker
+1. [x] MarkdownRender
+1. [x] CodeRender
 
 ## Open Source Library Description
 
