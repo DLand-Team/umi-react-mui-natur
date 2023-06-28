@@ -14,7 +14,7 @@ type MessageItem = {
 };
 
 const defaultPosition: SnackbarOrigin = {
-	vertical: 'bottom',
+	vertical: 'top',
 	horizontal: 'center',
 };
 
