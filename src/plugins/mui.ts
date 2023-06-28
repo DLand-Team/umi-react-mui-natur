@@ -53,6 +53,11 @@ export const defaultTheme = createTheme({
 				},
 			},
 		},
+		MuiAlert: {
+			defaultProps: {
+				variant: 'filled',
+			},
+		},
 	},
 	MyMuiTable: {
 		sxOverrides: {
