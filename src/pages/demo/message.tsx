@@ -1,12 +1,45 @@
+import type { SnackbarOrigin } from '@mui/material';
 import { Box, Button, TextField } from '@mui/material';
 import { useFlatInject } from 'umi';
+
+const positionList: SnackbarOrigin[] = [
+	{
+		vertical: 'top',
+		horizontal: 'left',
+	},
+	{
+		vertical: 'top',
+		horizontal: 'center',
+	},
+	{
+		vertical: 'top',
+		horizontal: 'right',
+	},
+	{
+		vertical: 'bottom',
+		horizontal: 'left',
+	},
+	{
+		vertical: 'bottom',
+		horizontal: 'center',
+	},
+	{
+		vertical: 'bottom',
+		horizontal: 'right',
+	},
+];
+
+function genRandomPosition() {
+	const index = Math.floor(Math.random() * 6);
+	return positionList[index];
+}
 
 export const MessageDemo = () => {
 	const [demo] = useFlatInject('demo', { state: [(s) => s.text.message] });
 	const [message] = useFlatInject('message', {});
 
 	const showToast = (type: 'error' | 'info' | 'success' | 'warning') => () => {
-		message[type](demo.text.message, -1);
+		message[type](demo.text.message, 3000, genRandomPosition());
 	};
 	return (
 		<Box>

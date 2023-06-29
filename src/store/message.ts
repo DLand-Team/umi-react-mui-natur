@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 type MessageType = 'info' | 'success' | 'warning' | 'error' | 'dark';
 
-type MessageItem = {
+export type MessageItem = {
 	text: ReactNode;
 	duration: number;
 	show: boolean;
@@ -14,8 +14,8 @@ type MessageItem = {
 };
 
 const defaultPosition: SnackbarOrigin = {
-	vertical: 'top',
-	horizontal: 'center',
+	vertical: 'bottom',
+	horizontal: 'right',
 };
 
 type CreateMessageItemParams = Partial<Omit<MessageItem, 'id' | 'show'>> & {

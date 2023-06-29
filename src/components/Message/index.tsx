@@ -1,6 +1,8 @@
+import type { MessageItem } from '@/store/message';
 import CloseIcon from '@mui/icons-material/Close';
-import type { SlideProps } from '@mui/material';
+import type { SlideProps, SnackbarOrigin } from '@mui/material';
 import { Alert, Box, IconButton, Slide, Snackbar } from '@mui/material';
+import { groupBy } from 'lodash';
 import { useEffect, useRef } from 'react';
 import { useFlatInject } from 'umi';
 import { useImmer } from 'use-immer';
@@ -13,6 +15,37 @@ function TransitionDown(props: SlideProps) {
 	return <Slide {...props} direction="down" mountOnEnter unmountOnExit />;
 }
 
+function TransitionLeft(props: SlideProps) {
+	return <Slide {...props} direction="left" mountOnEnter unmountOnExit />;
+}
+
+function TransitionRigth(props: SlideProps) {
+	return <Slide {...props} direction="right" mountOnEnter unmountOnExit />;
+}
+
+function getTransitionComponentByPosition(postion: SnackbarOrigin) {
+	if (postion.vertical === 'top') {
+		switch (postion.horizontal) {
+			case 'left':
+				return TransitionRigth;
+			case 'center':
+				return TransitionDown;
+			case 'right':
+				return TransitionLeft;
+		}
+	}
+	if (postion.vertical === 'bottom') {
+		switch (postion.horizontal) {
+			case 'left':
+				return TransitionRigth;
+			case 'center':
+				return TransitionUp;
+			case 'right':
+				return TransitionLeft;
+		}
+	}
+}
+
 function Message() {
 	const [{ messageList, remove, hide, messagePosition }] = useFlatInject('message');
 
@@ -21,7 +54,7 @@ function Message() {
 			elem: HTMLDivElement;
 			id: string;
 			index: number;
-			position: 'top' | 'bottom';
+			position: SnackbarOrigin;
 		}[]
 	>([]);
 
@@ -48,9 +81,11 @@ function Message() {
 			.sort((a, b) => a.index - b.index);
 
 		refList.current = finalEleList;
-		finalEleList
-			.filter((i) => i.position === 'top')
-			.reduce((offsetHeight, i) => {
+
+		const groupedEleList = groupBy(finalEleList, (i) => `${i.position.vertical}-${i.position.horizontal}`);
+
+		Object.keys(groupedEleList).forEach((key) => {
+			groupedEleList[key].reduce((offsetHeight, i) => {
 				newOffsetState[i.id] = offsetHeight;
 				const rect = i.elem?.getBoundingClientRect?.();
 				const bottom = rect?.bottom;
@@ -59,29 +94,20 @@ function Message() {
 				}
 				return offsetHeight;
 			}, 0);
-		finalEleList
-			.filter((i) => i.position === 'bottom')
-			.reduce((offsetHeight, i) => {
-				newOffsetState[i.id] = offsetHeight;
-				const rect = i.elem?.getBoundingClientRect?.();
-				const bottom = rect?.bottom;
-				if (bottom) {
-					return rect.height + offsetHeight + 20;
-				}
-				return offsetHeight;
-			}, 0);
+		});
+
 		setOffsetState(newOffsetState);
 	}, [messageList, messagePosition.vertical, setOffsetState]);
 
-	function calcOffsetStyle(id: string) {
-		if (messagePosition.vertical === 'top') {
+	function calcOffsetStyle(i: MessageItem) {
+		if (i.position.vertical === 'top') {
 			return {
-				marginTop: `${offsetState[id]}px` || 0,
+				marginTop: `${offsetState[i.id]}px` || 0,
 				transition: 'margin 0.3s',
 			};
 		}
 		return {
-			marginBottom: `${offsetState[id]}px` || 0,
+			marginBottom: `${offsetState[i.id]}px` || 0,
 			// transform: `translateY(-${offsetState[id] || 0}px)`,
 			transition: 'margin 0.3s',
 		};
@@ -96,12 +122,12 @@ function Message() {
 							elem: node,
 							id: i.id,
 							index: idx,
-							position: i.position.vertical,
+							position: i.position,
 						});
 					}
 				}}
-				sx={calcOffsetStyle(i.id)}
-				TransitionComponent={i.position.vertical === 'top' ? TransitionDown : TransitionUp}
+				sx={calcOffsetStyle(i)}
+				TransitionComponent={getTransitionComponentByPosition(i.position)}
 				key={i.id}
 				anchorOrigin={i.position}
 				TransitionProps={{
@@ -128,12 +154,12 @@ function Message() {
 							elem: node,
 							id: i.id,
 							index: idx,
-							position: i.position.vertical,
+							position: i.position,
 						});
 					}
 				}}
-				sx={calcOffsetStyle(i.id)}
-				TransitionComponent={i.position.vertical === 'top' ? TransitionDown : TransitionUp}
+				sx={calcOffsetStyle(i)}
+				TransitionComponent={getTransitionComponentByPosition(i.position)}
 				key={i.id}
 				TransitionProps={{
 					onExited: () => remove(i.id),
