@@ -1,5 +1,5 @@
 import { isEmpty, isObject } from 'lodash';
-import type { AllWatchAPI, AllWatchEvent, State, WatchAPI, WatchEvent } from 'natur';
+import type { AllWatchAPI, AllWatchEvent, Maps, State, WatchAPI, WatchEvent } from 'natur';
 import type { AnyFun, ITP } from 'natur-immer';
 
 export const isBrowser = typeof window !== 'undefined';
@@ -67,13 +67,15 @@ type MLP<MA extends AnyFun[]> = MA extends [infer First, ...infer R]
 
 type ExcludeLast<T extends any[]> = T extends [...infer R, any] ? R : [];
 
-export const createModule = <
+type MapType<
 	S extends State,
-	MI extends [...[...args: ((s: S) => any)[]], (...args: MLP<ExcludeLast<MI>>) => any],
-	MDO extends Record<string, ((s: S) => any)[]>,
-	M extends {
-		[K in keyof MDO]: [...MDO[K], (...args: MLP<MDO[K]>) => any];
-	},
+	DEPS extends ((s: S) => any)[] = ((s: S) => any)[],
+	MF extends (...args: MLP<DEPS>) => any = (...args: MLP<DEPS>) => any,
+> = Record<string, [DEPS, MF]>;
+
+export const createModule = <
+	M extends Maps,
+	S extends State,
 	A extends Record<
 		string,
 		| ((...args: any[]) => (p: ITP<S, M>) => Partial<S> | void | Promise<Partial<S> | void>)
@@ -84,37 +86,6 @@ export const createModule = <
 		| ((event: AllWatchEvent, api: AllWatchAPI) => any),
 >(m: {
 	state: S;
-	maps?: M;
 	actions: A;
 	watch?: W;
 }) => m;
-
-const m = createModule({
-	state: {
-		pageInfo: {
-			pageSize: 10,
-			pageNum: 1,
-		},
-		tableData: [] as { name: string }[],
-	},
-	// maps: {
-	// 	m1: [(s) => s.pageInfo.pageSize, (s) => s.tableData[0], (p1) => p1 + 1],
-	// 	m2: [(s) => s.tableData[0], (p1) => p1 + 1],
-	// },
-	actions: {
-		a1: (p1: string) => {
-			console.log(p1);
-		},
-		a2:
-			(p2: string) =>
-			async ({ setState }) => {
-				setState({});
-				return {
-					pageInfo: {
-						pageNum: 1,
-						pageSize: 2,
-					},
-				};
-			},
-	},
-});

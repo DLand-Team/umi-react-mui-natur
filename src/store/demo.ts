@@ -1,37 +1,33 @@
-import type { ITP } from 'natur-immer';
+import { createModule } from '@/utils';
 
-const state = {
-	routePath: '',
-	text: {
-		loading: '',
-		message: 'message a',
+const m = createModule({
+	state: {
+		routePath: '',
+		text: {
+			loading: '',
+			message: 'message a',
+		},
+		naturStore: {
+			text: '',
+		},
 	},
-	naturStore: {
-		text: '',
-	}
-};
-
-type State = typeof state;
-
-const actions = {
-	updateLoadingText: (loadingText: string) => ({ setState }: ITP<State>) => (
-		setState((s) => {
-			s.text.loading = loadingText;
-		})
-	),
-	updateMessageText: (messageText: string) => ({ setState }: ITP<State>) => (
-		setState((s) => {
-			s.text.message = messageText;
-		})
-	),
-	updateNaturStoreText: (text: string) => ({ setState }: ITP<State>) => (
-		setState((s) => {
-			s.naturStore.text = text;
-		})
-	),
-};
+	actions: {
+		updateLoadingText: (loadingText: string) => async (ctx) =>
+			ctx.setState((s) => {
+				s.text.loading = loadingText;
+			}),
+		updateMessageText: (messageText: string) => (ctx) =>
+			ctx.setState((s) => {
+				s.text.message = messageText;
+			}),
+		updateNaturStoreText: (text: string) => (ctx) =>
+			ctx.setState((s) => {
+				s.naturStore.text = text;
+			}),
+	},
+});
 
 export default {
-	state,
-	actions,
+	state: m.state,
+	actions: m.actions,
 };
