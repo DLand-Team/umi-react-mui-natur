@@ -12,7 +12,7 @@ const m = createModule({
 		},
 	},
 	actions: {
-		updateLoadingText: (loadingText: string) => async (ctx) =>
+		updateLoadingText: (loadingText: string) => (ctx) =>
 			ctx.setState((s) => {
 				s.text.loading = loadingText;
 			}),
