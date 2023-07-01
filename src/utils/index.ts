@@ -74,11 +74,11 @@ type MapType<
 > = Record<string, [DEPS, MF]>;
 
 export const createModule = <
-	M extends Maps,
 	S extends State,
+	M extends any,
 	A extends Record<
 		string,
-		| ((...args: any[]) => (p: ITP<S, M>) => Partial<S> | void | Promise<Partial<S> | void>)
+		| ((...args: any[]) => (p: ITP<S, M extends Maps ? M : Maps>) => Partial<S> | void | Promise<Partial<S> | void>)
 		| ((...args: any[]) => Partial<S> | void | Promise<Partial<S> | void>)
 	>,
 	W extends
@@ -86,6 +86,17 @@ export const createModule = <
 		| ((event: AllWatchEvent, api: AllWatchAPI) => any),
 >(m: {
 	state: S;
+	maps?: M;
 	actions: A;
 	watch?: W;
-}) => m;
+}) => {
+	type MO = typeof m;
+	type MR = Exclude<MO['maps'], undefined> extends never
+		? Omit<MO, 'maps'> & { maps: never }
+		: Omit<MO, 'maps'> & { maps: Exclude<MO['maps'], undefined> };
+
+	type WR = Exclude<MR['watch'], undefined> extends never
+		? Omit<MR, 'watch'>
+		: Omit<MR, 'watch'> & { watch: Exclude<MR['watch'], undefined> };
+	return m as WR;
+};
