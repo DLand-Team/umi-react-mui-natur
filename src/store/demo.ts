@@ -1,4 +1,4 @@
-import { createActions, createMapCreator, createWatch } from '@/utils';
+import { NaturFactory } from '@/utils/NaturFactory';
 
 const state = {
 	routePath: '',
@@ -11,7 +11,7 @@ const state = {
 	},
 };
 
-const createMap = createMapCreator(state);
+const createMap = NaturFactory.mapCreator(state);
 
 const maps = {
 	m1: createMap(
@@ -25,7 +25,9 @@ const maps = {
 	),
 };
 
-const actions = createActions(state, {
+const createActions = NaturFactory.actionsCreator(state, maps);
+
+const actions = createActions({
 	updateLoadingText: (loadingText: string) => (ctx) =>
 		ctx.setState((s) => {
 			s.text.loading = loadingText;
@@ -38,10 +40,6 @@ const actions = createActions(state, {
 		ctx.setState((s) => {
 			s.naturStore.text = text;
 		}),
-});
-
-const watch = createWatch({
-	ff: (event, api) => {},
 });
 
 export default {
