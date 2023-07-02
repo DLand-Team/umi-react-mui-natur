@@ -1,4 +1,4 @@
-import { createActions, createMapCreator } from '@/utils';
+import { createActions, createMapCreator, createWatch } from '@/utils';
 
 const state = {
 	routePath: '',
@@ -23,7 +23,6 @@ const maps = {
 		(s) => s.naturStore,
 		(p, p2) => p2,
 	),
-	// m2: createMapItem([(s) => s.text.loading], (p) => p),
 };
 
 const actions = createActions(state, {
@@ -39,6 +38,10 @@ const actions = createActions(state, {
 		ctx.setState((s) => {
 			s.naturStore.text = text;
 		}),
+});
+
+const watch = createWatch({
+	ff: (event, api) => {},
 });
 
 export default {

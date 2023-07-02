@@ -259,3 +259,11 @@ export function createMapCreator<S extends State>(state: S) {
 	}
 	return createMap;
 }
+
+export function createWatch<
+	W extends
+		| Record<string, (event: WatchEvent<any>, api: WatchAPI<any, any>) => any>
+		| ((event: AllWatchEvent, api: AllWatchAPI) => any),
+>(w: W) {
+	return w;
+}
