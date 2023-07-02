@@ -1,33 +1,48 @@
-import { createModule } from '@/utils';
+import { createActions, createMapCreator } from '@/utils';
 
-const m = createModule({
-	state: {
-		routePath: '',
-		text: {
-			loading: '',
-			message: 'message a',
-		},
-		naturStore: {
-			text: '',
-		},
+const state = {
+	routePath: '',
+	text: {
+		loading: '',
+		message: 'message a',
 	},
-	actions: {
-		updateLoadingText: (loadingText: string) => (ctx) =>
-			ctx.setState((s) => {
-				s.text.loading = loadingText;
-			}),
-		updateMessageText: (messageText: string) => (ctx) =>
-			ctx.setState((s) => {
-				s.text.message = messageText;
-			}),
-		updateNaturStoreText: (text: string) => (ctx) =>
-			ctx.setState((s) => {
-				s.naturStore.text = text;
-			}),
+	naturStore: {
+		text: '',
 	},
+};
+
+const createMap = createMapCreator(state);
+
+const maps = {
+	m1: createMap(
+		(s) => s.text.loading,
+		(p) => p,
+	),
+	m2: createMap(
+		(s) => s.text.loading,
+		(s) => s.naturStore,
+		(p, p2) => p2,
+	),
+	// m2: createMapItem([(s) => s.text.loading], (p) => p),
+};
+
+const actions = createActions(state, {
+	updateLoadingText: (loadingText: string) => (ctx) =>
+		ctx.setState((s) => {
+			s.text.loading = loadingText;
+		}),
+	updateMessageText: (messageText: string) => (ctx) =>
+		ctx.setState((s) => {
+			s.text.message = messageText;
+		}),
+	updateNaturStoreText: (text: string) => (ctx) =>
+		ctx.setState((s) => {
+			s.naturStore.text = text;
+		}),
 });
 
 export default {
-	state: m.state,
-	actions: m.actions,
+	state: state,
+	actions: actions,
+	maps,
 };
