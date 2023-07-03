@@ -26,7 +26,6 @@ export class NaturFactory {
 	 * @returns return a map creator
 	 */
 	static mapCreator<S extends State>(state: S) {
-		function createMap<MD1 extends () => any>(m: MD1): MD1;
 		function createMap<MD1 extends (s: S) => any>(m: MD1): MD1;
 		function createMap<MD1 extends (s: S) => any, F extends (p1: ReturnType<MD1>) => any>(...m: [MD1, F]): F;
 		function createMap<

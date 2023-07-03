@@ -5,6 +5,7 @@ const state = {
 	text: {
 		loading: '',
 		message: 'message a',
+		b1: [false],
 	},
 	naturStore: {
 		text: '',
@@ -15,7 +16,7 @@ const createMap = NaturFactory.mapCreator(state);
 
 const maps = {
 	m1: createMap(
-		(s) => s.text.loading,
+		(s) => s.text.message,
 		(p) => p,
 	),
 	m2: createMap(
