@@ -24,6 +24,12 @@ const maps = {
 		(s) => s.naturStore,
 		(p, p2) => p2,
 	),
+	m3: createMap(
+		(s) => s.naturStore.text,
+		(s) => s.routePath,
+		(s) => s.text,
+		(p, p1, p3) => p,
+	),
 };
 
 const createActions = NaturFactory.actionsCreator(state, maps);
@@ -42,7 +48,6 @@ const actions = createActions({
 			s.naturStore.text = text;
 		}),
 });
-
 export default {
 	state: state,
 	actions: actions,
