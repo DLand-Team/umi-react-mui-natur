@@ -11,7 +11,7 @@ import { DateRangePickerPanel } from './DateRangePickerPanel';
 export interface DateRangePickerProps
 	extends BaseInputProps<Dayjs[]>,
 		Omit<TextFieldProps, 'value' | 'onChange' | 'onBlur'>,
-		Pick<DateRangePickerPanelProps, 'disableDate'> {
+		Pick<DateRangePickerPanelProps, 'shouldDisableDate'> {
 	format?: string;
 }
 
@@ -20,7 +20,7 @@ export const DateRangePicker = ({
 	onBlur,
 	onChange,
 	format = 'YYYY-MM-DD',
-	disableDate,
+	shouldDisableDate,
 	...fieldProps
 }: DateRangePickerProps) => {
 	const [anchorEl, setAnchorEl] = useState<HTMLInputElement | null>(null);
@@ -55,7 +55,7 @@ export const DateRangePicker = ({
 				value={textValue}
 				InputProps={{
 					readOnly: true,
-					placeholder: `${format} - ${format}`,
+					placeholder: `Start Date - End Date`,
 					endAdornment: (
 						<>
 							<IconButton>
@@ -88,7 +88,7 @@ export const DateRangePicker = ({
 			>
 				<DateRangePickerPanel
 					elevation={0}
-					disableDate={disableDate}
+					shouldDisableDate={shouldDisableDate}
 					value={value || []}
 					onChange={(v) => {
 						onChange?.(v);

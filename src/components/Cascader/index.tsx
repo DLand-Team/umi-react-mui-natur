@@ -109,7 +109,7 @@ export const Cascader = <V extends any = any>({
 										/>
 									)}
 									{i.label}
-									{i.children?.length && <ChevronRightIcon sx={{ ml: 2 }} />}
+									{i.children?.length && <ChevronRightIcon sx={{ ml: 2, marginLeft: 'auto' }} />}
 								</Box>
 							))}
 						</Box>

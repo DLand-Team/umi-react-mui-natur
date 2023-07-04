@@ -21,7 +21,7 @@ interface DatePickerPanelProps {
 	start?: boolean;
 	hoverDate?: Dayjs;
 	onHoverValueChange?: (v?: Dayjs) => any;
-	disableDate?: (date: Dayjs) => boolean;
+	shouldDisableDate?: (date: Dayjs) => boolean;
 }
 
 const DatePickerPanel = ({
@@ -32,7 +32,7 @@ const DatePickerPanel = ({
 	start = true,
 	hoverDate,
 	onHoverValueChange,
-	disableDate = () => false,
+	shouldDisableDate = () => false,
 }: DatePickerPanelProps) => {
 	const showNext = !start;
 	const showPrev = start;
@@ -162,7 +162,7 @@ const DatePickerPanel = ({
 														onChange(day.clone());
 													}
 												}}
-												disabled={disableDate(day)}
+												disabled={shouldDisableDate(day)}
 												isInSelect={!!day && isInSelect(day)}
 												isHover={isSameDay(hoverDate, day)}
 												onMouseOver={() => onHoverValueChange?.(day.clone())}
@@ -188,13 +188,13 @@ const DatePickerPanel = ({
 export interface DateRangePickerPanelProps extends Omit<PaperProps, 'value' | 'onChange'> {
 	value?: Dayjs[];
 	onChange?: (value: Dayjs[]) => any;
-	disableDate?: (date: Dayjs) => boolean;
+	shouldDisableDate?: (date: Dayjs) => boolean;
 }
 
 export const DateRangePickerPanel = ({
 	value = [],
 	onChange,
-	disableDate,
+	shouldDisableDate,
 	...paperProps
 }: DateRangePickerPanelProps) => {
 	const setValue = onChange;
@@ -223,7 +223,7 @@ export const DateRangePickerPanel = ({
 				value={sortedValue}
 				onChange={pushValue}
 				hoverDate={hoverDate}
-				disableDate={disableDate}
+				shouldDisableDate={shouldDisableDate}
 				onHoverValueChange={setHoverDate}
 			/>
 			<Divider orientation="vertical" flexItem />
@@ -233,7 +233,7 @@ export const DateRangePickerPanel = ({
 				onDateChange={(d) => setTargetMonth(d.subtract(1, 'month'))}
 				value={sortedValue}
 				onChange={pushValue}
-				disableDate={disableDate}
+				shouldDisableDate={shouldDisableDate}
 				hoverDate={hoverDate}
 				onHoverValueChange={setHoverDate}
 			/>

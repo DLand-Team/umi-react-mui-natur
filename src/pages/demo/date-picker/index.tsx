@@ -18,7 +18,7 @@ export const DatePickerDemo = () => {
 				format="YYYY-MM-DD"
 			/>
 			<h2>date range picker</h2>
-			<DateRangePicker value={value} onChange={setValue} disableDate={(d) => d.isAfter(dayjs(), 'day')} />
+			<DateRangePicker value={value} onChange={setValue} shouldDisableDate={(d) => d.isAfter(dayjs(), 'day')} />
 		</Box>
 	);
 };

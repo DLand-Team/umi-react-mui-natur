@@ -13,7 +13,6 @@ import { MessageDemo } from './message';
 import { ModalDemo } from './modal';
 import { NaturStoreDemo } from './store';
 import TableDemo from './table';
-import '@/utils/collectDeps'
 
 const MyListItemLink = ({ href, ...props }: ListItemButtonProps & { href: string }) => {
 	return (
