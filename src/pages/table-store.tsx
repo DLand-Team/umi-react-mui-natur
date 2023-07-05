@@ -40,13 +40,9 @@ const columns: Columns<TableData[0]> = [
 
 export default function TableStorePage() {
 	const [table] = useFlatInject('table');
-	const { loading, run } = useHttp(table.fetchTableData, {
-		manual: true,
-		debounceTime: 300,
+	const { loading, fn } = useHttp(table.fetchTableData, {
+		single: true,
 	});
-	useEffect(() => {
-		run();
-	}, []);
 
 	return (
 		<Box sx={{ p: 1 }}>
@@ -54,15 +50,10 @@ export default function TableStorePage() {
 			<SearchInput
 				value={table.listQuery.name}
 				onChange={(e) => table.updateListQuery({ name: e.target.value })}
-				onSearch={run}
+				onSearch={fn}
 				loading={loading}
 			/>
-			<Table
-				rowKey={'name'}
-				data={table.tableData || []}
-				columns={columns}
-				loading={loading}
-			/>
+			<Table rowKey={'name'} data={table.tableData || []} columns={columns} loading={loading} />
 		</Box>
 	);
 }
