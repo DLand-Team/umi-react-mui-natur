@@ -1,4 +1,4 @@
-import { NaturFactory } from '@/utils/NaturFactory';
+import { NaturFactory } from 'natur-immer';
 
 const state = {
 	routePath: '',
@@ -48,6 +48,7 @@ const actions = createActions({
 			s.naturStore.text = text;
 		}),
 });
+
 export default {
 	state: state,
 	actions: actions,
